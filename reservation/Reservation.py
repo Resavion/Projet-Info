@@ -16,6 +16,23 @@ class Reservation(object):
         self._prix_total = prix_total
         self._date_achat = date_achat
 
+    @property
+    def id_reservation(self):
+        return self._id_reservation
+
+    @property
+    def id_client(self):
+        return self._id_client
+
+    @property
+    def prix_tota(self):
+        return self._prix_total
+
+    @property
+    def date_achat(self):
+        return self._date_achat
+
+
     def ajouter_billet(self):
         """
         Methode qui permet d'ajouter un billet à la reservation

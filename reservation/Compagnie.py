@@ -22,8 +22,42 @@ class Compagnie(object):
         self._pays = pays
         self._actif= actif
 
-    def ajouter_route(self):
-        """
+    @property
+    def id_compagnie(self):
+        return self._id_compagnie
+
+    @property
+    def nom_compagnie(self):
+        return self._nom_compagnie
+
+    @property
+    def alias(self):
+        return self._alias
+
+    @property
+    def iata(self):
+        return self._iata
+
+    @property
+    def icao(self):
+        return self._icao
+
+    @property
+    def callsign(self):
+        return self._callsign
+
+    @property
+    def pays(self):
+        return self._pays
+
+    @property
+    def actif(self):
+        return self._actif
+
+
+
+def ajouter_route(self):
+"""
         Methode qui permet d'ajouter une route empruntée par la compagnie pour un vol
         :return: 
         """

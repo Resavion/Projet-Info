@@ -16,10 +16,43 @@ class Vol(object):
         self._date = date
         self._heure_depart = heure_depart
         self._heure_arrivee = heure_arrivee
-        self._heure_embarquement:
+        self._heure_embarquement = heure_embarquement
         self._avion = avion
         self._places_restantes = places_restantes
         self._statut = statut
+
+    @property
+    def id_horaire(self):
+        return self._id_horaire
+
+    @property
+    def date(self):
+        return self._date
+
+    @property
+    def heure_depart(self):
+        return self._heure_depart
+
+    @property
+    def heure_arrivee(self):
+        return self._heure_arrivee
+
+    @property
+    def heure_embarquement(self):
+        return self._heure_embarquement
+
+    @property
+    def avion(self):
+        return self._avion
+
+    @property
+    def places_restantes(self):
+        return self._places_restantes
+
+    @property
+    def statut(self):
+        return self._statut
+
 
     def afficher_places(self):
         """

@@ -18,6 +18,29 @@ class Route(object):
         self._distance = distance
         self._codeshare = codeshare
 
+    @property
+    def id_compagnie(self):
+        return self._id_compagnie
+
+    @property
+    def aeroport_depart(self):
+        return self._id_compagnie
+
+    @property
+    def aeroport_arrivee(self):
+        return self._id_compagnie
+
+    @property
+    def geom(self):
+        return self._id_compagnie
+
+    @property
+    def distance(self):
+        return self._id_compagnie
+
+    @property
+    def codeshare(self):
+        return self._id_compagnie
 
     def ajouter_horaire(self):
         """

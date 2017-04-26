@@ -14,6 +14,24 @@ class Client(object):
         self._prenom = prenom
         self._date_naissance = date_naissance
 
+
+    @property
+    def id_client(self):
+        return self._id_client
+
+    @property
+    def nom(self):
+        return self._nom
+
+    @property
+    def prenom(self):
+        return self._prenom
+
+    @property
+    def date_naissance(self):
+        return self._date_naissance
+
+
     def faire_reservation(self):
         """
         Methode qui consiste a faire une reservation

@@ -1,5 +1,4 @@
 import sqlite3
-import ihm.console as ihm
 
 
 def ouvrir_connexion(db_name):

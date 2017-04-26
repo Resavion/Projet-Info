@@ -14,6 +14,15 @@ def creer_bdd(db_name):
     conn, cur = ouvrir_connexion(db_name)
 
     # Création des tables
+    req = """create table EnumAvion (id integer primary key AUTOINCREMENT NOT NULL,
+                                    statut text)"""
+    executer_requete(cur, req)
+    req = """create table EnumOption (id integer primary key AUTOINCREMENT NOT NULL,
+                                    option text)"""
+    executer_requete(cur, req)
+    req = """create table EnumSatutVol (id integer primary key AUTOINCREMENT NOT NULL,
+                                    statut text)"""
+    executer_requete(cur, req)
     req = """create table Aeroport (id_iata_code text primary key,
                                     type text,
                                     nom text,
@@ -25,21 +34,21 @@ def creer_bdd(db_name):
                                     municipalite text,
                                     gps_code text)"""
     executer_requete(cur, req)
-    req = """create table Piste (id integer primary key,
+    req = """create table Piste (id integer primary key AUTOINCREMENT NOT NULL,
                                  id_aeroport text,
                                  length_ft integer,
                                  le_identificateur text,
                                  le_seuil_decale_ft real,
                                  he_identificateur text,
                                  he_seuil_decale_ft real,
-                                 foreign key(id_aeroport) references Aeroport(id))"""
+                                 foreign key(id_aeroport) references Aeroport(id_iata_code))"""
     executer_requete(cur, req)
-    req = """create table Compagnie (id_iata_code integer primary key,
+    req = """create table Compagnie (id_iata_code text primary key,
                                      nom text,
                                      icao_code text,
                                      pays text)"""
     executer_requete(cur, req)
-    req = """create table TypeAvion (id integer primary key,
+    req = """create table TypeAvion (id integer primary key AUTOINCREMENT NOT NULL,
                                     nb_place_premiere integer,
                                     nb_place_business integer,
                                     nb_place_eco_plus integer,
@@ -52,31 +61,31 @@ def creer_bdd(db_name):
                                     altitude_vol_m integer,
                                     distance_decollage_m integer)"""
     executer_requete(cur, req)
-    req = """create table Avion (id integer primary key,
+    req = """create table Avion (id integer primary key AUTOINCREMENT NOT NULL,
                                  date_construction date,
                                  date_derniere_revision date,
                                  etat integer,
-                                 id_compagnie text
+                                 id_compagnie text,
                                  id_aeroport text,
                                  id_type_avion integer,
                                  position text,
-                                 statut EnumAvion,
-                                 foreign key(id_compagnie) references Compagnie(id),
-                                 foreign key(id_aeroport) references Aeroport(id),
+                                 foreign key(etat) references EnumAvion(id),
+                                 foreign key(id_compagnie) references Compagnie(id_iata_code),
+                                 foreign key(id_aeroport) references Aeroport(id_iata_code),
                                  foreign key(id_type_avion) references TypeAvion(id))"""
     executer_requete(cur, req)
-    req = """create table Route (id integer primary key,
+    req = """create table Route (id integer primary key AUTOINCREMENT NOT NULL,
                                  id_compagnie text,
                                  id_aeroport_depart text,
                                  id_aeroport_arrivee text,
                                  geom text,
                                  distance real,
                                  codeshare integer,
-                                 foreign key(id_compagnie) references Compagnie(id),
-                                 foreign key(id_aeroport_depart) references Aeroport(id),
-                                 foreign key(id_aeroport_arrivee) references Aeroport(id))"""
+                                 foreign key(id_compagnie) references Compagnie(id_iata_code),
+                                 foreign key(id_aeroport_depart) references Aeroport(id_iata_code),
+                                 foreign key(id_aeroport_arrivee) references Aeroport(id_iata_code))"""
     executer_requete(cur, req)
-    req = """create table Horaire (id integer primary key,
+    req = """create table Horaire (id integer primary key AUTOINCREMENT NOT NULL,
                                  id_compagnie text,
                                  numero_vol integer,
                                  id_route integer,
@@ -86,12 +95,12 @@ def creer_bdd(db_name):
                                  periodicite text,
                                  id_horaire_operateur integer,
                                  id_type_avion integer,
-                                 foreign key(id_compagnie) references Compagnie(id),
+                                 foreign key(id_compagnie) references Compagnie(id_iata_code),
                                  foreign key(id_route) references Route(id),
                                  foreign key(id_horaire_operateur) references Horaire(id),
                                  foreign key(id_type_avion) references TypeAvion(id))"""
     executer_requete(cur, req)
-    req = """create table Vol (id integer primary key,
+    req = """create table Vol (id integer primary key AUTOINCREMENT NOT NULL,
                                  id_horaire integer,
                                  heure_depart text,
                                  heure_arrivee text,
@@ -100,23 +109,24 @@ def creer_bdd(db_name):
                                  places_restantes_business integer,
                                  places_restantes_eco_plus integer,
                                  places_restantes_eco integer,
-                                 statut EnumStatutVol,
+                                 statut integer,
                                  foreign key(id_horaire) references Horaire(id),
-                                 foreign key(id_avion) references Avion(id))"""
+                                 foreign key(id_avion) references Avion(id),
+                                 foreign key(statut) references EnumStatutVol(id))"""
     executer_requete(cur, req)
-    req = """create table Client (id integer primary key,
+    req = """create table Client (id integer primary key AUTOINCREMENT NOT NULL,
                                   nom text,
                                   prenom text,
                                   date_naissance text)"""
     executer_requete(cur, req)
-    req = """create table Reservation (id text primary key,
+    req = """create table Reservation (id integer primary key AUTOINCREMENT NOT NULL,
                                        id_client integer,
                                        prix_total real,
                                        foreign key(id_client) references Client(id))"""
     executer_requete(cur, req)
-    req = """create table Billet (id integer primary key,
-                                  id_reservation text,
-                                  options EnumOption,
+    req = """create table Billet (id integer primary key AUTOINCREMENT NOT NULL,
+                                  id_reservation integer,
+                                  option text,
                                   tarif real,
                                   nom_passager text,
                                   prenom_passager text,
@@ -124,7 +134,7 @@ def creer_bdd(db_name):
                                   date_naissance text,
                                   foreign key(id_reservation) references Reservation(id))"""
     executer_requete(cur, req)
-    req = """create table Segment (id integer primary key,
+    req = """create table Segment (id integer primary key AUTOINCREMENT NOT NULL,
                                    id_billet integer,
                                    id_vol integer,
                                    place text,
@@ -135,103 +145,39 @@ def creer_bdd(db_name):
     valider_modifs(conn)
 
     # Insertion des éléments
+    colonnes = ('id_iata_code','type','nom','latitude_deg','longitude_deg','elevation_ft','continent','pays','municipalite','gps_code')
     aeroports = (
-        ('Eclair', 40, 100, 'Electrique'),
+        ("NRT","large_airport","Narita International Airport",35.7647018433,140.386001587,141,"AS","JP","Tokyo","RJAA"),
+        ("KHH", "large_airport","Kaohsiung International Airport",22.57710075378418,120.3499984741211, 31,"AS","TW","Kaohsiung City","RCKH")
     )
-    colonnes = ('nom', 'puissance', 'precision', 'type_pok')
     for t in aeroports:
-        r.insert_into(cur, 'Aeroport', colonnes, (t,))
+        r.insert_into(cur, 'Aeroport', colonnes, t)
     valider_modifs(conn)
 
-    dresseurs = ('Dresseur 1', 'Dresseur 2', 'Dresseur 3', 'Dresseur 4', 'Dresseur 5')
-    for d in dresseurs:
-        r.insert_into(cur, 'Dresseur', ('nom', 'type'), (d, 2))
-    valider_modifs(conn)
-
-    attaques = (
-        ('Eclair', 40, 100, 'Electrique'),
-        ('Poing éclair', 75, 100, 'Electrique'),
-        ('Fatal foudre', 110, 70, 'Electrique'),
-        ('Fouet liane', 45, 100, 'Plante'),
-        ('Méga-sangsue', 40, 100, 'Plante'),
-        ("Tranch'Herbe", 55, 95, 'Plante'),
-        ('Charge', 40, 100, 'Normal'),
-        ('Morsure', 60, 100, 'Normal'),
-        ('Jet-Pierres', 50, 90, 'Normal'),
-        ('Bélier', 90, 85, 'Normal'),
-        ('Coupe', 50, 95, 'Normal'),
-        ('Croc de mort', 80, 90, 'Normal'),
-        ('Hydrocanon', 110, 80, 'Eau'),
-        ('Hydroblast', 150, 90, 'Eau'),
-        ('Ocroupi', 95, 85, 'Eau'),
-        ('Danse flamme', 35, 85, 'Feu'),
-        ('Flammèche', 40, 100, 'Feu'),
-        ('Lance-flammes', 90, 100, 'Feu')
+    colonnes = ('id_aeroport','length_ft','le_identificateur','le_seuil_decale_ft','he_identificateur','he_seuil_decale_ft')
+    pistes = (
+        ("NRT",13123,"16R",'',"34L",2460),
+        ("KHH",10335,9,525,27,1477)
     )
-    colonnes = ('nom', 'puissance', 'precision', 'type_pok')
-    for att in attaques:
-        r.insert_into(cur, 'Attaque', colonnes, att)
+    for t in pistes:
+        r.insert_into(cur, 'Piste', colonnes, t)
     valider_modifs(conn)
 
-    especes = (
-        ('Bulbizare', 49, 49, 45, 'Plante'),
-        ('Salamèche', 52, 43, 39, 'Feu'),
-        ('Carapuce', 48, 65, 44, 'Eau'),
-        ('Pikachu', 55, 40, 35, 'Electrique'),
-        ('Chenipan', 30, 35, 45, 'Normal'),
-        ('Rattata', 56, 35, 30, 'Normal'),
-        ('Piafabec', 60, 30, 40, 'Normal'),
-        ('Tentacool', 40, 35, 40, 'Eau'),
-        ('Mystherbe', 50, 55, 45, 'Plante'),
-        ('Voltali', 65, 60, 65, 'Electrique')
+    colonnes = ('id_iata_code','nom','icao_code','pays')
+    compagnies = (
+        ("NH","All Nippon Airways","ANA","Japan"),
+        ("CI","China Airlines","CAL","Taiwan")
     )
-    colonnes = ('nom', 'force', 'defense', 'pv', 'type_pok')
-    for esp in especes:
-        r.insert_into(cur, 'EspecePokemon', colonnes, esp)
+    for t in compagnies:
+        r.insert_into(cur, 'Compagnie', colonnes, t)
     valider_modifs(conn)
 
-    pokemons = (
-        ('Bulbi sauvage', 'Bulbizare', 'Dresseur 1'),
-        ('Pika sauvage', 'Pikachu', 'Dresseur 1'),
-        ('Rattata sauvage', 'Rattata', 'Dresseur 2'),
-        ('Chenipan sauvage', 'Chenipan', 'Dresseur 3'),
-        ('Piaf sauvage', 'Piafabec', 'Dresseur 3'),
-        ('Pieuvre des mers', 'Tentacool', 'Dresseur 4'),
-        ('Mystherbe sauvage', 'Mystherbe', 'Dresseur 5'),
-        ('Voltali sauvage', 'Voltali', 'Dresseur 5')
-    )
-    colonnes = ('nom', 'espece', 'dresseur')
-    for pok in pokemons:
-        r.insert_into(cur, 'Pokemon', colonnes, pok)
-    valider_modifs(conn)
-
-    pok_att = (
-        ('Bulbi sauvage', 'Charge'),
-        ('Bulbi sauvage', 'Fouet liane'),
-        ('Bulbi sauvage', "Tranch'Herbe"),
-        ('Pika sauvage', 'Charge'),
-        ('Pika sauvage', 'Eclair'),
-        ('Rattata sauvage', 'Morsure'),
-        ('Rattata sauvage', 'Croc de mort'),
-        ('Chenipan sauvage', 'Charge'),
-        ('Piaf sauvage', 'Coupe'),
-        ('Piaf sauvage', 'Jet-Pierres'),
-        ('Pieuvre des mers', 'Hydroblast'),
-        ('Pieuvre des mers', 'Hydrocanon'),
-        ('Pieuvre des mers', 'Ocroupi'),
-        ('Mystherbe sauvage', 'Méga-sangsue'),
-        ('Mystherbe sauvage', "Tranch'Herbe"),
-        ('Voltali sauvage', 'Poing éclair'),
-        ('Voltali sauvage', 'Fatal foudre'),
-        ('Voltali sauvage', 'Charge')
-    )
-    colonnes = ('nom_pok', 'nom_att')
-    for pa in pok_att:
-        r.insert_into(cur, 'PokemonAtt', colonnes, pa)
-    valider_modifs(conn)
-
+#18768,1,"CI","NRT",,"35.7647018433","140.386001587"
+#18768,2,"CI","KHH",,"22.5771007538","120.3499984741"
+#7632,1,"NH","NRT",,"35.7647018433","140.386001587"
+#7632,2,"NH","KHH",,"22.5771007538","120.3499984741"
     fermer_connexion(cur, conn)
 
 
 if __name__ == '__main__':
-    creer_bdd("pokemon.db")
+    creer_bdd("resavion.db")

@@ -36,3 +36,10 @@ class Reservation(object):
         """
         pass
 
+    def fournir_recapitulatif(self):
+        """
+        Methode qui permet de fournir au client le recapitulatif de sa reservation
+        :return: 
+        """
+        pass
+

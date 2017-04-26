@@ -22,4 +22,51 @@ class Compagnie(object):
         self._pays = pays
         self._actif= actif
 
+    def ajouter_route(self):
+        """
+        Methode qui permet d'ajouter une route empruntée par la compagnie pour un vol
+        :return: 
+        """
+        pass
+
+    def supprimer_route(self):
+        """
+        Methode pour supprimer une route au préalablement assignée à un vol
+        :return: 
+        """
+        pass
+
+
+    def afficher_stats(self):
+        """
+        Methode qui permet d'afficher les statistiques sur le nombre de passager, etc pour la compagnie
+        :return: 
+        """
+        pass
+
+    def afficher_avions(self):
+        """
+        Methode qui permet d'afficher l'emplacement des différents avions
+        :return: 
+        """
+        pass
+
+
+    def afficher_routes(self):
+        """
+        Methode qui permet d'afficher le chemin suivi par le passager avec les escales
+        :return: 
+        """
+        pass
+
+    def affecter_avion(self):
+        """
+        Methode qui permet d'affecter un avion existant à un vol
+        
+        :return: 
+        """
+        pass
+
+
+
     

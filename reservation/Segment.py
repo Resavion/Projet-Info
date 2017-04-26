@@ -28,5 +28,5 @@ class Segment(object):
         """
         pass
 
-    
+
 

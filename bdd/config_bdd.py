@@ -49,6 +49,7 @@ def creer_bdd(db_name):
                                      pays text)"""
     executer_requete(cur, req)
     req = """create table TypeAvion (id integer primary key AUTOINCREMENT NOT NULL,
+                                    nom text,
                                     nb_place_premiere integer,
                                     nb_place_business integer,
                                     nb_place_eco_plus integer,
@@ -56,7 +57,6 @@ def creer_bdd(db_name):
                                     nb_total_place integer,
                                     fuel_cap_L integer,
                                     distance_franchissable_km integer,
-                                    coefficient_cout real,
                                     vitesse_mach real,
                                     altitude_vol_m integer,
                                     distance_decollage_m integer)"""
@@ -79,7 +79,6 @@ def creer_bdd(db_name):
                                  id_aeroport_depart text,
                                  id_aeroport_arrivee text,
                                  geom text,
-                                 distance real,
                                  codeshare integer,
                                  foreign key(id_compagnie) references Compagnie(id_iata_code),
                                  foreign key(id_aeroport_depart) references Aeroport(id_iata_code),
@@ -145,7 +144,10 @@ def creer_bdd(db_name):
     valider_modifs(conn)
 
     # Insertion des éléments
-    colonnes = ('id_iata_code','type','nom','latitude_deg','longitude_deg','elevation_ft','continent','pays','municipalite','gps_code')
+
+    # Aeroport
+    colonnes = ('id_iata_code','type','nom','latitude_deg','longitude_deg','elevation_ft','continent','pays',
+                'municipalite','gps_code')
     aeroports = (
         ("NRT","large_airport","Narita International Airport",35.7647018433,140.386001587,141,"AS","JP","Tokyo","RJAA"),
         ("KHH", "large_airport","Kaohsiung International Airport",22.57710075378418,120.3499984741211, 31,"AS","TW","Kaohsiung City","RCKH")
@@ -154,6 +156,7 @@ def creer_bdd(db_name):
         r.insert_into(cur, 'Aeroport', colonnes, t)
     valider_modifs(conn)
 
+    # Piste
     colonnes = ('id_aeroport','length_ft','le_identificateur','le_seuil_decale_ft','he_identificateur','he_seuil_decale_ft')
     pistes = (
         ("NRT",13123,"16R",'',"34L",2460),
@@ -163,6 +166,7 @@ def creer_bdd(db_name):
         r.insert_into(cur, 'Piste', colonnes, t)
     valider_modifs(conn)
 
+    # Compagnie
     colonnes = ('id_iata_code','nom','icao_code','pays')
     compagnies = (
         ("NH","All Nippon Airways","ANA","Japan"),
@@ -172,12 +176,44 @@ def creer_bdd(db_name):
         r.insert_into(cur, 'Compagnie', colonnes, t)
     valider_modifs(conn)
 
-#18768,1,"CI","NRT",,"35.7647018433","140.386001587"
-#18768,2,"CI","KHH",,"22.5771007538","120.3499984741"
-#7632,1,"NH","NRT",,"35.7647018433","140.386001587"
-#7632,2,"NH","KHH",,"22.5771007538","120.3499984741"
+    # TypeAvion
+    colonnes = ('nom','nb_place_premiere','nb_place_business','nb_place_eco_plus','nb_place_eco','nb_total_place',
+                'fuel_cap_L','distance_franchissable_km','vitesse_mach','altitude_vol_m','distance_decollage_m')
+    types = (
+        ("321",0,8,0,186,194,30000,5950,0.78,12000,2100),
+        ("CI", "NRT", "KHH", "LINESTRING(140.386001587 35.7647018433, 120.3499984741 22.5771007538)", 0)
+    )
+    for t in types:
+        r.insert_into(cur, 'Route', colonnes, t)
+    valider_modifs(conn)
+
+    # Avion
+
+    # Route
+    colonnes = ('id_compagnie', 'id_aeroport_depart', 'id_aeroport_arrivee', 'geom', 'codeshare')
+    routes = (
+        ("NH", "NRT", "KHH", "LINESTRING(140.386001587 35.7647018433, 120.3499984741 22.5771007538)", 0),
+        ("CI", "NRT", "KHH", "LINESTRING(140.386001587 35.7647018433, 120.3499984741 22.5771007538)", 0)
+    )
+    for t in routes:
+        r.insert_into(cur, 'Route', colonnes, t)
+    valider_modifs(conn)
+
+    # Horaire
+    colonnes = ('id_compagnie','numero_vol','id_route','heure_depart','heure_arrivee','duree','periodicite',
+                'id_horaire_operateur','id_type_avion')
+    horaires = (
+        ("NH", "NRT", "KHH", "LINESTRING(140.386001587 35.7647018433, 120.3499984741 22.5771007538)", 0),
+        ("CI", "NRT", "KHH", "LINESTRING(140.386001587 35.7647018433, 120.3499984741 22.5771007538)", 0)
+    )
+    for t in horaires:
+        r.insert_into(cur, 'Horaire', colonnes, t)
+    valider_modifs(conn)
+
     fermer_connexion(cur, conn)
 
 
 if __name__ == '__main__':
+    import os
+    os.remove("resavion.db")
     creer_bdd("resavion.db")

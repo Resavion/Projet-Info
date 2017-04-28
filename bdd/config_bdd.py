@@ -97,6 +97,7 @@ def creer_bdd(db_name):
     executer_requete(cur, req)
     req = """create table Horaire (id integer primary key,
                                  id_route integer,
+                                 id_compagnie text,
                                  numero_vol integer,
                                  heure_depart text,
                                  heure_arrivee text,
@@ -105,6 +106,7 @@ def creer_bdd(db_name):
                                  id_horaire_operateur integer,
                                  id_config_avion integer,
                                  foreign key(id_route) references Route(id),
+                                 foreign key(id_compagnie) references Compagnie(id_iata_code),
                                  foreign key(id_horaire_operateur) references Horaire(id),
                                  foreign key(id_config_avion) references ConfigAvion(id))"""
     executer_requete(cur, req)
@@ -269,13 +271,13 @@ def creer_bdd(db_name):
     valider_modifs(conn)
 
     # Horaire
-    colonnes = ('id','id_route','numero_vol','heure_depart','heure_arrivee','duree','periodicite',
-                'id_horaire_operateur','id_config_avion')
+    colonnes = ('id','id_route','id_compagnie','numero_vol','heure_depart','heure_arrivee','duree',
+                'periodicite','id_horaire_operateur','id_config_avion')
     horaires = (
-        (1,1,107,"12:45","15:40","3:55",None,None,1),
-        (2,2,5831,None,None,None,None,1,None),
-        (3,3,811,"18:00","21:10","4:10",None,None,2),
-        (4,4,9911,None,None,None,None,3,None)
+        (1,1,"BR",107,"12:45","15:40","3:55",None,None,1),
+        (2,2,"NH",5831,None,None,None,None,1,None),
+        (3,3,"JL",811,"18:00","21:10","4:10",None,None,2),
+        (4,4,"CI",9911,None,None,None,None,3,None)
     )
     for t in horaires:
         r.insert_into(cur, 'Horaire', colonnes, t)

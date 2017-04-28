@@ -1,5 +1,5 @@
 class Horaire(object):
-    def __init__(self, id_horaire, id_compagnie, id_route, numero, heure_depart, heure_arrivee, duree, periodicite, horaire_operateur,
+    def __init__(self, id_horaire, id_route, id_compagnie, numero, heure_depart, heure_arrivee, duree, periodicite, horaire_operateur,
                  config_avion):
         """
         Constructeur de la classe horaire
@@ -64,6 +64,10 @@ class Horaire(object):
     @property
     def config_avion(self):
         return self._config_avion
+
+    def __str__(self):
+        return "{}{} - {}->{}".format(self._id_compagnie,self._numero,self._heure_depart,
+                                      self._heure_arrivee)
 
     def creer_vols(self):
         """

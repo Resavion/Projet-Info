@@ -54,6 +54,12 @@ def select_routes_par_compagnie(cur, id_compagnie):
     return cur.fetchall()
 
 
+def select_horaires_par_route(cur, id_route):
+    req = "SELECT * FROM Horaire WHERE id_route = ?"
+    executer_requete(cur, req, (id_route,))
+    return cur.fetchall()
+
+
 def select_config_par_id(cur, id_config):
     req = "SELECT * FROM ConfigAvion WHERE id = ?"
     executer_requete(cur, req, (id_config,))

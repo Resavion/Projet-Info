@@ -1,5 +1,6 @@
 class Avion(object):
-    def __init__(self, id_avion, date_construction, date_derniere_revision, etat, aeroport, compagnie, typeAvion, date_prochaine_revision, aeroport_actuel, position, statut):
+    def __init__(self, id_avion, date_construction, date_derniere_revision, etat, aeroport, compagnie, typeAvion,
+                 date_prochaine_revision, aeroport_actuel, position, statut):
         """
         Constructeur de la classe avion
         

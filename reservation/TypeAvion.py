@@ -1,5 +1,7 @@
 class TypeAvion(object):
-    def __init__(self, id_type_avion, nb_place_premiere, nb_place_business, nb_place_eco_plus, nb_place_economique, nb_total_place, fuel_cap_L, distance_franchissable_km, coefficient_cout, vitesse_mach, altitude_vol_m, distance_decollage_m):
+    def __init__(self, id_type_avion, nb_place_premiere, nb_place_business, nb_place_eco_plus, nb_place_economique,
+                 nb_total_place, fuel_cap_L, distance_franchissable_km, coefficient_cout, vitesse_mach, altitude_vol_m,
+                 distance_decollage_m):
         """
         Constructeur de la classe typeAvion
         

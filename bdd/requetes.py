@@ -18,6 +18,18 @@ def update(cur, table, col, values, nom):
     executer_requete(cur, req, values)
 
 
+def select_aeroports(cur):
+    req = "SELECT * FROM Aeroport"
+    executer_requete(cur, req)
+    return cur.fetchall()
+
+
+def select_pistes_par_aeroport(cur, id_aero):
+    req = "SELECT * FROM Piste WHERE id_aeroport = ?"
+    executer_requete(cur, req, (id_aero,))
+    return cur.fetchall()
+
+
 def select_esp_pok_by_nom(cur, colonnes, nom_espece):
     req = "SELECT "
     req += ", ".join(colonnes)

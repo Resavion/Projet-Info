@@ -1,11 +1,11 @@
 class Piste(object):
-    def __init__(self, id_piste, aeroport, length_ft, le_identificateur, le_seuil_decale_ft,
+    def __init__(self, id_piste, id_aeroport, length_ft, le_identificateur, le_seuil_decale_ft,
                  he_identificateur, he_seuil_decale_ft):
         """
         Constructeur de la classe Piste
         
         :param id_piste: identifiant de la piste
-        :param aeroport: aeroport qui correspond au code iata
+        :param id_aeroport: id de l'aeroport qui correspond au code iata
         :param length_ft: longueur de la piste en feet 
         :param le_identificateur: identifiant de la piste sur l'extremite 1
         :param le_seuil_decale_ft: le seuil decale de la piste 1
@@ -13,7 +13,7 @@ class Piste(object):
         :param he_seuil_decale_ft: le seuil decale de la piste 2
         """
         self._id_piste = id_piste
-        self._aeroport = aeroport
+        self._id_aeroport = id_aeroport
         self._length_ft = length_ft
         self._le_identificateur = le_identificateur
         self._le_seuil_decale_ft = le_seuil_decale_ft
@@ -26,8 +26,8 @@ class Piste(object):
         return self._id_piste
 
     @property
-    def aeroport(self):
-        return self._aeroport
+    def id_aeroport(self):
+        return self._id_aeroport
 
     @property
     def length_ft(self):
@@ -49,7 +49,9 @@ class Piste(object):
     def he_seuil_decale_ft(self):
         return self._he_seuil_decale_ft
 
-
+    def __str__(self):
+        return "{} - {}/{} ({} ft)".format(self._id_aeroport,self._le_identificateur,
+                                           self._he_identificateur,self._length_ft)
 
 
 

@@ -68,6 +68,9 @@ class Aeroport(object):
     def gps_code(self):
         return self._gps_code
 
+    def __str__(self):
+        return "{} - {} - {}, {} ({})".format(self._id_aero,self._gps_code,self._nom,
+                                              self._municipalite,self._code_pays)
 
     def afficher_routes(self):
         """

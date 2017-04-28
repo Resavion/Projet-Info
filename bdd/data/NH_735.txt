@@ -1,0 +1,29 @@
+  ABC HJK
+  -------
+ |>     <|
+ |--- ---|
+Y|OOO OOO|1
+Y|OOO OOO|2
+Y|OOO OOO|3
+Y|OOO OOO|4
+Y|OOO OOO|5
+Y|OOO OOO|6
+Y|OOO OOO|7
+Y|OOO OOO|8
+Y|OOO OOO|9
+ |>     <|
+Y|OOO OOO|10
+Y|OOO OOO|11
+Y|OOO OOO|12
+Y|OOO OOO|13
+Y|OOO OOO|14
+Y|OOO OOO|15
+Y|OOO OOO|16
+Y|OOO OOO|17
+Y|OOO OOO|18
+Y|OOO OOO|19
+Y|OOO OOO|20
+Y|OOO OOO|21
+ |--- ---|
+ |>     <|
+  -------

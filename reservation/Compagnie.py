@@ -1,17 +1,17 @@
 class Compagnie(object):
-    def __init__(self, id_compagnie, nom_compagnie, icao, pays):
+    def __init__(self, id_compagnie, nom_compagnie, code_icao, pays):
         """
         Constructeur de la classe compagnie
         
         :param id_compagnie: identifiant de la compagnie
         :param nom_compagnie: nom de la compagnie
-        :param icao: code icao de la compagnie
+        :param code_icao: code icao de la compagnie
         :param pays: pays d'origine de la compagnie
         """
 
         self._id_compagnie = id_compagnie
         self._nom_compagnie = nom_compagnie
-        self._icao = icao
+        self._code_icao = code_icao
         self._pays = pays
 
     @property
@@ -23,16 +23,12 @@ class Compagnie(object):
         return self._nom_compagnie
 
     @property
-    def icao(self):
-        return self._icao
+    def code_icao(self):
+        return self._code_icao
 
     @property
     def pays(self):
         return self._pays
-
-
-
-
 
     def ajouter_route(self):
         """

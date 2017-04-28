@@ -1,33 +1,33 @@
 class Aeroport(object):
-    def __init__(self, id_aeroport_iata_code, type, nom, latitude, longtitude, elevation, code_continent, pays, municipalite, gps_code):
+    def __init__(self, id_aero, type, nom, latitude, longtitude, elevation, code_continent,
+                 code_pays, municipalite, gps_code):
         """
         Constructeur de la classe aeroport
         
-        :param id_aeroport_iata_code: identifiant de l'aeroport correspondant au iata code
+        :param id_aero: identifiant de l'aeroport correspondant au iata code
         :param type: type de l'aeroport (grand, moyen, petit)
         :param nom: nom de l'aeroport
         :param latitude: la latitude de l'aeroport
         :param longtitude: la longitude de l'aeroport
         :param elevation: l'elevation de l'aeroport
         :param code_continent: le code du continent ou se trouve l'aeroport
-        :param pays: le pays ou se trouve l'aeroport
+        :param code_pays: le code du pays ou se trouve l'aeroport
         :param municipalite: la municipalite ou se trouve l'aeroport
         :param gps_code: le code gps de l'aeroport
         """
-
-        self._id_aeroport_iata_code = id_aeroport_iata_code
+        self._id_aero = id_aero
         self._type = type
         self._nom = nom
         self._latitude = latitude
         self._longtitude = longtitude
         self._elevation = elevation
         self._code_continent = code_continent
-        self._pays = pays
+        self._code_pays = code_pays
         self._municipalite = municipalite
         self._gps_code = gps_code
 
     @property
-    def id_aeroport_iata_code(self):
+    def id_aero(self):
         return
 
     @property
@@ -55,8 +55,8 @@ class Aeroport(object):
         return self._code_continent
 
 
-    def pays(self):
-        return self._pays
+    def code_pays(self):
+        return self._code_pays
 
     @property
     def municipalite(self):

@@ -3,10 +3,11 @@ import reservation.Aeroport
 
 
 class Route(object):
-    def __init__(self, id_compagnie, aeroport_depart, aeroport_arrivee, geom, codeshare, horaires):
+    def __init__(self, id_route, id_compagnie, aeroport_depart, aeroport_arrivee, geom, codeshare, horaires):
         """
         Constructeur de la classe route
         
+        :param id_route: id de la route
         :param id_compagnie: id de la compagnie qui propose la route
         :param aeroport_depart: aeroport de depart de la route
         :param aeroport_arrivee: aeroport d'arrivee de la route
@@ -14,6 +15,7 @@ class Route(object):
         :param codeshare: booleen qui permet de savoir si un avion est partage par plusieurs id_compagnies
         :param horaires: liste des horaires sur cette route
         """
+        self._id_route = id_route
         self._id_compagnie = id_compagnie
         self._aeroport_depart = aeroport_depart
         self._aeroport_arrivee = aeroport_arrivee
@@ -21,6 +23,10 @@ class Route(object):
         self._distance = self.distance_haversine(aeroport_depart, aeroport_arrivee)
         self._codeshare = codeshare
         self._horaires = horaires
+
+    @property
+    def id_route(self):
+        return self._id_route
 
     @property
     def id_compagnie(self):

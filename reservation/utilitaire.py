@@ -31,6 +31,22 @@ def charger_bd(db_name):
 
     # Aeroports
     rows = r.select_aeroports(cur)
+    aeroports = charger_aeroports(cur)
+
+    # Types d'avions
+    rows = r.select_types_avions(cur)
+    types_avions = []
+    for row in rows:
+        type_avion = TypeAvion(*row)
+        types_avions.append(type_avion)
+        # print(type_avion)
+
+    # Compagnies
+    compagnies = charger_compagnies(cur, aeroports, types_avions)
+
+
+def charger_aeroports(cur):
+    rows = r.select_aeroports(cur)
     aeroports = []
     for row in rows:
         id_aeroport = row[0]
@@ -40,40 +56,57 @@ def charger_bd(db_name):
         for row_piste in rows_pistes:
             piste = Piste(*row_piste)
             pistes.append(piste)
-            print(piste)
+            # print(piste)
         aeroport = Aeroport(*row, pistes)
         aeroports.append(aeroport)
-        print(aeroport)
+        # print(aeroport)
+    return aeroports
 
-    # Types d'avions
-    rows = r.select_types_avions(cur)
-    types_avions = []
-    for row in rows:
-        type_avion = TypeAvion(*row)
-        types_avions.append(type_avion)
-        print(type_avion)
 
-    # Compagnies
+def charger_compagnies(cur, aeroports, types_avions):
     rows = r.select_compagnies(cur)
+    compagnies = []
     for row in rows:
         id_compagnie = row[0]
-        rows_avions = r.select_avions_par_compagnie(cur, id_compagnie)
-        avions = []
         # Avions
-        for row_avion in rows_avions:
-            id_config = row_avion[2]
-            # Config
-            row_config = r.select_config_par_id(cur, id_config)
-            id_type_avion = row_config[3]
-            type_avion = [x for x in types_avions if x.id_type_avion == id_type_avion]
-            config = ConfigAvion(*row_config[0:3],*type_avion,*row_config[4:])
-            print(config)
-            avion = Avion(*row_avion[0:2],config,*row_avion[3:])
-            avions.append(avion)
-            print(avion)
+        avions = charger_avions_de_compagnie(cur, id_compagnie, types_avions)
+        # Routes
+        routes = charger_routes_de_compagnie(cur, id_compagnie, aeroports)
         # compagnie = Compagnie(*row)
+    return compagnies
 
-#
+
+def charger_avions_de_compagnie(cur, id_compagnie, types_avions):
+    rows_avions = r.select_avions_par_compagnie(cur, id_compagnie)
+    avions = []
+    for row in rows_avions:
+        id_config = row[2]
+        # Config
+        row_config = r.select_config_par_id(cur, id_config)
+        id_type_avion = row_config[3]
+        type_avion = [x for x in types_avions if x.id_type_avion == id_type_avion][0]
+        config = ConfigAvion(*row_config[0:3], type_avion, *row_config[4:])
+        # print(config)
+        avion = Avion(*row[0:2], config, *row[3:])
+        avions.append(avion)
+        # print(avion)
+    return avions
+
+
+def charger_routes_de_compagnie(cur, id_compagnie, aeroports):
+    rows_routes = r.select_routes_par_compagnie(cur, id_compagnie)
+    routes = []
+    for row in rows_routes:
+        print(row)
+        id_aero_dep = row[2]
+        aero_dep = [x for x in aeroports if x.id_aero == id_aero_dep][0]
+        print(aero_dep)
+        id_aero_arr = row[3]
+        aero_arr = [x for x in aeroports if x.id_aero == id_aero_arr][0]
+        print(aero_arr)
+    return routes
+
+
 # def initialiser_partie(db_name):
 #     """
 #     Créer un joueur humain et lui affecter un pokemon

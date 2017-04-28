@@ -48,6 +48,12 @@ def select_avions_par_compagnie(cur, id_compagnie):
     return cur.fetchall()
 
 
+def select_routes_par_compagnie(cur, id_compagnie):
+    req = "SELECT * FROM Route WHERE id_compagnie = ?"
+    executer_requete(cur, req, (id_compagnie,))
+    return cur.fetchall()
+
+
 def select_config_par_id(cur, id_config):
     req = "SELECT * FROM ConfigAvion WHERE id = ?"
     executer_requete(cur, req, (id_config,))

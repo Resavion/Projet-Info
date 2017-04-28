@@ -129,6 +129,7 @@ def creer_bdd(db_name):
     req = """create table Reservation (id integer primary key,
                                        id_client integer,
                                        prix_total real,
+                                       date_achat text,
                                        foreign key(id_client) references Client(id))"""
     executer_requete(cur, req)
     req = """create table Billet (id integer primary key,
@@ -145,7 +146,7 @@ def creer_bdd(db_name):
                                    id_billet integer,
                                    id_vol integer,
                                    place text,
-                                   options EnumOption,
+                                   option EnumOption,
                                    foreign key(id_billet) references Billet(id),
                                    foreign key(id_vol) references Vol(id))"""
     executer_requete(cur, req)
@@ -290,11 +291,42 @@ def creer_bdd(db_name):
 
     # Client
     colonnes = ('id','nom','prenom','date_naissance')
-    vols = (
-        (1,"Dupond","Michel",""),
+    clients = (
+        (1,"Dupond","Michel","10/04/1970"),
+        (2,"Tartempion","Lucien","20/03/1960"),
     )
-    for t in vols:
-        r.insert_into(cur, 'Vol', colonnes, t)
+    for t in clients:
+        r.insert_into(cur, 'Client', colonnes, t)
+    valider_modifs(conn)
+
+    # Reservation
+    colonnes = ('id','id_client','prix_total','date_achat')
+    resas = (
+        (1,1,1300,"20/04/2017"),
+        (2,2,500,"19/04/2017"),
+    )
+    for t in resas:
+        r.insert_into(cur, 'Reservation', colonnes, t)
+    valider_modifs(conn)
+
+    # Billet
+    colonnes = ('id','id_reservation','option','tarif','nom_passager','prenom_passager','passeport','date_naissance')
+    billets = (
+        (10001,1,None,1200,"Dupond","Michel","123456D","10/04/1970"),
+        (20002,2,None,400,"Tartempion","Lucien","123789E","20/03/1960"),
+    )
+    for t in billets:
+        r.insert_into(cur, 'Billet', colonnes, t)
+    valider_modifs(conn)
+
+    # Segment
+    colonnes = ('id_billet','id_vol','place','option')
+    segments = (
+        (10001,1,"36A",1),
+        (20002,2,"45H",None),
+    )
+    for t in segments:
+        r.insert_into(cur, 'Segment', colonnes, t)
     valider_modifs(conn)
 
     fermer_connexion(cur, conn)

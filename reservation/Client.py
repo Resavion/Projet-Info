@@ -1,5 +1,5 @@
 class Client(object):
-    def __init__(self, id_client, nom, prenom, date_naissance):
+    def __init__(self, id_client, nom, prenom, date_naissance, reservations):
         """
         Constructeur de la classe client
         
@@ -7,11 +7,13 @@ class Client(object):
         :param nom: nom du client
         :param prenom: prenom du client
         :param date_naissance: date de naissance du client
+        :param reservations: liste des reservations du client
         """
         self._id_client = id_client
         self._nom = nom
         self._prenom = prenom
         self._date_naissance = date_naissance
+        self._reservations = reservations
 
 
     @property
@@ -30,6 +32,9 @@ class Client(object):
     def date_naissance(self):
         return self._date_naissance
 
+    @property
+    def reservations(self):
+        return self._reservations
 
     def faire_reservation(self):
         """

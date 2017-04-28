@@ -55,7 +55,7 @@ class Avion(object):
         return self._position
 
     def __str__(self):
-        return "{} {} ({}/{} : {} pax) - {}".format(self._id_compagnie,self._id_avion,
+        return "{} - {} ({}/{} : {} pax) - {}".format(self._id_compagnie,self._id_avion,
                                                     self._config.type_avion,self._config.nom,
                                                     self._config.nb_total_place,
                                                     self._date_construction)

@@ -77,8 +77,8 @@ class Horaire(object):
         return self._horaire_operateur.config_avion
 
     def __str__(self):
-        return "{}{} - {}->{}".format(self._id_compagnie,self._numero,
-                                      self.heure_depart,self.heure_arrivee)
+        return "{}{} - {}->{} ({})".format(self._id_compagnie,self._numero,self.heure_depart,
+                                           self.heure_arrivee,self.duree)
 
     def creer_vols(self):
         """

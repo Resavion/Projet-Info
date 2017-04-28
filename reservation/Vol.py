@@ -1,50 +1,57 @@
 class Vol(object):
-    def __init__(self, horaire, date, heure_depart, heure_arrivee, decalage_jour, avion,
+    def __init__(self, id_vol, horaire, datetime_depart, datetime_arrivee, duree, avion,
                  places_restantes_premiere, places_restantes_business, places_restantes_eco_plus,
-                 places_restantes_eco, statut):
+                 places_restantes_eco, statut, cabine=None):
         """
         Constructeur de la classe vol
-        
+
+        :param id_vol: id du vol
         :param horaire: horaire du vol
-        :param date: date du vol
-        :param heure_depart: heure de depart du vol
-        :param heure_arrivee: heure d'arrivee du vol
-        :param decalage_jour: vaut 1 si l'heure d'arrivée est dans le jour suivant
-        :param avion: type de l'avion qui fait le vol
+        :param datetime_depart: date et heure de depart du vol
+        :param datetime_arrivee: date et heure d'arrivee du vol
+        :param duree: duree du vol
+        :param avion: avion qui fait le vol
         :param places_restantes_premiere: le nombre de places premiere restantes dans le vol
         :param places_restantes_business: le nombre de places business restantes dans le vol
         :param places_restantes_eco_plus: le nombre de places eco_plus restantes dans le vol
         :param places_restantes_eco: le nombre de places eco restantes dans le vol
         :param statut: statut indiquant l'etat du vol
+        :param cabine: schema des places du vol
         """
+        self._id_vol = id_vol
         self._horaire = horaire
-        self._date = date
-        self._heure_depart = heure_depart
-        self._heure_arrivee = heure_arrivee
-        self._decalage_jour = decalage_jour
+        self._datetime_depart = datetime_depart
+        self._datetime_arrivee = datetime_arrivee
+        self._duree = duree
         self._avion = avion
         self._places_restantes_premiere = places_restantes_premiere
         self._places_restantes_business = places_restantes_business
         self._places_restantes_eco_plus = places_restantes_eco_plus
         self._places_restantes_eco = places_restantes_eco
         self._statut = statut
-        self._cabine = horaire.config_avion.disposition
+        self._cabine = cabine
+        if cabine is None:
+            self._cabine = horaire.config_avion.disposition
+
+    @property
+    def id_vol(self):
+        return self._id_vol
 
     @property
     def horaire(self):
         return self._horaire
 
     @property
-    def date(self):
-        return self._date
+    def datetime_depart(self):
+        return self._datetime_depart
 
     @property
-    def heure_depart(self):
-        return self._heure_depart
+    def datetime_arrivee(self):
+        return self._datetime_arrivee
 
     @property
-    def heure_arrivee(self):
-        return self._heure_arrivee
+    def duree(self):
+        return self._duree
 
     @property
     def heure_embarquement(self):
@@ -78,6 +85,10 @@ class Vol(object):
     def cabine(self):
         return self._cabine
 
+    def __str__(self):
+        return "{} {}{} - {} -> {}".format(self._id_vol,self._horaire.id_compagnie,
+                                           self._horaire.numero,self._datetime_depart,
+                                           self._datetime_arrivee)
 
     def afficher_places(self):
         """

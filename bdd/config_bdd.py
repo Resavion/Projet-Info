@@ -112,8 +112,8 @@ def creer_bdd(db_name):
     executer_requete(cur, req)
     req = """create table Vol (id integer primary key,
                                  id_horaire integer,
-                                 heure_depart text,
-                                 heure_arrivee text,
+                                 datetime_depart text,
+                                 datetime_arrivee text,
                                  duree text,
                                  id_avion text,
                                  places_restantes_premiere integer,
@@ -284,7 +284,7 @@ def creer_bdd(db_name):
     valider_modifs(conn)
 
     # Vol
-    colonnes = ('id','id_horaire','heure_depart','heure_arrivee','duree','id_avion','places_restantes_premiere',
+    colonnes = ('id','id_horaire','datetime_depart','datetime_arrivee','duree','id_avion','places_restantes_premiere',
                 'places_restantes_business','places_restantes_eco_plus','places_restantes_eco','statut')
     vols = (
         (1,1,"27/04/2017-12:50","27/04/2017-15:50","4:00","B-16213",0,3,0,76,5),

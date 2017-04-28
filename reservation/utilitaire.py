@@ -1,5 +1,5 @@
 from random import randint
-
+from datetime import (datetime,timedelta)
 import ihm.console as ihm
 from bdd.acces_bdd import (ouvrir_connexion,
                            fermer_connexion,
@@ -40,11 +40,20 @@ def charger_bd(db_name):
         types_avions.append(type_avion)
         # print(type_avion)
 
-    # Horaires
-    horaires = charger_horaires(cur, types_avions)
+    # Configs d'avions
+    configs = charger_config_avions(cur, types_avions)
 
-    # Routes
-    routes = charger_routes(cur, aeroports, horaires)
+    # Avions
+    avions = charger_avions(cur, configs)
+
+    # Horaires
+    horaires = charger_horaires(cur, configs)
+
+    # Vols
+    vols = charger_vols(cur, horaires, avions)
+
+    # # Routes
+    # routes = charger_routes(cur, aeroports, horaires)
 
     # # Compagnies
     # compagnies = charger_compagnies(cur, aeroports, types_avions)
@@ -68,27 +77,72 @@ def charger_aeroports(cur):
     return aeroports
 
 
-def charger_horaires(cur, types_avions):
+def charger_config_avions(cur, types_avions):
+    configs = []
+    rows = r.select_all(cur, 'ConfigAvion')
+    for row in rows:
+        id_type_avion = row[3]
+        type_avion = [x for x in types_avions if x.id_type_avion == id_type_avion][0]
+        config = ConfigAvion(*row[0:3], type_avion, *row[4:])
+        configs.append(config)
+        # print(config)
+    return configs
+
+
+def charger_avions(cur, config_avions):
+    avions = []
+    rows = r.select_all(cur, 'Avion')
+    for row in rows:
+        id_config = row[2]
+        config = [x for x in config_avions if x.id_config_avion == id_config][0]
+        avion = Avion(*row[0:2], config, *row[3:])
+        avions.append(avion)
+        print(avion)
+    return avions
+
+
+def charger_horaires(cur, configs):
     horaires = []
     rows = r.select_horaires_pas_codeshare(cur)
     for row in rows:
+        print(row)
         id_config = row[9]
-        config = charger_config_par_id(cur, id_config, types_avions)
-        horaire = Horaire(*row[0:-1],config)
+        config = [x for x in configs if x.id_config_avion == id_config][0]
+        dep = datetime.strptime(row[4],"%H:%M").time()
+        arr = datetime.strptime(row[5],"%H:%M").time()
+        t = datetime.strptime(row[6],"%H:%M")
+        dur = timedelta(hours=t.hour, minutes=t.minute)
+        horaire = Horaire(*row[0:4],dep,arr,dur,*row[7:-1],config)
         horaires.append(horaire)
-        # print(horaire)
+        print(horaire)
     rows = r.select_horaires_codeshare(cur)
     for row in rows:
-        horaire_operateur = [x for x in horaires if x.id_horaire == row[8]][0]
+        id_horaire_operateur = row[8]
+        horaire_operateur = [x for x in horaires if x.id_horaire == id_horaire_operateur][0]
         horaire = Horaire(*row[0:8], horaire_operateur, None)
         horaires.append(horaire)
-        # print(horaire)
+        print(horaire)
     return horaires
 
 
+def charger_vols(cur, horaires, avions):
+    vols = []
+    rows = r.select_all(cur, 'Vol')
+    for row in rows:
+        id_horaire = row[1]
+        horaire = [x for x in horaires if x.id_horaire == id_horaire][0]
+        id_avion = row[5]
+        avion = [x for x in avions if x.id_avion == id_avion][0]
+        dep = datetime.strptime(row[2],"%d/%m/%Y-%H:%M")
+        arr = datetime.strptime(row[3],"%d/%m/%Y-%H:%M")
+        vol = Vol(row[0],horaire,dep,arr,*row[4:5],avion,*row[6:])
+        print(vol)
+    return vols
+
+
 def charger_routes(cur, aeroports, horaires):
-    rows = r.select_all(cur, 'Route')
     routes = []
+    rows = r.select_all(cur, 'Route')
     for row in rows:
         id_route = row[0]
         dep = [x for x in aeroports if x.id_aero == row[2]][0]
@@ -101,8 +155,8 @@ def charger_routes(cur, aeroports, horaires):
 
 
 def charger_compagnies(cur, aeroports, types_avions):
-    rows = r.select_all(cur, 'Compagnie')
     compagnies = []
+    rows = r.select_all(cur, 'Compagnie')
     for row in rows:
         id_compagnie = row[0]
         # Avions

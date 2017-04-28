@@ -66,5 +66,4 @@ Y|OO  OOOO  OO|56
 Y|OO  OOOO  OO|57
 Y|>   OOOO   <|58
  |>          <|
- |>          <|
   ------------

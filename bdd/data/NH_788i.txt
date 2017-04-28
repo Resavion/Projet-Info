@@ -1,0 +1,40 @@
+  ABC DFG HJK
+  -----------
+ |>         <|
+ |>   ---   <|
+C|OOO OOO OOO|1
+C|OOO OOO OOO|2
+C|OOO OOO OOO|3
+C|OOO OOO OOO|4
+ |>         <|
+ |>   ---   <|
+C|OOO OOO OOO|5
+C|OOO OOO OOO|6
+C|OOO OOO OOO|7
+ |--- --- ---|
+Y|OOO     OOO|12
+Y|OOO OOO OOO|13
+Y|OOO OOO OOO|14
+Y|OOO OOO OOO|15
+Y|OOO OOO OOO|16
+Y|OOO OOO OOO|17
+Y|OOO OOO OOO|20
+Y|OOO OOO OOO|21
+Y|OOO OOO OOO|22
+ |>   ---   <|
+ |>         <|
+Y|OOO OOO OOO|23
+Y|OOO OOO OOO|24
+Y|OOO OOO OOO|25
+Y|OOO OOO OOO|26
+Y|OOO OOO OOO|27
+Y|OOO OOO OOO|28
+Y|OOO OOO OOO|29
+Y|OOO OOO OOO|30
+Y|OOO OOO OOO|31
+Y|OOO OOO OOO|32
+Y|O-O OOO O-O|33
+Y|O-O OOO    |34
+ |>         <|
+ |>         <|
+  -----------

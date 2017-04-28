@@ -1,0 +1,51 @@
+  ABC DEFG HJK
+  ------------
+ |>          <|
+ |>   ----   <|
+F|O-- O--O --O|1
+F|O-- O--O --O|2
+ |--- ---- ---|
+C|O-- O-O- O--|5
+C|--O -O-O --O|6
+ |--- ---- ---|
+C|O-- O-O- O--|7
+C|--O -O-O --O|8
+C|O-- O-O- O--|9
+C|--O -O-O --O|10
+C|O-- O-O- O--|11
+C|--O -O-O --O|12
+C|O-- O-O- O--|13
+C|--O -O-O --O|14
+C|O-- O-O- O--|15
+C|--O -O-O --O|16
+C|O-- O-O- O--|17
+ |>          <|
+ |>   ----   <|
+P|O-O OOOO O-O|18
+P|O-O OOOO O-O|19
+P|O-O OOOO O-O|20
+ |--- ---- ---|
+Y|OOO OOOO OOO|24
+Y|OOO OOOO OOO|25
+Y|OOO OOOO OOO|26
+Y|OOO OOOO OOO|27
+Y|OOO OOOO OOO|28
+Y|OOO OOOO OOO|29
+ |>          <|
+ |>   ----   <|
+Y|OOO OOOO OOO|30
+Y|OOO OOOO OOO|31
+Y|OOO OOOO OOO|32
+Y|OOO OOOO OOO|33
+Y|OOO OOOO OOO|34
+Y|OOO OOOO OOO|35
+Y|OOO OOOO OOO|36
+Y|OOO OOOO OOO|37
+Y|OOO OOOO OOO|38
+Y|OO  OOOO  OO|39
+Y|OO  OOOO  OO|40
+Y|OO  OOOO  OO|41
+Y|OO  OOOO  --|42
+ |>   ----   <|
+ |>          <|
+  ------------

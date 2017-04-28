@@ -10,8 +10,6 @@ class Compagnie(object):
         :param code_continent: code du continent
         :param code_pays: code du pays
         """
-
-
         self._id_compagnie = id_compagnie
         self._nom_compagnie = nom_compagnie
         self._code_icao = code_icao
@@ -40,7 +38,7 @@ class Compagnie(object):
         return self._code_continent
 
     @property
-    def code_paysself):
+    def code_pays(self):
         return self._code_pays
 
 

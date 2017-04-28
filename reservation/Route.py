@@ -3,17 +3,17 @@ import reservation.Aeroport
 
 
 class Route(object):
-    def __init__(self,  id_compagnie, aeroport_depart, aeroport_arrivee, geom, codeshare):
+    def __init__(self,  compagnie, aeroport_depart, aeroport_arrivee, geom, codeshare):
         """
         Constructeur de la classe route
         
-        :param id_compagnie: identifiant de la compagnie
+        :param compagnie: compagnie qui propose la route
         :param aeroport_depart: aeroport de depart de la route
         :param aeroport_arrivee: aeroport d'arrivee de la route
         :param geom: linestring entre les deux aeroports en WKT
         :param codeshare: booleen qui permet de savoir si un avion est partage par plusieurs compagnies
         """
-        self._id_compagnie = id_compagnie
+        self._compagnie = compagnie
         self._aeroport_depart = aeroport_depart
         self._aeroport_arrivee = aeroport_arrivee
         self._geom = geom
@@ -21,8 +21,8 @@ class Route(object):
         self._codeshare = codeshare
 
     @property
-    def id_compagnie(self):
-        return self._id_compagnie
+    def compagnie(self):
+        return self._compagnie
 
     @property
     def aeroport_depart(self):
@@ -37,29 +37,30 @@ class Route(object):
         return self._geom
 
     @property
+    def codeshare(self):
+        return self._codeshare
+
+    @property
     def distance(self):
         return self._distance
 
-    @property
-    def codeshare(self):
-        return self._codeshare
 
     @staticmethod
     def distance_haversine(self, dep, arr, radius=6371000):
         """ note that the default distance is in meters """
-        dlat = ma.radians(arr.latitude - dep.latitude)
-        dlon = ma.radians(arr.longitude - dep.longitude)
-        lat1 = ma.radians(dep.latitude)
-        lat2 = ma.radians(arr.latitude)
+        dlat = ma.radians(arr.latitude_deg - dep.latitude_deg)
+        dlon = ma.radians(arr.longitude_deg - dep.longitude_deg)
+        lat1 = ma.radians(dep.latitude_deg)
+        lat2 = ma.radians(arr.latitude_deg)
         a = ma.sin(dlat / 2) * ma.sin(dlat / 2) + ma.sin(dlon / 2) * ma.sin(dlon / 2) * ma.cos(lat1) * ma.cos(lat2)
         c = 2 * ma.atan2(ma.sqrt(a), ma.sqrt(1 - a))
         return c * radius
 
     @staticmethod
     def bearing(self, dep, arr):
-        dlon = ma.radians(arr.longitude - dep.longitude)
-        lat1 = ma.radians(dep.latitude)
-        lat2 = ma.radians(arr.latitude)
+        dlon = ma.radians(arr.longitude_deg - dep.longitude_deg)
+        lat1 = ma.radians(dep.latitude_deg)
+        lat2 = ma.radians(arr.latitude_deg)
         y = ma.sin(dlon) * ma.cos(lat2)
         x = ma.cos(lat1) * ma.sin(lat2) - ma.sin(lat1) * ma.cos(lat2) * ma.cos(dlon)
         return ma.degrees(ma.atan2(y, x))
@@ -68,10 +69,10 @@ class Route(object):
         delta = self._distance/radius
         a = ma.sin((1. - frac)*delta)/ma.sin(delta)
         b = ma.sin(frac*delta)/ma.sin(delta)
-        lat1 = ma.radians(dep.latitude)
-        lat2 = ma.radians(arr.latitude)
-        lon1 = ma.radians(dep.longitude)
-        lon2 = ma.radians(arr.longitude)
+        lat1 = ma.radians(dep.latitude_deg)
+        lat2 = ma.radians(arr.latitude_deg)
+        lon1 = ma.radians(dep.longitude_deg)
+        lon2 = ma.radians(arr.longitude_deg)
         x = a * ma.cos(lat1) * ma.cos(lon1) + b * ma.cos(lat2) * ma.cos(lon2)
         y = a * ma.cos(lat1) * ma.sin(lon1) + b * ma.cos(lat2) * ma.sin(lon2)
         z = a * ma.sin(lat1) + b * ma.sin(lat2)

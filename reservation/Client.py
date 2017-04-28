@@ -8,7 +8,6 @@ class Client(object):
         :param prenom: prenom du client
         :param date_naissance: date de naissance du client
         """
-
         self._id_client = id_client
         self._nom = nom
         self._prenom = prenom

@@ -1,42 +1,40 @@
 class Horaire(object):
-    def __init__(self, id_compagnie, numero, route, heure_depart, heure_arrivee, duree, periodicite, id_horaire_operateur,
-                 type_avion):
+    def __init__(self, id_horaire, route, numero, heure_depart, heure_arrivee, duree, periodicite, horaire_operateur,
+                 config_avion):
         """
         Constructeur de la classe horaire
         
-        :param id_compagnie: identifiant de la compagnie
+        :param id_horaire: identifiant de l'horaire
+        :param route: route empruntee par le vol
         :param numero: numero de vol 
-        :param route: route empruntée par le vol
         :param heure_depart: heure de depart du vol
         :param heure_arrivee: heure d'arrivee du vol
         :param duree: duree du vol
-        :param periodicite: nombre de fois ou se vole est effectue (par semaine, mois, annee, saison...)
-        :param id_horaire_operateur: identifiant de l'horaire de la compagnie qui va operer le vol
-        :param type_avion: le type d'avion utilisé a cette horaire
+        :param periodicite: nombre de fois ou ce vol est effectue (par semaine, mois, annee, saison...)
+        :param horaire_operateur: horaire de la compagnie qui va operer le vol
+        :param config_avion: la configuration d'avion utilisee a cet horaire
         """
-
-
-        self._id_compagnie = id_compagnie
-        self._numero = numero
+        self._id_horaire = id_horaire
         self._route = route
+        self._numero = numero
         self._heure_depart = heure_depart
         self._heure_arrivee = heure_arrivee
         self._duree = duree
         self._periodicite = periodicite
-        self._id_horaire_operateur = id_horaire_operateur
-        self._type_avion = type_avion
+        self._horaire_operateur = horaire_operateur
+        self._config_avion = config_avion
 
     @property
-    def id_compagnie(self):
-        return self._id_compagnie
-
-    @property
-    def numero(self):
-        return self._numero
+    def id_horaire(self):
+        return self._id_horaire
 
     @property
     def route(self):
         return self._route
+    
+    @property
+    def numero(self):
+        return self._numero
 
     def heure_depart(self):
         return self._heure_depart
@@ -54,12 +52,12 @@ class Horaire(object):
         return self._periodicite
 
     @property
-    def id_horaire_operateur(self):
-        return self._id_horaire_operateur
+    def horaire_operateur(self):
+        return self._horaire_operateur
 
     @property
-    def type_avion(self):
-        return self._type_avion
+    def config_avion(self):
+        return self._config_avion
 
     def creer_vols(self):
         """

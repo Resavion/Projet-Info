@@ -24,13 +24,13 @@ def creer_bdd(db_name):
                                     statut text)"""
     executer_requete(cur, req)
     req = """create table Aeroport (id_iata_code text primary key,
-                                    type text,
+                                    type_aero text,
                                     nom text,
                                     latitude_deg real,
                                     longitude_deg real,
                                     elevation_ft integer,
-                                    continent text,
-                                    pays text,
+                                    code_continent text,
+                                    code_pays text,
                                     municipalite text,
                                     gps_code text)"""
     executer_requete(cur, req)
@@ -45,12 +45,14 @@ def creer_bdd(db_name):
     executer_requete(cur, req)
     req = """create table Compagnie (id_iata_code text primary key,
                                      nom text,
-                                     icao_code text,
-                                     pays text)"""
+                                     code_icao text,
+                                     pays text,
+                                     code_continent text,
+                                     code_pays text)"""
     executer_requete(cur, req)
     req = """create table TypeAvion (id text primary key,
-                                    iata_code text,
-                                    icao_code text,
+                                    code_iata text,
+                                    code_icao text,
                                     fuel_cap_L integer,
                                     distance_franchissable_km integer,
                                     vitesse_mach real,
@@ -117,6 +119,7 @@ def creer_bdd(db_name):
                                  places_restantes_eco_plus integer,
                                  places_restantes_eco integer,
                                  statut integer,
+                                 cabine text,
                                  foreign key(id_horaire) references Horaire(id),
                                  foreign key(id_avion) references Avion(id),
                                  foreign key(statut) references EnumStatutVol(id))"""
@@ -134,12 +137,12 @@ def creer_bdd(db_name):
     executer_requete(cur, req)
     req = """create table Billet (id integer primary key,
                                   id_reservation integer,
-                                  option text,
                                   tarif real,
                                   nom_passager text,
                                   prenom_passager text,
                                   passeport text,
                                   date_naissance text,
+                                  options text,
                                   foreign key(id_reservation) references Reservation(id))"""
     executer_requete(cur, req)
     req = """create table Segment (id integer primary key AUTOINCREMENT NOT NULL,
@@ -188,8 +191,8 @@ def creer_bdd(db_name):
     valider_modifs(conn)
 
     # Aeroport
-    colonnes = ('id_iata_code','type','nom','latitude_deg','longitude_deg','elevation_ft','continent','pays',
-                'municipalite','gps_code')
+    colonnes = ('id_iata_code','type_aero','nom','latitude_deg','longitude_deg','elevation_ft','code_continent',
+                'code_pays','municipalite','gps_code')
     aeroports = (
         ("NRT","large_airport","Narita International Airport",35.7647018433,140.386001587,141,"AS","JP","Tokyo","RJAA"),
         ("KHH", "large_airport","Kaohsiung International Airport",22.57710075378418,120.3499984741211, 31,"AS","TW","Kaohsiung City","RCKH")
@@ -209,19 +212,19 @@ def creer_bdd(db_name):
     valider_modifs(conn)
 
     # Compagnie
-    colonnes = ('id_iata_code','nom','icao_code','pays')
+    colonnes = ('id_iata_code','nom','code_icao','pays','code_continent','code_pays')
     compagnies = (
-        ("NH","All Nippon Airways","ANA","Japan"),
-        ("BR", "EVA Air", "EVA", "Taiwan"),
-        ("CI","China Airlines","CAL","Taiwan"),
-        ("JL","Japan Airlines","JAL","Japan")
+        ("NH","All Nippon Airways","ANA","Japan","AS","JP"),
+        ("BR", "EVA Air", "EVA", "Taiwan","AS","TW"),
+        ("CI","China Airlines","CAL","Taiwan","AS","TW"),
+        ("JL","Japan Airlines","JAL","Japan","AS","JP")
     )
     for t in compagnies:
         r.insert_into(cur, 'Compagnie', colonnes, t)
     valider_modifs(conn)
 
     # TypeAvion
-    colonnes = ('id','iata_code','icao_code','fuel_cap_L','distance_franchissable_km','vitesse_mach',
+    colonnes = ('id','code_iata','code_icao','fuel_cap_L','distance_franchissable_km','vitesse_mach',
                 'altitude_vol_m','distance_decollage_m')
     types = (
         ("A321","321","A321",30000,5950,0.78,12000,1700),
@@ -310,10 +313,10 @@ def creer_bdd(db_name):
     valider_modifs(conn)
 
     # Billet
-    colonnes = ('id','id_reservation','option','tarif','nom_passager','prenom_passager','passeport','date_naissance')
+    colonnes = ('id','id_reservation','tarif','nom_passager','prenom_passager','passeport','date_naissance','options')
     billets = (
-        (10001,1,None,1200,"Dupond","Michel","123456D","10/04/1970"),
-        (20002,2,None,400,"Tartempion","Lucien","123789E","20/03/1960"),
+        (10001,1,1200,"Dupond","Michel","123456D","10/04/1970",None),
+        (20002,2,400,"Tartempion","Lucien","123789E","20/03/1960",None),
     )
     for t in billets:
         r.insert_into(cur, 'Billet', colonnes, t)

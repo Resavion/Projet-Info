@@ -1,5 +1,5 @@
 class Aeroport(object):
-    def __init__(self, id_aero, type_aero, nom, latitude_deg, longtitude_deg, elevation_ft, code_continent,
+    def __init__(self, id_aero, type_aero, nom, latitude_deg, longitude_deg, elevation_ft, code_continent,
                  code_pays, municipalite, gps_code, pistes):
         """
         Constructeur de la classe aeroport
@@ -8,7 +8,7 @@ class Aeroport(object):
         :param type_aero: type de l'aeroport (grand, moyen, petit)
         :param nom: nom de l'aeroport
         :param latitude_deg: la latitude de l'aeroport
-        :param longtitude_deg: la longitude de l'aeroport
+        :param longitude_deg: la longitude de l'aeroport
         :param elevation_ft: l'elevation de l'aeroport
         :param code_continent: le code du continent ou se trouve l'aeroport
         :param code_pays: le code du pays ou se trouve l'aeroport
@@ -20,7 +20,7 @@ class Aeroport(object):
         self._type_aero = type_aero
         self._nom = nom
         self._latitude_deg = latitude_deg
-        self._longtitude_deg = longtitude_deg
+        self._longitude_deg = longitude_deg
         self._elevation_ft = elevation_ft
         self._code_continent = code_continent
         self._code_pays = code_pays
@@ -45,8 +45,8 @@ class Aeroport(object):
         return self._latitude_deg
 
     @property
-    def longtitude_deg(self):
-        return self._longtitude_deg
+    def longitude_deg(self):
+        return self._longitude_deg
 
     @property
     def elevation_ft(self):

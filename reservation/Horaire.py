@@ -42,20 +42,29 @@ class Horaire(object):
     def numero(self):
         return self._numero
 
+    @property
     def heure_depart(self):
-        return self._heure_depart
+        if self._horaire_operateur is None:
+            return self._heure_depart
+        return self._horaire_operateur.heure_depart
 
     @property
     def heure_arrivee(self):
-        return self._heure_arrivee
+        if self._horaire_operateur is None:
+            return self._heure_arrivee
+        return self._horaire_operateur.heure_arrivee
 
     @property
     def duree(self):
-        return self._duree
+        if self._horaire_operateur is None:
+            return self._duree
+        return self._horaire_operateur.duree
 
     @property
     def periodicite(self):
-        return self._periodicite
+        if self._horaire_operateur is None:
+            return self._periodicite
+        return self._horaire_operateur.periodicite
 
     @property
     def horaire_operateur(self):
@@ -63,11 +72,13 @@ class Horaire(object):
 
     @property
     def config_avion(self):
-        return self._config_avion
+        if self._horaire_operateur is None:
+            return self._config_avion
+        return self._horaire_operateur.config_avion
 
     def __str__(self):
-        return "{}{} - {}->{}".format(self._id_compagnie,self._numero,self._heure_depart,
-                                      self._heure_arrivee)
+        return "{}{} - {}->{}".format(self._id_compagnie,self._numero,
+                                      self.heure_depart,self.heure_arrivee)
 
     def creer_vols(self):
         """

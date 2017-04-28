@@ -20,7 +20,7 @@ def creer_bdd(db_name):
     req = """create table EnumOption (id integer primary key AUTOINCREMENT NOT NULL,
                                     option text)"""
     executer_requete(cur, req)
-    req = """create table EnumSatutVol (id integer primary key AUTOINCREMENT NOT NULL,
+    req = """create table EnumStatutVol (id integer primary key AUTOINCREMENT NOT NULL,
                                     statut text)"""
     executer_requete(cur, req)
     req = """create table Aeroport (id_iata_code text primary key,
@@ -57,9 +57,9 @@ def creer_bdd(db_name):
                                     altitude_vol_m integer,
                                     distance_decollage_m integer)"""
     executer_requete(cur, req)
-    req = """create table ConfigAvion (id text,
+    req = """create table ConfigAvion (id integer primary key,
+                                    nom text,
                                     id_compagnie text,
-                                    primary key(nom, id_compagnie),
                                     id_type_avion text,
                                     nb_place_premiere integer,
                                     nb_place_business integer,
@@ -70,20 +70,20 @@ def creer_bdd(db_name):
                                     foreign key(id_compagnie) references Compagnie(id_iata_code),
                                     foreign key(id_type_avion) references TypeAvion(id))"""
     executer_requete(cur, req)
-    req = """create table Avion (id_reg text primary key,
+    req = """create table Avion (id text primary key,
                                  id_compagnie text,
                                  id_config integer,
                                  date_construction date,
                                  date_derniere_revision date,
-                                 etat integer,
+                                 id_etat integer,
                                  id_aeroport text,
                                  position text,
-                                 foreign key(etat) references EnumAvion(id),
                                  foreign key(id_compagnie) references Compagnie(id_iata_code),
-                                 foreign key(id_config, id_compagnie) references ConfigAvion(id, id_compagnie),
+                                 foreign key(id_config) references ConfigAvion(id),
+                                 foreign key(id_etat) references EnumAvion(id),
                                  foreign key(id_aeroport) references Aeroport(id_iata_code))"""
     executer_requete(cur, req)
-    req = """create table Route (id integer primary key AUTOINCREMENT NOT NULL,
+    req = """create table Route (id integer primary key,
                                  id_compagnie text,
                                  id_aeroport_depart text,
                                  id_aeroport_arrivee text,
@@ -93,26 +93,25 @@ def creer_bdd(db_name):
                                  foreign key(id_aeroport_depart) references Aeroport(id_iata_code),
                                  foreign key(id_aeroport_arrivee) references Aeroport(id_iata_code))"""
     executer_requete(cur, req)
-    req = """create table Horaire (id integer primary key AUTOINCREMENT NOT NULL,
-                                 id_compagnie text,
-                                 numero_vol integer,
+    req = """create table Horaire (id integer primary key,
                                  id_route integer,
+                                 numero_vol integer,
                                  heure_depart text,
                                  heure_arrivee text,
                                  duree text,
                                  periodicite text,
                                  id_horaire_operateur integer,
-                                 id_type_avion integer,
-                                 foreign key(id_compagnie) references Compagnie(id_iata_code),
+                                 id_config_avion integer,
                                  foreign key(id_route) references Route(id),
                                  foreign key(id_horaire_operateur) references Horaire(id),
-                                 foreign key(id_type_avion) references TypeAvion(id))"""
+                                 foreign key(id_config_avion) references ConfigAvion(id))"""
     executer_requete(cur, req)
-    req = """create table Vol (id integer primary key AUTOINCREMENT NOT NULL,
+    req = """create table Vol (id integer primary key,
                                  id_horaire integer,
                                  heure_depart text,
                                  heure_arrivee text,
-                                 id_avion integer,
+                                 duree text,
+                                 id_avion text,
                                  places_restantes_premiere integer,
                                  places_restantes_business integer,
                                  places_restantes_eco_plus integer,
@@ -122,17 +121,17 @@ def creer_bdd(db_name):
                                  foreign key(id_avion) references Avion(id),
                                  foreign key(statut) references EnumStatutVol(id))"""
     executer_requete(cur, req)
-    req = """create table Client (id integer primary key AUTOINCREMENT NOT NULL,
+    req = """create table Client (id integer primary key,
                                   nom text,
                                   prenom text,
                                   date_naissance text)"""
     executer_requete(cur, req)
-    req = """create table Reservation (id integer primary key AUTOINCREMENT NOT NULL,
+    req = """create table Reservation (id integer primary key,
                                        id_client integer,
                                        prix_total real,
                                        foreign key(id_client) references Client(id))"""
     executer_requete(cur, req)
-    req = """create table Billet (id integer primary key AUTOINCREMENT NOT NULL,
+    req = """create table Billet (id integer primary key,
                                   id_reservation integer,
                                   option text,
                                   tarif real,
@@ -155,35 +154,36 @@ def creer_bdd(db_name):
     # Insertion des éléments
 
     # EnumAvion
-    colonnes = ('etat')
+    colonnes = ('etat',)
     enumavion = (
-        ("en revision"),
-        ("en vol"),
-        ("a terre")
+        ("en revision",),
+        ("en vol",),
+        ("a terre",)
     )
     for t in enumavion:
         r.insert_into(cur, 'EnumAvion', colonnes, t)
     valider_modifs(conn)
 
     # EnumOption
-    colonnes = ('option')
-    enumavion = (
-        ("vegetarien")
+    colonnes = ('option',)
+    enumoption = (
+        ("vegetarien",)
     )
     for t in enumavion:
-        r.insert_into(cur, 'EnumAvion', colonnes, t)
+        r.insert_into(cur, 'EnumOption', colonnes, t)
     valider_modifs(conn)
 
     # EnumStatutVol
-    colonnes = ('statut')
-    enumavion = (
-        ("a l'heure"),
-        ("retarde"),
-        ("embarquement"),
-        ("annule")
+    colonnes = ('statut',)
+    enumstatutvol = (
+        ("a l'heure",),
+        ("retarde",),
+        ("embarquement",),
+        ("annule",),
+        ("arrive",)
     )
-    for t in enumavion:
-        r.insert_into(cur, 'EnumAvion', colonnes, t)
+    for t in enumstatutvol:
+        r.insert_into(cur, 'EnumStatutVol', colonnes, t)
     valider_modifs(conn)
 
     # Aeroport
@@ -220,7 +220,7 @@ def creer_bdd(db_name):
     valider_modifs(conn)
 
     # TypeAvion
-    colonnes = ('nom','iata_code','icao_code','fuel_cap_L','distance_franchissable_km','vitesse_mach',
+    colonnes = ('id','iata_code','icao_code','fuel_cap_L','distance_franchissable_km','vitesse_mach',
                 'altitude_vol_m','distance_decollage_m')
     types = (
         ("A321","321","A321",30000,5950,0.78,12000,1700),
@@ -231,46 +231,70 @@ def creer_bdd(db_name):
     valider_modifs(conn)
 
     # ConfigAvion
-    colonnes = ('nom','id_compagnie','id_type_avion','nb_place_premiere','nb_place_business','nb_place_eco_plus',
+    colonnes = ('id','nom','id_compagnie','id_type_avion','nb_place_premiere','nb_place_business','nb_place_eco_plus',
                 'nb_place_eco','nb_total_place','disposition')
     configs = (
-        ("321","BR","A321",0,8,0,176,184,""),
-        ("A44","JL","B767-300ER",0,24,0,175,199,"")
+        (1,"321","BR","A321",0,8,0,176,184,""),
+        (2,"A44","JL","B767-300ER",0,24,0,175,199,"")
     )
     for t in configs:
         r.insert_into(cur, 'ConfigAvion', colonnes, t)
     valider_modifs(conn)
 
     # Avion
-    colonnes = ('id_reg','id_compagnie','id_config','date_construction','date_derniere_revision','etat','id_aeroport',
+    colonnes = ('id','id_compagnie','id_config','date_construction','date_derniere_revision','id_etat','id_aeroport',
                 'position')
-    configs = (
-        ("B-16213","BR","321","10/10/2014","27/10/2014",3,"KHH","POINT(120.3499984741211 22.57710075378418)"),
-        ("JA608J","JL","A44","23/02/2004","01/05/2014",3,"NRT","POINT(140.386001587 35.7647018433)")
+    avions = (
+        ("B-16213","BR",1,"10/10/2014","27/10/2014",3,"KHH","POINT(120.3499984741211 22.57710075378418)"),
+        ("JA608J","JL",2,"23/02/2004","01/05/2014",3,"NRT","POINT(140.386001587 35.7647018433)")
     )
-    for t in configs:
-        r.insert_into(cur, 'ConfigAvion', colonnes, t)
+    for t in avions:
+        r.insert_into(cur, 'Avion', colonnes, t)
     valider_modifs(conn)
 
     # Route
-    colonnes = ('id_compagnie', 'id_aeroport_depart', 'id_aeroport_arrivee', 'geom', 'codeshare')
+    colonnes = ('id','id_compagnie','id_aeroport_depart','id_aeroport_arrivee','geom','codeshare')
     routes = (
-        ("NH", "NRT", "KHH", "LINESTRING(140.386001587 35.7647018433, 120.3499984741 22.5771007538)", 0),
-        ("CI", "NRT", "KHH", "LINESTRING(140.386001587 35.7647018433, 120.3499984741 22.5771007538)", 0)
+        (1,"BR","NRT","KHH","LINESTRING(140.386001587 35.7647018433,120.3499984741 22.5771007538)",0),
+        (2,"NH","NRT","KHH","LINESTRING(140.386001587 35.7647018433,120.3499984741 22.5771007538)",0),
+        (3,"JL","NRT","KHH","LINESTRING(140.386001587 35.7647018433,120.3499984741 22.5771007538)",0),
+        (4,"CI","NRT","KHH","LINESTRING(140.386001587 35.7647018433,120.3499984741 22.5771007538)",0)
     )
     for t in routes:
         r.insert_into(cur, 'Route', colonnes, t)
     valider_modifs(conn)
 
     # Horaire
-    colonnes = ('id_compagnie','numero_vol','id_route','heure_depart','heure_arrivee','duree','periodicite',
-                'id_horaire_operateur','id_type_avion')
+    colonnes = ('id','id_route','numero_vol','heure_depart','heure_arrivee','duree','periodicite',
+                'id_horaire_operateur','id_config_avion')
     horaires = (
-        ("NH",5831, "KHH", "LINESTRING(140.386001587 35.7647018433, 120.3499984741 22.5771007538)", 0),
-        ("CI", "NRT", "KHH", "LINESTRING(140.386001587 35.7647018433, 120.3499984741 22.5771007538)", 0)
+        (1,1,107,"12:45","15:40","3:55",None,None,1),
+        (2,2,5831,None,None,None,None,1,None),
+        (3,3,811,"18:00","21:10","4:10",None,None,2),
+        (4,4,9911,None,None,None,None,3,None)
     )
     for t in horaires:
         r.insert_into(cur, 'Horaire', colonnes, t)
+    valider_modifs(conn)
+
+    # Vol
+    colonnes = ('id','id_horaire','heure_depart','heure_arrivee','duree','id_avion','places_restantes_premiere',
+                'places_restantes_business','places_restantes_eco_plus','places_restantes_eco','statut')
+    vols = (
+        (1,1,"27/04/2017-12:50","27/04/2017-15:50","4:00","B-16213",0,3,0,76,5),
+        (2,3,"27/04/2017-18:00","27/04/2017-21:10","4:10","JA608J",0,10,0,100,5),
+    )
+    for t in vols:
+        r.insert_into(cur, 'Vol', colonnes, t)
+    valider_modifs(conn)
+
+    # Client
+    colonnes = ('id','nom','prenom','date_naissance')
+    vols = (
+        (1,"Dupond","Michel",""),
+    )
+    for t in vols:
+        r.insert_into(cur, 'Vol', colonnes, t)
     valider_modifs(conn)
 
     fermer_connexion(cur, conn)

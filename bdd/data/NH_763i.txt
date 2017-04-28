@@ -1,0 +1,46 @@
+  AB CDE FG
+  ---------
+ |>       <|
+ |>  ---  <|
+C|OO -O- OO|1
+C|-- --- OO|2
+C|OO -O- --|3
+C|OO -O- OO|5
+C|-- --- OO|6
+C|OO -O- --|7
+C|OO -O- OO|8
+C|OO -O- OO|10
+C|OO -O- OO|11
+ |-- --- --|
+Y|OO OOO OO|15
+Y|OO OOO OO|16
+Y|OO OOO OO|17
+Y|OO OOO OO|18
+Y|-- OOO OO|19
+ |>  ---  <|
+ |>       <|
+Y|OO     OO|22
+Y|OO     OO|23
+Y|OO OOO OO|24
+Y|OO OOO OO|25
+Y|OO OOO OO|26
+Y|OO OOO OO|27
+Y|OO OOO OO|28
+Y|OO OOO OO|29
+Y|OO OOO OO|30
+Y|OO OOO OO|31
+Y|OO OOO OO|32
+Y|OO OOO OO|33
+Y|OO OOO OO|34
+Y|OO OOO OO|35
+Y|OO OOO OO|36
+Y|OO OOO OO|37
+Y|OO OOO OO|38
+Y|OO OOO OO|39
+Y|OO OOO OO|40
+Y|OO OOO OO|41
+Y|OO OOO OO|43
+Y|OO OOO --|45
+ |>  ---  <|
+ |>       <|
+  ---------

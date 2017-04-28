@@ -29,10 +29,12 @@ def charger_bd(db_name):
     """
     conn, cur = ouvrir_connexion(db_name)
 
+    # Aeroports
     rows = r.select_aeroports(cur)
     aeroports = []
     for row in rows:
         id_aeroport = row[0]
+        # Pistes
         rows_pistes = r.select_pistes_par_aeroport(cur, id_aeroport)
         pistes = []
         for row_piste in rows_pistes:
@@ -40,8 +42,36 @@ def charger_bd(db_name):
             pistes.append(piste)
             print(piste)
         aeroport = Aeroport(*row, pistes)
+        aeroports.append(aeroport)
         print(aeroport)
 
+    # Types d'avions
+    rows = r.select_types_avions(cur)
+    types_avions = []
+    for row in rows:
+        type_avion = TypeAvion(*row)
+        types_avions.append(type_avion)
+        print(type_avion)
+
+    # Compagnies
+    rows = r.select_compagnies(cur)
+    for row in rows:
+        id_compagnie = row[0]
+        rows_avions = r.select_avions_par_compagnie(cur, id_compagnie)
+        avions = []
+        # Avions
+        for row_avion in rows_avions:
+            id_config = row_avion[2]
+            # Config
+            row_config = r.select_config_par_id(cur, id_config)
+            id_type_avion = row_config[3]
+            type_avion = [x for x in types_avions if x.id_type_avion == id_type_avion]
+            config = ConfigAvion(*row_config[0:3],*type_avion,*row_config[4:])
+            print(config)
+            avion = Avion(*row_avion[0:2],config,*row_avion[3:])
+            avions.append(avion)
+            print(avion)
+        # compagnie = Compagnie(*row)
 
 #
 # def initialiser_partie(db_name):

@@ -30,6 +30,30 @@ def select_pistes_par_aeroport(cur, id_aero):
     return cur.fetchall()
 
 
+def select_types_avions(cur):
+    req = "SELECT * FROM TypeAvion"
+    executer_requete(cur, req)
+    return cur.fetchall()
+
+
+def select_compagnies(cur):
+    req = "SELECT * FROM Compagnie"
+    executer_requete(cur, req)
+    return cur.fetchall()
+
+
+def select_avions_par_compagnie(cur, id_compagnie):
+    req = "SELECT * FROM Avion WHERE id_compagnie = ?"
+    executer_requete(cur, req, (id_compagnie,))
+    return cur.fetchall()
+
+
+def select_config_par_id(cur, id_config):
+    req = "SELECT * FROM ConfigAvion WHERE id = ?"
+    executer_requete(cur, req, (id_config,))
+    return cur.fetchone()
+
+
 def select_esp_pok_by_nom(cur, colonnes, nom_espece):
     req = "SELECT "
     req += ", ".join(colonnes)

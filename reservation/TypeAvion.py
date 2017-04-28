@@ -58,3 +58,5 @@ class TypeAvion(object):
     def distance_decollage_m(self):
         return self._distance_decollage_m
 
+    def __str__(self):
+        return "{}".format(self._id_type_avion)

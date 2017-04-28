@@ -1,7 +1,3 @@
-import reservation.Horaire
-import reservation.ConfigAvion
-
-
 class Vol(object):
     def __init__(self, horaire, date, heure_depart, heure_arrivee, decalage_jour, avion,
                  places_restantes_premiere, places_restantes_business, places_restantes_eco_plus,
@@ -82,6 +78,7 @@ class Vol(object):
     def cabine(self):
         return self._cabine
 
+
     def afficher_places(self):
         """
         Methode qui permet d'afficher les places disponibles et non disponibles dans un avion
@@ -89,12 +86,18 @@ class Vol(object):
         """
         pass
 
-    def reserver_place(self):
+    def reserver_place(self,avion): # rang, colonne):
         """
-        Methode qui permet de reserver un place dans un vol
+        Methode qui permet de reserver une place dans un vol
         :return: 
         """
-        pass
+        rangs = avion
+        for rang in rangs.split("\n"):
+            print(rang)
+
+        #"""accroché a une chaine de caractere"""".replace("l","L")
+
+
 
     def liberer_place(self):
         """
@@ -125,4 +128,110 @@ class Vol(object):
         :return: 
         """
         pass
+
+if __name__=='__main__':
+    avion = """  ABC DEFG HJK
+  ------------
+ |>          <|
+ |>   ----   <|
+F|O-- O--O --O|1
+F|O-- O--O --O|2
+ |--- ---- ---|
+C|O-- O-O- O--|5
+C|--O -O-O --O|6
+ |--- ---- ---|
+C|O-- O-O- O--|7
+C|--O -O-O --O|8
+C|O-- O-O- O--|9
+C|--O -O-O --O|10
+C|O-- O-O- O--|11
+C|--O -O-O --O|12
+C|O-- O-O- O--|13
+C|--O -O-O --O|14
+C|O-- O-O- O--|15
+C|--O -O-O --O|16
+C|O-- O-O- O--|17
+ |>          <|
+ |>   ----   <|
+P|O-O OOOO O-O|18
+P|O-O OOOO O-O|19
+P|O-O OOOO O-O|20
+ |--- ---- ---|
+Y|OOO OOOO OOO|24
+Y|OOO OOOO OOO|25
+Y|OOO OOOO OOO|26
+Y|OOO OOOO OOO|27
+Y|OOO OOOO OOO|28
+Y|OOO OOOO OOO|29
+ |>          <|
+ |>   ----   <|
+Y|OOO OOOO OOO|30
+Y|OOO OOOO OOO|31
+Y|OOO OOOO OOO|32
+Y|OOO OOOO OOO|33
+Y|OOO OOOO OOO|34
+Y|OOO OOOO OOO|35
+Y|OOO OOOO OOO|36
+Y|OOO OOOO OOO|37
+Y|OOO OOOO OOO|38
+Y|OO  OOOO  OO|39
+Y|OO  OOOO  OO|40
+Y|OO  OOOO  OO|41
+Y|OO  OOOO  --|42
+ |>   ----   <|
+ |>          <|
+  ------------"""
+    #print(avion)
+
+    def reserver_place(avion, rangee, colonne):
+        """
+        Methode qui permet de reserver une place dans un vol
+        :return: 
+        """
+        rangee = rangee - 1
+        rangs = avion
+        #for rang in rangs.split("\n"):
+        #print(rangs.split("\n")[rangee])
+        list_rang = rangs.split("\n")
+        colonne = list_rang[0].index(colonne) - 2
+
+        classe_rg5 = list_rang[5].split("|")[0]
+        classe_rga = list_rang[0].split("|")[0]
+        body_rg5 = list_rang[5].split("|")[1]
+        num_rg5 = list_rang[5].split("|")[2]
+     #   print(classe_rg5)
+  #      print(classe_rga)
+   #     print(body_rg5)
+   #     print(num_rg5)
+        for rang in list_rang[2:-1]:
+            num_rg = rang.split("|")[2]
+            body_rg = rang.split("|")[1]
+            if num_rg == str(rangee+1):
+                 # print (body_rg[colonne])
+                if body_rg[colonne] == "O":
+                    drapeau = list(body_rg)
+                    drapeau[colonne]="."
+                    body_rg = "".join(drapeau)
+                    print(body_rg)
+
+        # reassembler tous les elements
+
+            # """accroché a une chaine de caractere"""".replace("l","L")
+
+
+
+
+
+
+
+  #  body_rg = rang.split("|")[1]
+   # if num_rg == rangee:
+    #    print(body_rg)
+
+    reserver_place(avion,1,'A')
+
+
+
+
+
 

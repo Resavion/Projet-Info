@@ -57,8 +57,9 @@ class Route(object):
         return self._horaires
 
     def __str__(self):
-        return "{} {}->{} ({:.0f} km)".format(self._id_compagnie,self._aeroport_depart.id_aero,
-                                              self._aeroport_arrivee.id_aero,self._distance/1000)
+        return "{} {}->{} ({:.0f} km)"\
+            .format(self._id_compagnie,self._aeroport_depart.id_aero,
+                    self._aeroport_arrivee.id_aero,self._distance/1000)
 
     @staticmethod
     def distance_haversine(dep, arr, radius=6371000):

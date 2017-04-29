@@ -1,12 +1,12 @@
 class ConfigAvion(object):
-    def __init__(self, id_config_avion, nom, id_compagnie, type_avion, nb_place_premiere, nb_place_business,
+    def __init__(self, id_config_avion, nom, compagnie, type_avion, nb_place_premiere, nb_place_business,
                  nb_place_eco_plus, nb_place_eco, nb_total_place, disposition):
         """
         Constructeur de la classe ConfigAvion
         
         :param id_config_avion: identifiant de la configuration d'avion
         :param nom: nom de la configuration d'avion
-        :param id_compagnie: id de la compagnie qui utilise cette configuration
+        :param compagnie: compagnie qui utilise cette configuration
         :param type_avion: type de l'avion
         :param nb_place_premiere: nombre de place de premiere dans l'avion
         :param nb_place_business: nombre de place de business dans l'avion
@@ -17,7 +17,7 @@ class ConfigAvion(object):
         """
         self._id_config_avion = id_config_avion
         self._nom = nom
-        self._id_compagnie = id_compagnie
+        self._compagnie = compagnie
         self._type_avion = type_avion
         self._nb_place_premiere = nb_place_premiere
         self._nb_place_business = nb_place_business
@@ -35,8 +35,8 @@ class ConfigAvion(object):
         return self._nom
 
     @property
-    def id_compagnie(self):
-        return self._id_compagnie
+    def compagnie(self):
+        return self._compagnie
 
     @property
     def type_avion(self):
@@ -67,7 +67,8 @@ class ConfigAvion(object):
         return self._disposition
 
     def __str__(self):
-        return "{} {} ({}) : {}F,{}C,{}P,{}Y : {} pax".format(self._id_compagnie,self._nom,
-                                                     self._type_avion,self._nb_place_premiere,
-                                                     self._nb_place_business,self._nb_place_eco_plus,
-                                                     self._nb_place_eco,self._nb_total_place)
+        return "{} {} ({}) : {}F,{}C,{}P,{}Y : {} pax"\
+            .format(self._compagnie.id_compagnie,self._nom,
+                    self._type_avion,self._nb_place_premiere,
+                    self._nb_place_business,self._nb_place_eco_plus,
+                    self._nb_place_eco,self._nb_total_place)

@@ -75,15 +75,15 @@ def creer_bdd(db_name):
     req = """create table Avion (id text primary key,
                                  id_compagnie text,
                                  id_config integer,
+                                 id_aeroport text,
                                  date_construction date,
                                  date_derniere_revision date,
                                  id_etat integer,
-                                 id_aeroport text,
                                  position text,
                                  foreign key(id_compagnie) references Compagnie(id_iata_code),
                                  foreign key(id_config) references ConfigAvion(id),
-                                 foreign key(id_etat) references EnumAvion(id),
-                                 foreign key(id_aeroport) references Aeroport(id_iata_code))"""
+                                 foreign key(id_aeroport) references Aeroport(id_iata_code),
+                                 foreign key(id_etat) references EnumAvion(id))"""
     executer_requete(cur, req)
     req = """create table Route (id integer primary key,
                                  id_compagnie text,
@@ -217,7 +217,7 @@ def creer_bdd(db_name):
     colonnes = ('id_iata_code','nom','code_icao','pays','code_continent','code_pays')
     compagnies = (
         ("NH","All Nippon Airways","ANA","Japan","AS","JP"),
-        ("BR", "EVA Air", "EVA", "Taiwan","AS","TW"),
+        ("BR","EVA Air","EVA","Taiwan","AS","TW"),
         ("CI","China Airlines","CAL","Taiwan","AS","TW"),
         ("JL","Japan Airlines","JAL","Japan","AS","JP")
     )
@@ -248,11 +248,11 @@ def creer_bdd(db_name):
     valider_modifs(conn)
 
     # Avion
-    colonnes = ('id','id_compagnie','id_config','date_construction','date_derniere_revision','id_etat','id_aeroport',
+    colonnes = ('id','id_compagnie','id_config','id_aeroport','date_construction','date_derniere_revision','id_etat',
                 'position')
     avions = (
-        ("B-16213","BR",1,"10/10/2014","27/10/2014",3,"KHH","POINT(120.3499984741211 22.57710075378418)"),
-        ("JA608J","JL",2,"23/02/2004","01/05/2014",3,"NRT","POINT(140.386001587 35.7647018433)")
+        ("B-16213","BR",1,"KHH","10/10/2014","27/10/2014",3,"POINT(120.3499984741211 22.57710075378418)"),
+        ("JA608J","JL",2,"NRT","23/02/2004","01/05/2014",3,"POINT(140.386001587 35.7647018433)")
     )
     for t in avions:
         r.insert_into(cur, 'Avion', colonnes, t)

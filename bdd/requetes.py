@@ -24,6 +24,12 @@ def select_all(cur, table):
     return cur.fetchall()
 
 
+def select_all_par_compagnie(cur, table, id_compagnie):
+    req = "SELECT * FROM "+table+" WHERE id_compagnie = ?"
+    executer_requete(cur, req, (id_compagnie,))
+    return cur.fetchall()
+
+
 def select_pistes_par_aeroport(cur, id_aero):
     req = "SELECT * FROM Piste WHERE id_aeroport = ?"
     executer_requete(cur, req, (id_aero,))
@@ -64,6 +70,12 @@ def select_config_par_id(cur, id_config):
     req = "SELECT * FROM ConfigAvion WHERE id = ?"
     executer_requete(cur, req, (id_config,))
     return cur.fetchone()
+
+
+def select_configs_par_compagnie(cur, id_compagnie):
+    req = "SELECT * FROM ConfigAvion WHERE id_compagnie = ?"
+    executer_requete(cur, req, (id_compagnie,))
+    return cur.fetchall()
 
 #
 # def select_esp_pok_by_nom(cur, colonnes, nom_espece):

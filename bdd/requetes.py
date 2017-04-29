@@ -42,7 +42,7 @@ def select_horaires_par_route(cur, id_route):
     return cur.fetchall()
 
 
-def select_horaires_pas_codeshare(cur):
+def select_horaires_propres(cur):
     req = "SELECT * FROM Horaire WHERE id_horaire_operateur IS NULL"
     executer_requete(cur, req)
     return cur.fetchall()
@@ -54,17 +54,17 @@ def select_horaires_codeshare(cur):
     return cur.fetchall()
 
 
-def select_horaires_pas_codeshare_par_route(cur, id_route):
+def select_horaires_propres_par_route(cur, id_route):
     req = "SELECT * FROM Horaire WHERE id_horaire_operateur IS NULL"
     req += " AND id_route = ?"
     executer_requete(cur, req, (id_route,))
     return cur.fetchall()
 
 
-def select_horaires_codeshare_par_compagnie(cur, id_compagnie):
+def select_horaires_codeshare_par_route(cur, id_route):
     req = "SELECT * FROM Horaire WHERE id_horaire_operateur IS NOT NULL"
-    req += " AND id_compagnie = ?"
-    executer_requete(cur, req, (id_compagnie,))
+    req += " AND id_route = ?"
+    executer_requete(cur, req, (id_route,))
     return cur.fetchall()
 
 

@@ -86,9 +86,10 @@ class Vol(object):
         return self._cabine
 
     def __str__(self):
-        return "{} {}{} - {} -> {}".\
-            format(self._id_vol,self._horaire.compagnie.id_compagnie,
-                   self._horaire.numero,self._datetime_depart,
+        return "{} {}{} - {:%d/%m/%Y %H:%M} -> {:%d/%m/%Y %H:%M}".\
+            format(self._id_vol,
+                   self._horaire.compagnie.id_compagnie,self._horaire.numero,
+                   self._datetime_depart,
                    self._datetime_arrivee)
 
     def afficher_places(self):

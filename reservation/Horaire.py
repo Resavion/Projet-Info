@@ -1,6 +1,6 @@
 class Horaire(object):
     def __init__(self, id_horaire, route, compagnie, numero, heure_depart, heure_arrivee, duree, periodicite, horaire_operateur,
-                 config_avion, vols=None):
+                 config_avion=None, vols=None):
         """
         Constructeur de la classe horaire
         

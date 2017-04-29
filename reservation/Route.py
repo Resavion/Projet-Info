@@ -3,25 +3,28 @@ import reservation.Aeroport
 
 
 class Route(object):
-    def __init__(self, id_route, id_compagnie, aeroport_depart, aeroport_arrivee, geom, codeshare, horaires):
+    def __init__(self, id_route, compagnie, aeroport_depart, aeroport_arrivee, geom, codeshare, 
+                 horaires=None):
         """
         Constructeur de la classe route
         
         :param id_route: id de la route
-        :param id_compagnie: id de la compagnie qui propose la route
+        :param compagnie: compagnie qui propose la route
         :param aeroport_depart: aeroport de depart de la route
         :param aeroport_arrivee: aeroport d'arrivee de la route
         :param geom: linestring entre les deux aeroports en WKT
-        :param codeshare: booleen qui permet de savoir si un avion est partage par plusieurs id_compagnies
+        :param codeshare: booleen qui permet de savoir si un avion est partage par plusieurs compagnies
         :param horaires: liste des horaires sur cette route
         """
         self._id_route = id_route
-        self._id_compagnie = id_compagnie
+        self._compagnie = compagnie
         self._aeroport_depart = aeroport_depart
         self._aeroport_arrivee = aeroport_arrivee
         self._geom = geom
         self._distance = self.distance_haversine(aeroport_depart, aeroport_arrivee)
         self._codeshare = codeshare
+        if horaires is None:
+            horaires = []
         self._horaires = horaires
 
     @property
@@ -29,8 +32,8 @@ class Route(object):
         return self._id_route
 
     @property
-    def id_compagnie(self):
-        return self._id_compagnie
+    def compagnie(self):
+        return self._compagnie
 
     @property
     def aeroport_depart(self):
@@ -57,9 +60,15 @@ class Route(object):
         return self._horaires
 
     def __str__(self):
-        return "{} {}->{} ({:.0f} km)"\
-            .format(self._id_compagnie,self._aeroport_depart.id_aero,
-                    self._aeroport_arrivee.id_aero,self._distance/1000)
+        return "{} {} ({},{}) -> {} ({},{}) : {:.0f} km"\
+            .format(self._compagnie.id_compagnie,
+                    self._aeroport_depart.id_aeroport,
+                    self._aeroport_depart.municipalite,
+                    self._aeroport_depart.code_pays,
+                    self._aeroport_arrivee.id_aeroport,
+                    self._aeroport_arrivee.municipalite,
+                    self._aeroport_arrivee.code_pays,
+                    self._distance/1000)
 
     @staticmethod
     def distance_haversine(dep, arr, radius=6371000):

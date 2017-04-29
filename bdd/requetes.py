@@ -36,18 +36,6 @@ def select_pistes_par_aeroport(cur, id_aero):
     return cur.fetchall()
 
 
-def select_avions_par_compagnie(cur, id_compagnie):
-    req = "SELECT * FROM Avion WHERE id_compagnie = ?"
-    executer_requete(cur, req, (id_compagnie,))
-    return cur.fetchall()
-
-
-def select_routes_par_compagnie(cur, id_compagnie):
-    req = "SELECT * FROM Route WHERE id_compagnie = ?"
-    executer_requete(cur, req, (id_compagnie,))
-    return cur.fetchall()
-
-
 def select_horaires_par_route(cur, id_route):
     req = "SELECT * FROM Horaire WHERE id_route = ?"
     executer_requete(cur, req, (id_route,))
@@ -66,15 +54,23 @@ def select_horaires_codeshare(cur):
     return cur.fetchall()
 
 
-def select_config_par_id(cur, id_config):
-    req = "SELECT * FROM ConfigAvion WHERE id = ?"
-    executer_requete(cur, req, (id_config,))
-    return cur.fetchone()
+def select_horaires_pas_codeshare_par_route(cur, id_route):
+    req = "SELECT * FROM Horaire WHERE id_horaire_operateur IS NULL"
+    req += " AND id_route = ?"
+    executer_requete(cur, req, (id_route,))
+    return cur.fetchall()
 
 
-def select_configs_par_compagnie(cur, id_compagnie):
-    req = "SELECT * FROM ConfigAvion WHERE id_compagnie = ?"
+def select_horaires_codeshare_par_compagnie(cur, id_compagnie):
+    req = "SELECT * FROM Horaire WHERE id_horaire_operateur IS NOT NULL"
+    req += " AND id_compagnie = ?"
     executer_requete(cur, req, (id_compagnie,))
+    return cur.fetchall()
+
+
+def select_vols_par_horaire(cur, id_horaire):
+    req = "SELECT * FROM Vol WHERE id_horaire = ?"
+    executer_requete(cur, req, (id_horaire,))
     return cur.fetchall()
 
 #

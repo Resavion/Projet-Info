@@ -56,7 +56,7 @@ class Compagnie(object):
 
     @property
     def configs(self):
-        return self._avions
+        return self._configs
 
     @property
     def avions(self):

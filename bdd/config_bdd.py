@@ -32,7 +32,7 @@ def creer_bdd(db_name):
                                     code_continent text,
                                     code_pays text,
                                     municipalite text,
-                                    gps_code text)"""
+                                    code_icao text)"""
     executer_requete(cur, req)
     req = """create table Piste (id integer primary key AUTOINCREMENT NOT NULL,
                                  id_aeroport text,
@@ -194,7 +194,7 @@ def creer_bdd(db_name):
 
     # Aeroport
     colonnes = ('id_iata_code','type_aero','nom','latitude_deg','longitude_deg','elevation_ft','code_continent',
-                'code_pays','municipalite','gps_code')
+                'code_pays','municipalite','code_icao')
     aeroports = (
         ("NRT","large_airport","Narita International Airport",35.7647018433,140.386001587,141,"AS","JP","Tokyo","RJAA"),
         ("KHH", "large_airport","Kaohsiung International Airport",22.57710075378418,120.3499984741211, 31,"AS","TW","Kaohsiung City","RCKH")

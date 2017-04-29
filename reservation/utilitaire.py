@@ -41,32 +41,36 @@ def charger_bd(db_name):
     for row in rows:
         compagnie = Compagnie(*row)
         # Configs
-        configs = charger_configs_par_compagnie(cur, types_avions, compagnie)
+        configs = charger_configs_de_compagnie(cur, types_avions, compagnie)
         compagnie.configs.extend(configs)
         # Avions
-        avions = charger_avions_par_compagnie(cur, aeroports, configs, compagnie)
+        avions = charger_avions_de_compagnie(cur, aeroports, configs, compagnie)
         compagnie.avions.extend(avions)
         # Routes
-        print(compagnie)
+        routes = charger_routes_de_compagnie(cur, aeroports, compagnie)
+        compagnie.routes.extend(routes)
+        # Horaires propres
+        for route in routes:
+            horaires_propres = charger_horaires_de_route(cur, configs, route)
+            route.horaires.extend(horaires_propres)
+        # Vols propres
+        for horaire in horaires_propres:
+            vols_propres = charger_vols_de_horaire(cur, horaire)
+            horaire.vols.extend(vols_propres)
         compagnies.append(compagnie)
-
-    # # Routes
-    # routes = charger_routes(cur, aeroports, avions, configs)
+        print(compagnie)
 
     # # Horaires
     # horaires = charger_horaires(cur, configs)
-
-    # # Vols
-    # vols = charger_vols(cur, horaires, avions)
 
 
 def charger_aeroports(cur):
     rows = r.select_all(cur, 'Aeroport')
     aeroports = []
     for row in rows:
-        id_aeroport = row[0]
+        id_aeroportport = row[0]
         # Pistes
-        rows_pistes = r.select_pistes_par_aeroport(cur, id_aeroport)
+        rows_pistes = r.select_pistes_par_aeroport(cur, id_aeroportport)
         pistes = []
         for row_piste in rows_pistes:
             piste = Piste(*row_piste)
@@ -88,7 +92,7 @@ def charger_types_avions(cur):
     return types_avions
 
 
-def charger_configs_par_compagnie(cur, types_avions, compagnie):
+def charger_configs_de_compagnie(cur, types_avions, compagnie):
     configs = []
     rows = r.select_all_par_compagnie(cur,'ConfigAvion',compagnie.id_compagnie)
     for row in rows:
@@ -99,12 +103,12 @@ def charger_configs_par_compagnie(cur, types_avions, compagnie):
     return configs
 
 
-def charger_avions_par_compagnie(cur, aeroports, configs, compagnie):
+def charger_avions_de_compagnie(cur, aeroports, configs, compagnie):
     avions = []
     rows = r.select_all_par_compagnie(cur,'Avion',compagnie.id_compagnie)
     for row in rows:
         config = [x for x in configs if x.id_config_avion == row[2]][0]
-        aeroport = [x for x in aeroports if x.id_aero == row[3]][0]
+        aeroport = [x for x in aeroports if x.id_aeroport == row[3]][0]
         date_construc = datetime.strptime(row[4],"%d/%m/%Y").date()
         date_der_rev = datetime.strptime(row[5],"%d/%m/%Y").date()
         avion = Avion(row[0], compagnie, config, aeroport,
@@ -114,14 +118,15 @@ def charger_avions_par_compagnie(cur, aeroports, configs, compagnie):
     return avions
 
 
-def charger_routes(cur, aeroports, avions, configs):
+def charger_routes_de_compagnie(cur, aeroports, compagnie):
     routes = []
-    rows = r.select_all(cur, 'Route')
+    rows = r.select_all_par_compagnie(cur,'Route',compagnie.id_compagnie)
     for row in rows:
         id_route = row[0]
-        dep = [x for x in aeroports if x.id_aero == row[2]][0]
-        arr = [x for x in aeroports if x.id_aero == row[3]][0]
-        route = Route(id_route,row[1],dep,arr,row[4],row[5],None)
+        dep = [x for x in aeroports if x.id_aeroport == row[2]][0]
+        arr = [x for x in aeroports if x.id_aeroport == row[3]][0]
+        route = Route(id_route,compagnie,dep,arr,row[4],row[5])
+        routes.append(route)
         print(route)
     return routes
 
@@ -150,44 +155,39 @@ def charger_horaires(cur, configs):
     return horaires
 
 
-def charger_vols(cur, horaires, avions):
-    vols = []
-    rows = r.select_all(cur, 'Vol')
-    for row in rows:
-        id_horaire = row[1]
-        horaire = [x for x in horaires if x.id_horaire == id_horaire][0]
-        id_avion = row[5]
-        avion = [x for x in avions if x.id_avion == id_avion][0]
-        dep = datetime.strptime(row[2],"%d/%m/%Y-%H:%M")
-        arr = datetime.strptime(row[3],"%d/%m/%Y-%H:%M")
-        vol = Vol(row[0],horaire,dep,arr,*row[4:5],avion,*row[6:])
-        print(vol)
-    return vols
-
-
-def charger_horaires_de_route(cur, id_route, types_avions):
-    rows = r.select_horaires_par_route(cur, id_route)
+def charger_horaires_de_route(cur, configs, route):
+    rows = r.select_horaires_pas_codeshare_par_route(cur, route.id_route)
     horaires = []
     for row in rows:
-        print(row)
         # Config
-        id_config = row[9]
-        config = None
-        if id_config:
-            config = charger_config_par_id(cur, id_config, types_avions)
+        config = [x for x in configs if x.id_config_avion == row[9]][0]
+        # Heures et durée
+        dep = datetime.strptime(row[4],"%H:%M").time()
+        arr = datetime.strptime(row[5],"%H:%M").time()
+        t = datetime.strptime(row[6],"%H:%M")
+        dur = timedelta(hours=t.hour, minutes=t.minute)
         # Horaire
-        horaire = Horaire(*row[0:-1],config)
-        print(horaire)
+        horaire = Horaire(row[0], route, route.compagnie, row[3],
+                          dep, arr, dur, row[7], row[8], config)
         horaires.append(horaire)
+        print(horaire)
     return horaires
 
 
-def charger_config_par_id(cur, id_config, types_avions):
-    row_config = r.select_config_par_id(cur, id_config)
-    id_type_avion = row_config[3]
-    type_avion = [x for x in types_avions if x.id_type_avion == id_type_avion][0]
-    config = ConfigAvion(*row_config[0:3], type_avion, *row_config[4:])
-    return config
+def charger_vols_de_horaire(cur, horaire):
+    vols = []
+    rows = r.select_vols_par_horaire(cur, horaire.id_horaire)
+    avions = horaire.compagnie.avions
+    for row in rows:
+        avion = [x for x in avions if x.id_avion == row[5]][0]
+        dep = datetime.strptime(row[2],"%d/%m/%Y-%H:%M")
+        arr = datetime.strptime(row[3],"%d/%m/%Y-%H:%M")
+        t = datetime.strptime(row[4],"%H:%M")
+        dur = timedelta(hours=t.hour, minutes=t.minute)
+        vol = Vol(row[0], horaire, dep, arr, dur, avion, *row[6:])
+        vols.append(vol)
+        print(vol)
+    return vols
 
 
 # def initialiser_partie(db_name):

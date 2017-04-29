@@ -150,10 +150,12 @@ def creer_bdd(db_name):
     req = """create table Segment (id integer primary key AUTOINCREMENT NOT NULL,
                                    id_billet integer,
                                    id_vol integer,
+                                   id_horaire integer,
                                    place text,
                                    option EnumOption,
                                    foreign key(id_billet) references Billet(id),
-                                   foreign key(id_vol) references Vol(id))"""
+                                   foreign key(id_vol) references Vol(id),
+                                   foreign key(id_horaire) references Horaire(id))"""
     executer_requete(cur, req)
     valider_modifs(conn)
 
@@ -307,8 +309,8 @@ def creer_bdd(db_name):
     # Reservation
     colonnes = ('id','id_client','prix_total','date_achat')
     resas = (
-        (1,1,1300,"20/04/2017"),
-        (2,2,500,"19/04/2017"),
+        (1,1,1300,"20/04/2017-23:59:59"),
+        (2,2,500,"19/04/2017-13:40:01"),
     )
     for t in resas:
         r.insert_into(cur, 'Reservation', colonnes, t)
@@ -317,7 +319,7 @@ def creer_bdd(db_name):
     # Billet
     colonnes = ('id','id_reservation','tarif','nom_passager','prenom_passager','passeport','date_naissance','options')
     billets = (
-        (10001,1,1200,"Dupond","Michel","123456D","10/04/1970",None),
+        (10001,1,1200,"Chaffouin","Antoine","123456D","15/05/1980",None),
         (20002,2,400,"Tartempion","Lucien","123789E","20/03/1960",None),
     )
     for t in billets:
@@ -325,10 +327,10 @@ def creer_bdd(db_name):
     valider_modifs(conn)
 
     # Segment
-    colonnes = ('id_billet','id_vol','place','option')
+    colonnes = ('id_billet','id_vol','id_horaire','place','option')
     segments = (
-        (10001,1,"36A",1),
-        (20002,2,"45H",None),
+        (10001,1,2,"36A",1),
+        (20002,2,3,"45H",None),
     )
     for t in segments:
         r.insert_into(cur, 'Segment', colonnes, t)

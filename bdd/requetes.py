@@ -36,24 +36,6 @@ def select_pistes_par_aeroport(cur, id_aero):
     return cur.fetchall()
 
 
-def select_horaires_par_route(cur, id_route):
-    req = "SELECT * FROM Horaire WHERE id_route = ?"
-    executer_requete(cur, req, (id_route,))
-    return cur.fetchall()
-
-
-def select_horaires_propres(cur):
-    req = "SELECT * FROM Horaire WHERE id_horaire_operateur IS NULL"
-    executer_requete(cur, req)
-    return cur.fetchall()
-
-
-def select_horaires_codeshare(cur):
-    req = "SELECT * FROM Horaire WHERE id_horaire_operateur IS NOT NULL"
-    executer_requete(cur, req)
-    return cur.fetchall()
-
-
 def select_horaires_propres_par_route(cur, id_route):
     req = "SELECT * FROM Horaire WHERE id_horaire_operateur IS NULL"
     req += " AND id_route = ?"
@@ -72,6 +54,25 @@ def select_vols_par_horaire(cur, id_horaire):
     req = "SELECT * FROM Vol WHERE id_horaire = ?"
     executer_requete(cur, req, (id_horaire,))
     return cur.fetchall()
+
+
+def select_resas_par_client(cur, id_client):
+    req = "SELECT * FROM Reservation WHERE id_client = ?"
+    executer_requete(cur, req, (id_client,))
+    return cur.fetchall()
+
+
+def select_billets_par_resa(cur, id_resa):
+    req = "SELECT * FROM Billet WHERE id_reservation = ?"
+    executer_requete(cur, req, (id_resa,))
+    return cur.fetchall()
+
+
+def select_segments_par_billet(cur, id_billet):
+    req = "SELECT * FROM Segment WHERE id_billet = ?"
+    executer_requete(cur, req, (id_billet,))
+    return cur.fetchall()
+
 
 #
 # def select_esp_pok_by_nom(cur, colonnes, nom_espece):

@@ -1,25 +1,30 @@
 class Billet(object):
-    def __init__(self, id_billet, id_reservation, tarif, nom_passager, prenom_passager, passeport, date_naissance, options):
+    def __init__(self, id_billet, reservation, tarif, nom_passager, prenom_passager,
+                 passeport, date_naissance, options, segments=None):
         """
         Constructeur de la classe billet
         
         :param id_billet: identifiant du billet
-        :param id_reservation: numero de reservation
+        :param reservation: reservation dont fait partie le billet
         :param tarif: prix du billet
         :param nom_passager: nom du passager qui fait le vol
         :param prenom_passager: prenom du passager qui fait le vol
         :param passeport: passeport du passager faisant le vol
         :param date_naissance: date de naissance du passager faisant le vol
         :param options: options que le passager à pris pour son vol
+        :param segments: segments qui composent le billet
         """
         self._id_billet = id_billet
-        self._id_reservation = id_reservation
+        self._reservation = reservation
         self._tarif = tarif
         self._nom_passager = nom_passager
         self._prenom_passager = prenom_passager
         self._passeport = passeport
         self._date_naissance = date_naissance
         self._options = options
+        if segments is None:
+            segments = []
+        self._segments = segments
 
 
     @property
@@ -27,8 +32,8 @@ class Billet(object):
         return self._id_billet
 
     @property
-    def id_reservation(self):
-        return self._id_reservation
+    def reservation(self):
+        return self._reservation
 
     @property
     def tarif(self):
@@ -54,6 +59,18 @@ class Billet(object):
     def options(self):
         return self._options
 
+    @property
+    def segments(self):
+        return self._segments
+
+    def __str__(self):
+        return "Billet n°{:05d} - Voyageur : {} {} " \
+               "(né le {:%d/%m/%Y}, passeport n°{}) - Tarif : {} €"\
+            .format(self._id_billet,
+                    self._nom_passager.upper(),
+                    self._prenom_passager.upper(),
+                    self._date_naissance,self._passeport,
+                    self._tarif)
 
     def ajouter_segment(self):
         """

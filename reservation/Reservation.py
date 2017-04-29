@@ -1,28 +1,32 @@
 
 
 class Reservation(object):
-    def __init__(self, id_reservation, id_client, prix_total, date_achat):
+    def __init__(self, id_reservation, client, prix_total, date_achat,
+                 billets=None):
         """
         Constructeur de la classe reservation
         
-        :param id_reservation: numero de la reservation
-        :param id_client: identifiant du client qui a fait la reservation
+        :param id_reservation: identifiant de la reservation
+        :param client: client qui a fait la reservation
         :param prix_total: prix total à payer pour la reservation
         :param date_achat: date de paiement de la reservation
+        :param billets: billets concernes par cette reservation
         """
-
         self._id_reservation = id_reservation
-        self._id_client = id_client
+        self._client = client
         self._prix_total = prix_total
         self._date_achat = date_achat
+        if billets is None:
+            billets = []
+        self._billets = billets
 
     @property
     def id_reservation(self):
         return self._id_reservation
 
     @property
-    def id_client(self):
-        return self._id_client
+    def client(self):
+        return self._client
 
     @property
     def prix_tota(self):
@@ -32,6 +36,16 @@ class Reservation(object):
     def date_achat(self):
         return self._date_achat
 
+    @property
+    def billets(self):
+        return self._billets
+
+    def __str__(self):
+        return "Réservation n°{:05d} - Par : {}, {} - Total : {} € - " \
+               "Le : {:%d/%m/%Y à %Hh%M}"\
+            .format(self._id_reservation,
+                    self._client.nom,self._client.prenom,
+                    self._prix_total,self._date_achat)
 
     def ajouter_billet(self):
         """
@@ -55,7 +69,7 @@ class Reservation(object):
 
     def fournir_recapitulatif(self):
         """
-        Methode qui permet de fournir au id_client le recapitulatif de sa reservation
+        Methode qui permet de fournir au client le recapitulatif de sa reservation
         :return: 
         """
         pass

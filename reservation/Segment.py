@@ -45,7 +45,7 @@ class Segment(object):
         return self._options
 
     def __str__(self):
-        txt = "Vol {} {}{:4s} - {} -> {} - {:%d/%m/%Y %H:%M} -> {:%d/%m/%Y %H:%M} - Siège {} - {} {}"\
+        txt = "Segment {} {}{:4s} - {} -> {} - {:%d/%m/%Y %H:%M} -> {:%d/%m/%Y %H:%M} - Siège {} - {} {}"\
             .format(self._horaire.compagnie.code_icao,
                     self._horaire.compagnie.id_code_iata,
                     str(self._horaire.numero),

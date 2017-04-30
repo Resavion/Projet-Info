@@ -63,8 +63,8 @@ class Billet(object):
         return self._segments
 
     def __str__(self):
-        return "Billet n°{:05d} - Voyageur : {} {} " \
-               "(né le {:%d/%m/%Y}, passeport n°{}) - Tarif : {} €"\
+        return "Billet n°{:05d} - {} {} (né le {:%d/%m/%Y}, passeport n°{})" \
+               " - Tarif : {} €"\
             .format(self._id,
                     self._nom_passager.upper(),
                     self._prenom_passager.upper(),

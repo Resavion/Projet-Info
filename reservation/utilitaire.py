@@ -134,7 +134,7 @@ def charger_avions_de_compagnie(cur, aeroports, configs, compagnie):
         avion = Avion(row[0], compagnie, config, aeroport,
                       date_construc, date_der_rev, *row[6:])
         avions.append(avion)
-        print(avion)
+        # print(avion)
     return avions
 
 
@@ -215,11 +215,11 @@ def charger_clients(cur, horaires, vols):
         # Billets
         for resa in resas:
             billets = charger_billets_de_resa(cur, resa)
-            resa.billets.append(billets)
+            resa.billets.extend(billets)
             # Segments
             for billet in billets:
                 segments = charger_segments_de_billet(cur, horaires, vols, billet)
-                billet.segments.append(segments)
+                billet.segments.extend(segments)
         clients.append(client)
     return clients
 
@@ -272,28 +272,7 @@ def update_bd(db_name, compagnies, clients):
     # Pour chaque compagnie
     for compagnie in compagnies:
         for avion in compagnie.avions:
-            row = r.select_par_id(cur, 'Avion', avion.id)
-            if not row:
-                # Insérer avion dans bd
-                colonnes = ('id', 'id_compagnie', 'id_config', 'id_aeroport',
-                            'date_construction', 'date_derniere_revision',
-                            'id_etat', 'position')
-                values = (avion.id, avion.compagnie.id_code_iata,
-                          avion.config.id, avion.aeroport.id_code_iata,
-                          avion.date_construction,
-                          avion.date_derniere_revision,
-                          avion.etat, avion.position)
-                r.insert_into(cur, 'Avion', colonnes, values)
-                # print("insert {}".format(avion))
-            else:
-                # Update avion dans bd
-                colonnes = ('id_config', 'id_aeroport', 'date_derniere_revision',
-                            'id_etat', 'position')
-                values = (avion.config.id, avion.aeroport.id_code_iata,
-                          avion.date_derniere_revision,
-                          avion.etat, avion.position)
-                r.update(cur, 'Avion', colonnes, values, avion.id)
-                # print("update {}".format(avion))
+            update_avion(cur, avion)
     valider_modifs(conn)
 
     # Vols
@@ -302,42 +281,7 @@ def update_bd(db_name, compagnies, clients):
         for route in compagnie.routes:
             for horaire in route.horaires:
                 for vol in horaire.vols:
-                    row = r.select_par_id(cur, 'Vol', vol.id)
-                    if not row:
-                        # Insérer vol dans bd
-                        colonnes = ('id','id_horaire','datetime_depart',
-                                    'datetime_arrivee','duree','id_avion',
-                                    'places_restantes_premiere',
-                                    'places_restantes_business',
-                                    'places_restantes_eco_plus',
-                                    'places_restantes_eco','statut','cabine')
-                        values = (vol.id, vol.horaire.id,
-                                  vol.datetime_depart, vol.datetime_arrivee,
-                                  "{}".format(vol.duree), vol.avion.id,
-                                  vol.places_restantes_premiere,
-                                  vol.places_restantes_business,
-                                  vol.places_restantes_eco_plus,
-                                  vol.places_restantes_eco,
-                                  vol.statut, vol.cabine)
-                        r.insert_into(cur, 'Vol', colonnes, values)
-                        print("insert {}".format(vol))
-                    else:
-                        # Update vol dans bd
-                        colonnes = ('datetime_depart','datetime_arrivee',
-                                    'duree','id_avion',
-                                    'places_restantes_premiere',
-                                    'places_restantes_business',
-                                    'places_restantes_eco_plus',
-                                    'places_restantes_eco','statut','cabine')
-                        values = (vol.datetime_depart, vol.datetime_arrivee,
-                                  "{}".format(vol.duree), vol.avion.id,
-                                  vol.places_restantes_premiere,
-                                  vol.places_restantes_business,
-                                  vol.places_restantes_eco_plus,
-                                  vol.places_restantes_eco,
-                                  vol.statut, vol.cabine)
-                        r.update(cur, 'Vol', colonnes, values, vol.id)
-                        print("update {}".format(vol))
+                    update_vol(cur, vol)
     valider_modifs(conn)
 
     # Clients
@@ -352,17 +296,133 @@ def update_bd(db_name, compagnies, clients):
     valider_modifs(conn)
 
     # Reservations
+    # Pour chaque client
     for client in clients:
         for resa in client.reservations:
             row = r.select_par_id(cur, 'Reservation', resa.id)
             if not row:
                 # Insérer resa dans bd
                 colonnes = ('id','id_client','prix_total','date_achat')
-                values = (client.id, client.nom, client.prenom, client.date_naissance)
-                r.insert_into(cur, 'Client', colonnes, values)
-                print("insert {}".format(client))
+                values = (resa.id, resa.client.id, resa.prix_total, resa.date_achat)
+                r.insert_into(cur, 'Reservation', colonnes, values)
+                print("insert {}".format(resa))
+    valider_modifs(conn)
+
+    # Billets
+    # Pour chaque client
+    for client in clients:
+        for resa in client.reservations:
+            for billet in resa.billets:
+                update_billet(cur, billet)
+    valider_modifs(conn)
+
+    # Segments
+    # Pour chaque client
+    for client in clients:
+        for resa in client.reservations:
+            for billet in resa.billets:
+                for segment in billet.segments:
+                    update_segment(cur, segment)
+    valider_modifs(conn)
 
     fermer_connexion(cur, conn)
+
+
+def update_avion(cur, avion):
+    row = r.select_par_id(cur, 'Avion', avion.id)
+    if not row:
+        # Insérer avion dans bd
+        colonnes = ('id', 'id_compagnie', 'id_config', 'id_aeroport',
+                    'date_construction', 'date_derniere_revision',
+                    'id_etat', 'position')
+        values = (avion.id, avion.compagnie.id_code_iata,
+                  avion.config.id, avion.aeroport.id_code_iata,
+                  avion.date_construction, avion.date_derniere_revision,
+                  avion.etat, avion.position)
+        r.insert_into(cur, 'Avion', colonnes, values)
+        print("insert {}".format(avion))
+    else:
+        # Update avion dans bd
+        colonnes = ('id_config', 'id_aeroport', 'date_derniere_revision',
+                    'id_etat', 'position')
+        values = (avion.config.id, avion.aeroport.id_code_iata,
+                  avion.date_derniere_revision, avion.etat, avion.position)
+        r.update(cur, 'Avion', colonnes, values, avion.id)
+        print("update {}".format(avion))
+
+
+def update_vol(cur, vol):
+    row = r.select_par_id(cur, 'Vol', vol.id)
+    if not row:
+        # Insérer vol dans bd
+        colonnes = ('id', 'id_horaire', 'datetime_depart',
+                    'datetime_arrivee', 'duree', 'id_avion',
+                    'places_restantes_premiere', 'places_restantes_business',
+                    'places_restantes_eco_plus', 'places_restantes_eco',
+                    'statut', 'cabine')
+        values = (vol.id, vol.horaire.id,
+                  vol.datetime_depart, vol.datetime_arrivee,
+                  "{}".format(vol.duree), vol.avion.id,
+                  vol.places_restantes_premiere, vol.places_restantes_business,
+                  vol.places_restantes_eco_plus, vol.places_restantes_eco,
+                  vol.statut, vol.cabine)
+        r.insert_into(cur, 'Vol', colonnes, values)
+        print("insert {}".format(vol))
+    else:
+        # Update vol dans bd
+        colonnes = ('datetime_depart', 'datetime_arrivee',
+                    'duree', 'id_avion', 'places_restantes_premiere',
+                    'places_restantes_business', 'places_restantes_eco_plus',
+                    'places_restantes_eco', 'statut', 'cabine')
+        values = (vol.datetime_depart, vol.datetime_arrivee,
+                  "{}".format(vol.duree), vol.avion.id,
+                  vol.places_restantes_premiere, vol.places_restantes_business,
+                  vol.places_restantes_eco_plus, vol.places_restantes_eco,
+                  vol.statut, vol.cabine)
+        r.update(cur, 'Vol', colonnes, values, vol.id)
+        print("update {}".format(vol))
+
+
+def update_billet(cur, billet):
+    row = r.select_par_id(cur, 'Billet', billet.id)
+    if not row:
+        # Insérer billet dans bd
+        colonnes = ('id', 'id_reservation', 'tarif',
+                    'nom_passager', 'prenom_passager', 'passeport',
+                    'date_naissance', 'options')
+        values = (billet.id, billet.reservation.id, billet.tarif,
+                  billet.nom_passager, billet.prenom_passager,
+                  billet.passeport, billet.date_naissance,
+                  billet.options)
+        r.insert_into(cur, 'Billet', colonnes, values)
+        print("insert {}".format(billet))
+    else:
+        # Update billet dans bd
+        colonnes = ('tarif', 'nom_passager', 'prenom_passager',
+                    'passeport', 'date_naissance', 'options')
+        values = (billet.tarif, billet.nom_passager,
+                  billet.prenom_passager, billet.passeport,
+                  billet.date_naissance, billet.options)
+        r.update(cur, 'Billet', colonnes, values, billet.id)
+        print("update {}".format(billet))
+
+
+def update_segment(cur, segment):
+    row = r.select_par_id(cur, 'Segment', segment.id)
+    if not row:
+        # Insérer segment dans bd
+        colonnes = ('id_billet','id_vol','id_horaire','place','option')
+        values = (segment.billet.id, segment.vol.id, segment.horaire.id,
+                  segment.place, segment.options)
+        r.insert_into(cur, 'Segment', colonnes, values)
+        print("insert {}".format(segment))
+    else:
+        # Update segment dans bd
+        colonnes = ('id_vol','id_horaire','place','option')
+        values = (segment.vol.id, segment.horaire.id,
+                  segment.place, segment.options)
+        r.update(cur, 'Segment', colonnes, values, segment.id)
+        print("update {}".format(segment))
 
     # # Un dresseur avec un nom et une liste de pokemon
     # # Les espèces existent déjà, juste nom suffit

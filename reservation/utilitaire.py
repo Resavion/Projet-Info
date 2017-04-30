@@ -1,5 +1,4 @@
-from random import randint
-from datetime import (datetime,timedelta)
+from datetime import (datetime,timedelta,date)
 import ihm.console as ihm
 from bdd.acces_bdd import (ouvrir_connexion,
                            fermer_connexion,
@@ -141,8 +140,8 @@ def charger_avions_de_compagnie(cur, aeroports, configs, compagnie):
     for row in rows:
         config = [x for x in configs if x.id == row[2]][0]
         aeroport = [x for x in aeroports if x.id_code_iata == row[3]][0]
-        date_construc = datetime.strptime(row[4],"%d/%m/%Y").date()
-        date_der_rev = datetime.strptime(row[5],"%d/%m/%Y").date()
+        date_construc = datetime.strptime(row[4],"%Y-%m-%d").date()
+        date_der_rev = datetime.strptime(row[5],"%Y-%m-%d").date()
         avion = Avion(row[0], compagnie, config, aeroport,
                       date_construc, date_der_rev, *row[6:])
         avions.append(avion)
@@ -260,17 +259,33 @@ def update_bd(db_name, compagnies, clients):
     conn, cur = ouvrir_connexion(db_name)
 
     # Avions
-    colonnes = ('id', 'id_compagnie', 'id_config', 'id_aeroport', 'date_construction',
-                'date_derniere_revision', 'id_etat', 'position')
     # Pour chaque compagnie
     for compagnie in compagnies:
         for avion in compagnie.avions:
-            row = r.select_avion_par_id(cur, avion.id)
+            row = r.select_par_id(cur, 'Avion', avion.id)
             if not row:
                 # Insérer avion dans bd
+                colonnes = ('id', 'id_compagnie', 'id_config', 'id_aeroport',
+                            'date_construction', 'date_derniere_revision',
+                            'id_etat', 'position')
                 values = (avion.id, avion.compagnie.id_code_iata,
-                          avion.config.id,)
+                          avion.config.id, avion.aeroport.id_code_iata,
+                          avion.date_construction,
+                          avion.date_derniere_revision,
+                          avion.etat, avion.position)
                 r.insert_into(cur, 'Avion', colonnes, values)
+                print("insert {}".format(avion))
+            else:
+                # Update avion dans bd
+                colonnes = ('id_config', 'id_aeroport', 'date_derniere_revision',
+                            'id_etat', 'position')
+                values = (avion.config.id, avion.aeroport.id_code_iata,
+                          avion.date_derniere_revision,
+                          avion.etat, avion.position)
+                r.update(cur, 'Avion', colonnes, values, avion.id)
+                print("update {}".format(avion))
+    
+    valider_modifs(conn)
 
     # # Un dresseur avec un nom et une liste de pokemon
     # # Les espèces existent déjà, juste nom suffit

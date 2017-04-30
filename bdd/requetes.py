@@ -10,10 +10,10 @@ def insert_into(cur, table, col, values):
     executer_requete(cur, req, values)
 
 
-def update(cur, table, col, values, nom):
+def update(cur, table, col, values, id_objet):
     req = "UPDATE {} SET ".format(table)
     req += "=?, ".join(col)
-    req += "=? WHERE nom='{}'".format(nom)
+    req += "=? WHERE id='{}'".format(id_objet)
     req += ";"
     executer_requete(cur, req, values)
 
@@ -27,6 +27,12 @@ def select_all(cur, table):
 def select_all_par_compagnie(cur, table, id_compagnie):
     req = "SELECT * FROM "+table+" WHERE id_compagnie = ?"
     executer_requete(cur, req, (id_compagnie,))
+    return cur.fetchall()
+
+
+def select_par_id(cur, table, id_objet):
+    req = "SELECT * FROM "+table+" WHERE id = ?"
+    executer_requete(cur, req, (id_objet,))
     return cur.fetchall()
 
 

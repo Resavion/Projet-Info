@@ -23,7 +23,7 @@ def creer_bdd(db_name):
     req = """create table EnumStatutVol (id integer primary key AUTOINCREMENT NOT NULL,
                                     statut text)"""
     executer_requete(cur, req)
-    req = """create table Aeroport (id_iata_code text primary key,
+    req = """create table Aeroport (id text primary key,
                                     type_aero text,
                                     nom text,
                                     latitude_deg real,
@@ -41,9 +41,9 @@ def creer_bdd(db_name):
                                  le_seuil_decale_ft real,
                                  he_identificateur text,
                                  he_seuil_decale_ft real,
-                                 foreign key(id_aeroport) references Aeroport(id_iata_code))"""
+                                 foreign key(id_aeroport) references Aeroport(id))"""
     executer_requete(cur, req)
-    req = """create table Compagnie (id_iata_code text primary key,
+    req = """create table Compagnie (id text primary key,
                                      nom text,
                                      code_icao text,
                                      pays text,
@@ -69,7 +69,7 @@ def creer_bdd(db_name):
                                     nb_place_eco integer,
                                     nb_total_place integer,
                                     disposition text,
-                                    foreign key(id_compagnie) references Compagnie(id_iata_code),
+                                    foreign key(id_compagnie) references Compagnie(id),
                                     foreign key(id_type_avion) references TypeAvion(id))"""
     executer_requete(cur, req)
     req = """create table Avion (id text primary key,
@@ -80,9 +80,9 @@ def creer_bdd(db_name):
                                  date_derniere_revision date,
                                  id_etat integer,
                                  position text,
-                                 foreign key(id_compagnie) references Compagnie(id_iata_code),
+                                 foreign key(id_compagnie) references Compagnie(id),
                                  foreign key(id_config) references ConfigAvion(id),
-                                 foreign key(id_aeroport) references Aeroport(id_iata_code),
+                                 foreign key(id_aeroport) references Aeroport(id),
                                  foreign key(id_etat) references EnumAvion(id))"""
     executer_requete(cur, req)
     req = """create table Route (id integer primary key,
@@ -91,9 +91,9 @@ def creer_bdd(db_name):
                                  id_aeroport_arrivee text,
                                  geom text,
                                  codeshare integer,
-                                 foreign key(id_compagnie) references Compagnie(id_iata_code),
-                                 foreign key(id_aeroport_depart) references Aeroport(id_iata_code),
-                                 foreign key(id_aeroport_arrivee) references Aeroport(id_iata_code))"""
+                                 foreign key(id_compagnie) references Compagnie(id),
+                                 foreign key(id_aeroport_depart) references Aeroport(id),
+                                 foreign key(id_aeroport_arrivee) references Aeroport(id))"""
     executer_requete(cur, req)
     req = """create table Horaire (id integer primary key,
                                  id_route integer,
@@ -106,7 +106,7 @@ def creer_bdd(db_name):
                                  id_horaire_operateur integer,
                                  id_config_avion integer,
                                  foreign key(id_route) references Route(id),
-                                 foreign key(id_compagnie) references Compagnie(id_iata_code),
+                                 foreign key(id_compagnie) references Compagnie(id),
                                  foreign key(id_horaire_operateur) references Horaire(id),
                                  foreign key(id_config_avion) references ConfigAvion(id))"""
     executer_requete(cur, req)
@@ -195,7 +195,7 @@ def creer_bdd(db_name):
     valider_modifs(conn)
 
     # Aeroport
-    colonnes = ('id_iata_code','type_aero','nom','latitude_deg','longitude_deg','elevation_ft','code_continent',
+    colonnes = ('id','type_aero','nom','latitude_deg','longitude_deg','elevation_ft','code_continent',
                 'code_pays','municipalite','code_icao')
     aeroports = (
         ("NRT","large_airport","Narita International Airport",35.7647018433,140.386001587,141,"AS","JP","Tokyo","RJAA"),
@@ -216,7 +216,7 @@ def creer_bdd(db_name):
     valider_modifs(conn)
 
     # Compagnie
-    colonnes = ('id_iata_code','nom','code_icao','pays','code_continent','code_pays')
+    colonnes = ('id','nom','code_icao','pays','code_continent','code_pays')
     compagnies = (
         ("NH","All Nippon Airways","ANA","Japan","AS","JP"),
         ("BR","EVA Air","EVA","Taiwan","AS","TW"),
@@ -253,8 +253,8 @@ def creer_bdd(db_name):
     colonnes = ('id','id_compagnie','id_config','id_aeroport','date_construction','date_derniere_revision','id_etat',
                 'position')
     avions = (
-        ("B-16213","BR",1,"KHH","10/10/2014","27/10/2014",3,"POINT(120.3499984741211 22.57710075378418)"),
-        ("JA608J","JL",2,"NRT","23/02/2004","01/05/2014",3,"POINT(140.386001587 35.7647018433)")
+        ("B-16213","BR",1,"KHH","2014-10-10","2014-10-27",3,"POINT(120.3499984741211 22.57710075378418)"),
+        ("JA608J","JL",2,"NRT","2004-02-23","2014-05-01",3,"POINT(140.386001587 35.7647018433)")
     )
     for t in avions:
         r.insert_into(cur, 'Avion', colonnes, t)

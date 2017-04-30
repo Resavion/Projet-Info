@@ -64,9 +64,13 @@ class Avion(object):
         was_earlier = (on.month, on.day) < (when.month, when.day)
         return on.year - when.year - was_earlier
 
+    @date_derniere_revision.setter
+    def date_derniere_revision(self, valeur):
+        self._date_derniere_revision = valeur
+
     def __str__(self):
         return "{} {} - {} - Config {} : {}F/{}C/{}P/{}Y ({} pax) - " \
-               "Age : {} ans (premier vol : {})"\
+               "Age : {} ans (premier vol : {}, derniere revision : {})"\
             .format(self._compagnie.id_code_iata, self._id,
                     self._config.type_avion, self._config.nom,
                     self._config.nb_place_premiere,
@@ -74,4 +78,5 @@ class Avion(object):
                     self._config.nb_place_eco_plus,
                     self._config.nb_place_eco,
                     self._config.nb_total_place,
-                    self.age, self._date_construction)
+                    self.age, self._date_construction,
+                    self._date_derniere_revision)

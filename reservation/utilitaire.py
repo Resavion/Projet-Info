@@ -35,62 +35,13 @@ def charger_bd(db_name):
     types_avions = charger_types_avions(cur)
 
     # Compagnies
-    compagnies = []
-    horaires_tout = []
-    vols_tout = []
-    rows = r.select_all(cur, 'Compagnie')
-    for row in rows:
-        compagnie = Compagnie(*row)
-        # Configs
-        configs = charger_configs_de_compagnie(cur, types_avions, compagnie)
-        compagnie.configs.extend(configs)
-        # Avions
-        avions = charger_avions_de_compagnie(cur, aeroports, configs, compagnie)
-        compagnie.avions.extend(avions)
-        # Routes
-        routes = charger_routes_de_compagnie(cur, aeroports, compagnie)
-        compagnie.routes.extend(routes)
-        # Horaires propres
-        for route in routes:
-            horaires_propres = charger_horaires_propres_de_route(cur, configs, route)
-            route.horaires.extend(horaires_propres)
-            horaires_tout.extend(horaires_propres)
-            # Vols propres
-            for horaire in horaires_propres:
-                vols = charger_vols_de_horaire(cur, horaire)
-                horaire.vols.extend(vols)
-                vols_tout.extend(vols)
-        compagnies.append(compagnie)
-        # print(compagnie)
-
-    # Horaires en codeshare
-    for compagnie in compagnies:
-        for route in compagnie.routes:
-            horaires_codeshare = charger_horaires_codeshare_de_route(
-                cur, horaires_tout, route)
-            route.horaires.extend(horaires_codeshare)
-            horaires_tout.extend(horaires_codeshare)
+    compagnies, horaires_tout, vols_tout = \
+        charger_compagnies(cur, aeroports, types_avions)
 
     # Clients
-    clients = []
-    rows = r.select_all(cur, 'Client')
-    for row in rows:
-        date_naissance = datetime.strptime(row[3],"%Y-%m-%d").date()
-        client = Client(*row[0:3], date_naissance)
-        # Reservations
-        resas = charger_resas_de_client(cur, client)
-        client.reservations.extend(resas)
-        # Billets
-        for resa in resas:
-            billets = charger_billets_de_resa(cur, resa)
-            resa.billets.append(billets)
-            # Segments
-            for billet in billets:
-                segments = charger_segments_de_billet(cur, vols_tout,
-                                                      horaires_tout, billet)
-                billet.segments.append(segments)
-        clients.append(client)
+    clients = charger_clients(cur, horaires_tout, vols_tout)
 
+    fermer_connexion(cur, conn)
     return aeroports, compagnies, clients
 
 
@@ -120,6 +71,45 @@ def charger_types_avions(cur):
         types_avions.append(type_avion)
         # print(type_avion)
     return types_avions
+
+
+def charger_compagnies(cur, aeroports, types_avions):
+    compagnies = []
+    horaires_tout = []
+    vols_tout = []
+    # Compagnies
+    rows = r.select_all(cur, 'Compagnie')
+    for row in rows:
+        compagnie = Compagnie(*row)
+        # Configs
+        configs = charger_configs_de_compagnie(cur, types_avions, compagnie)
+        compagnie.configs.extend(configs)
+        # Avions
+        avions = charger_avions_de_compagnie(cur, aeroports, configs, compagnie)
+        compagnie.avions.extend(avions)
+        # Routes
+        routes = charger_routes_de_compagnie(cur, aeroports, compagnie)
+        compagnie.routes.extend(routes)
+        # Horaires propres
+        for route in routes:
+            horaires_propres = charger_horaires_propres_de_route(cur, configs, route)
+            route.horaires.extend(horaires_propres)
+            horaires_tout.extend(horaires_propres)
+            # Vols propres
+            for horaire in horaires_propres:
+                vols = charger_vols_de_horaire(cur, horaire)
+                horaire.vols.extend(vols)
+                vols_tout.extend(vols)
+        compagnies.append(compagnie)
+        # print(compagnie)
+    # Horaires en codeshare
+    for compagnie in compagnies:
+        for route in compagnie.routes:
+            horaires_codeshare = charger_horaires_codeshare_de_route(
+                cur, horaires_tout, route)
+            route.horaires.extend(horaires_codeshare)
+            horaires_tout.extend(horaires_codeshare)
+    return compagnies, horaires_tout, vols_tout
 
 
 def charger_configs_de_compagnie(cur, types_avions, compagnie):
@@ -213,6 +203,27 @@ def charger_vols_de_horaire(cur, horaire):
     return vols
 
 
+def charger_clients(cur, horaires, vols):
+    clients = []
+    rows = r.select_all(cur, 'Client')
+    for row in rows:
+        date_naissance = datetime.strptime(row[3],"%Y-%m-%d").date()
+        client = Client(*row[0:3], date_naissance)
+        # Reservations
+        resas = charger_resas_de_client(cur, client)
+        client.reservations.extend(resas)
+        # Billets
+        for resa in resas:
+            billets = charger_billets_de_resa(cur, resa)
+            resa.billets.append(billets)
+            # Segments
+            for billet in billets:
+                segments = charger_segments_de_billet(cur, horaires, vols, billet)
+                billet.segments.append(segments)
+        clients.append(client)
+    return clients
+
+
 def charger_resas_de_client(cur, client):
     resas = []
     rows = r.select_resas_par_client(cur, client.id)
@@ -235,7 +246,7 @@ def charger_billets_de_resa(cur, resa):
     return billets
 
 
-def charger_segments_de_billet(cur, vols, horaires, billet):
+def charger_segments_de_billet(cur, horaires, vols, billet):
     segments = []
     rows = r.select_segments_par_billet(cur, billet.id)
     for row in rows:
@@ -283,6 +294,8 @@ def update_bd(db_name, compagnies, clients):
                           avion.etat, avion.position)
                 r.update(cur, 'Avion', colonnes, values, avion.id)
                 # print("update {}".format(avion))
+    valider_modifs(conn)
+
     # Vols
     # Pour chaque compagnie
     for compagnie in compagnies:
@@ -299,9 +312,8 @@ def update_bd(db_name, compagnies, clients):
                                     'places_restantes_eco_plus',
                                     'places_restantes_eco','statut','cabine')
                         values = (vol.id, vol.horaire.id,
-                                  vol.datetime_depart,vol.datetime_arrivee,
-                                  "{}".format(vol.duree),
-                                  vol.avion.id,
+                                  vol.datetime_depart, vol.datetime_arrivee,
+                                  "{}".format(vol.duree), vol.avion.id,
                                   vol.places_restantes_premiere,
                                   vol.places_restantes_business,
                                   vol.places_restantes_eco_plus,
@@ -317,10 +329,8 @@ def update_bd(db_name, compagnies, clients):
                                     'places_restantes_business',
                                     'places_restantes_eco_plus',
                                     'places_restantes_eco','statut','cabine')
-                        values = (vol.datetime_depart,
-                                  vol.datetime_arrivee,
-                                  "{}".format(vol.duree),
-                                  vol.avion.id,
+                        values = (vol.datetime_depart, vol.datetime_arrivee,
+                                  "{}".format(vol.duree), vol.avion.id,
                                   vol.places_restantes_premiere,
                                   vol.places_restantes_business,
                                   vol.places_restantes_eco_plus,
@@ -329,6 +339,30 @@ def update_bd(db_name, compagnies, clients):
                         r.update(cur, 'Vol', colonnes, values, vol.id)
                         print("update {}".format(vol))
     valider_modifs(conn)
+
+    # Clients
+    for client in clients:
+        row = r.select_par_id(cur, 'Client', client.id)
+        if not row:
+            # Insérer client dans bd
+            colonnes = ('id','nom','prenom','date_naissance')
+            values = (client.id, client.nom, client.prenom, client.date_naissance)
+            r.insert_into(cur, 'Client', colonnes, values)
+            print("insert {}".format(client))
+    valider_modifs(conn)
+
+    # Reservations
+    for client in clients:
+        for resa in client.reservations:
+            row = r.select_par_id(cur, 'Reservation', resa.id)
+            if not row:
+                # Insérer resa dans bd
+                colonnes = ('id','id_client','prix_total','date_achat')
+                values = (client.id, client.nom, client.prenom, client.date_naissance)
+                r.insert_into(cur, 'Client', colonnes, values)
+                print("insert {}".format(client))
+
+    fermer_connexion(cur, conn)
 
     # # Un dresseur avec un nom et une liste de pokemon
     # # Les espèces existent déjà, juste nom suffit

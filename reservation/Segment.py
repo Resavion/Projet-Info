@@ -1,17 +1,17 @@
 class Segment(object):
-    def __init__(self, id, billet, vol, horaire_codeshare,
+    def __init__(self, id_segment, billet, vol, horaire_codeshare,
                  place, options):
         """
         Constructeur de la classe segment
         
-        :param id: identifiant du segment
+        :param id_segment: identifiant du segment
         :param billet: billet qui contient ce segment
         :param vol: vol concerne par ce segment
         :param horaire_codeshare: horaire concerne par ce segment si codeshare
         :param place: numero du siège
         :param options: options que le passager a pris pour cette partie de trajet
         """
-        self._id = id
+        self._id = id_segment
         self._billet = billet
         self._vol = vol
         self._horaire = vol.horaire

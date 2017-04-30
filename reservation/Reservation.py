@@ -1,18 +1,16 @@
-
-
 class Reservation(object):
-    def __init__(self, id, client, prix_total, date_achat,
+    def __init__(self, id_resa, client, prix_total, date_achat,
                  billets=None):
         """
         Constructeur de la classe reservation
         
-        :param id: identifiant de la reservation
+        :param id_resa: identifiant de la reservation
         :param client: client qui a fait la reservation
         :param prix_total: prix total à payer pour la reservation
         :param date_achat: date de paiement de la reservation
         :param billets: billets concernes par cette reservation
         """
-        self._id = id
+        self._id = id_resa
         self._client = client
         self._prix_total = prix_total
         self._date_achat = date_achat

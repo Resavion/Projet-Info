@@ -1,10 +1,10 @@
 class Billet(object):
-    def __init__(self, id, reservation, tarif, nom_passager, prenom_passager,
+    def __init__(self, id_billet, reservation, tarif, nom_passager, prenom_passager,
                  passeport, date_naissance, options, segments=None):
         """
         Constructeur de la classe billet
         
-        :param id: identifiant du billet
+        :param id_billet: identifiant du billet
         :param reservation: reservation dont fait partie le billet
         :param tarif: prix du billet
         :param nom_passager: nom du passager qui fait le vol
@@ -14,7 +14,7 @@ class Billet(object):
         :param options: options que le passager à pris pour son vol
         :param segments: segments qui composent le billet
         """
-        self._id = id
+        self._id = id_billet
         self._reservation = reservation
         self._tarif = tarif
         self._nom_passager = nom_passager

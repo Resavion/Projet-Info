@@ -1,14 +1,13 @@
 import math as ma
-import reservation.Aeroport
 
 
 class Route(object):
-    def __init__(self, id, compagnie, aeroport_depart, aeroport_arrivee, geom, codeshare,
+    def __init__(self, id_route, compagnie, aeroport_depart, aeroport_arrivee, geom, codeshare,
                  horaires=None):
         """
         Constructeur de la classe route
         
-        :param id: id de la route
+        :param id_route: id de la route
         :param compagnie: compagnie qui propose la route
         :param aeroport_depart: aeroport de depart de la route
         :param aeroport_arrivee: aeroport d'arrivee de la route
@@ -16,7 +15,7 @@ class Route(object):
         :param codeshare: booleen qui permet de savoir si un avion est partage par plusieurs compagnies
         :param horaires: liste des horaires sur cette route
         """
-        self._id = id
+        self._id = id_route
         self._compagnie = compagnie
         self._aeroport_depart = aeroport_depart
         self._aeroport_arrivee = aeroport_arrivee

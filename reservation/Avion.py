@@ -2,12 +2,12 @@ from datetime import date
 
 
 class Avion(object):
-    def __init__(self, id, compagnie, config, aeroport, date_construction, date_derniere_revision,
+    def __init__(self, id_avion, compagnie, config, aeroport, date_construction, date_derniere_revision,
                  etat, position):
         """
         Constructeur de la classe avion
         
-        :param id: identifiant avion
+        :param id_avion: identifiant avion
         :param compagnie: compagnie qui possède l'avion
         :param config: configuration de l'avion
         :param aeroport: aeroport ou il se situe actuellement
@@ -16,7 +16,7 @@ class Avion(object):
         :param etat: donne l'etat de l'avion, si il est en vol, au sol, non utilisable
         :param position: la position de l'avion en fonction de ses coordonnées
         """
-        self._id = id
+        self._id = id_avion
         self._compagnie = compagnie
         self._config = config
         self._date_construction = date_construction

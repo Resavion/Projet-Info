@@ -1,10 +1,10 @@
 class Horaire(object):
-    def __init__(self, id, route, compagnie, numero, heure_depart, heure_arrivee, duree, periodicite, horaire_operateur,
+    def __init__(self, id_horaire, route, compagnie, numero, heure_depart, heure_arrivee, duree, periodicite, horaire_operateur,
                  config_avion=None, vols=None):
         """
         Constructeur de la classe horaire
         
-        :param id: identifiant de l'horaire
+        :param id_horaire: identifiant de l'horaire
         :param route: route empruntee par le vol
         :param compagnie: compagnie qui propose la route
         :param numero: numero de vol 
@@ -16,7 +16,7 @@ class Horaire(object):
         :param config_avion: la configuration d'avion utilisee a cet horaire
         :param vols: vols assurant cet horaire
         """
-        self._id = id
+        self._id = id_horaire
         self._route = route
         self._compagnie = compagnie
         self._numero = numero

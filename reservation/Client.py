@@ -1,16 +1,16 @@
 class Client(object):
-    def __init__(self, id, nom, prenom, date_naissance,
+    def __init__(self, id_client, nom, prenom, date_naissance,
                  reservations=None):
         """
         Constructeur de la classe client
         
-        :param id: identifiant du compte client 
+        :param id_client: identifiant du compte client 
         :param nom: nom du client
         :param prenom: prenom du client
         :param date_naissance: date de naissance du client
         :param reservations: liste des reservations du client
         """
-        self._id = id
+        self._id = id_client
         self._nom = nom
         self._prenom = prenom
         self._date_naissance = date_naissance

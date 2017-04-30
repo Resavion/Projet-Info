@@ -55,20 +55,19 @@ def charger_bd(db_name):
             horaires_propres = charger_horaires_propres_de_route(cur, configs, route)
             route.horaires.extend(horaires_propres)
             horaires_tout.extend(horaires_propres)
-        # Vols propres
-        for horaire in horaires_propres:
-            vols = charger_vols_de_horaire(cur, horaire)
-            horaire.vols.extend(vols)
-            vols_tout.extend(vols)
+            # Vols propres
+            for horaire in horaires_propres:
+                vols = charger_vols_de_horaire(cur, horaire)
+                horaire.vols.extend(vols)
+                vols_tout.extend(vols)
         compagnies.append(compagnie)
         # print(compagnie)
 
     # Horaires en codeshare
     for compagnie in compagnies:
-        configs = compagnie.configs
         for route in compagnie.routes:
             horaires_codeshare = charger_horaires_codeshare_de_route(
-                cur, configs, horaires_tout, route)
+                cur, horaires_tout, route)
             route.horaires.extend(horaires_codeshare)
             horaires_tout.extend(horaires_codeshare)
 
@@ -76,7 +75,7 @@ def charger_bd(db_name):
     clients = []
     rows = r.select_all(cur, 'Client')
     for row in rows:
-        date_naissance = datetime.strptime(row[3],"%d/%m/%Y").date()
+        date_naissance = datetime.strptime(row[3],"%Y-%m-%d").date()
         client = Client(*row[0:3], date_naissance)
         # Reservations
         resas = charger_resas_de_client(cur, client)
@@ -156,7 +155,7 @@ def charger_routes_de_compagnie(cur, aeroports, compagnie):
         id_route = row[0]
         dep = [x for x in aeroports if x.id_code_iata == row[2]][0]
         arr = [x for x in aeroports if x.id_code_iata == row[3]][0]
-        route = Route(id_route,compagnie,dep,arr,row[4],row[5])
+        route = Route(id_route, compagnie, dep, arr, row[4], row[5])
         routes.append(route)
         # print(route)
     return routes
@@ -171,7 +170,7 @@ def charger_horaires_propres_de_route(cur, configs, route):
         # Heures et duree
         dep = datetime.strptime(row[4], "%H:%M").time()
         arr = datetime.strptime(row[5], "%H:%M").time()
-        t = datetime.strptime(row[6], "%H:%M")
+        t = datetime.strptime(row[6], "%Hh%M")
         dur = timedelta(hours=t.hour, minutes=t.minute)
         # Horaire
         horaire = Horaire(row[0], route, route.compagnie, row[3],
@@ -181,7 +180,7 @@ def charger_horaires_propres_de_route(cur, configs, route):
     return horaires
 
 
-def charger_horaires_codeshare_de_route(cur, configs, horaires, route):
+def charger_horaires_codeshare_de_route(cur, horaires, route):
     horaires_codeshare = []
     rows = r.select_horaires_codeshare_par_route(cur, route.id)
     for row in rows:
@@ -203,9 +202,9 @@ def charger_vols_de_horaire(cur, horaire):
         if row[5] is not None:
             avion = [x for x in avions if x.id == row[5]][0]
         # Jours, heures et durees
-        dep = datetime.strptime(row[2], "%d/%m/%Y-%H:%M")
-        arr = datetime.strptime(row[3], "%d/%m/%Y-%H:%M")
-        t = datetime.strptime(row[4], "%H:%M")
+        dep = datetime.strptime(row[2], "%Y-%m-%d %H:%M:%S")
+        arr = datetime.strptime(row[3], "%Y-%m-%d %H:%M:%S")
+        t = datetime.strptime(row[4], "%H:%M:%S")
         dur = timedelta(hours=t.hour, minutes=t.minute)
         # Vol
         vol = Vol(row[0], horaire, dep, arr, dur, avion, *row[6:])
@@ -218,7 +217,7 @@ def charger_resas_de_client(cur, client):
     resas = []
     rows = r.select_resas_par_client(cur, client.id)
     for row in rows:
-        achat = datetime.strptime(row[3], "%d/%m/%Y-%H:%M:%S")
+        achat = datetime.strptime(row[3], "%Y-%m-%d %H:%M:%S")
         resa = Reservation(row[0], client, row[2], achat)
         resas.append(resa)
         # print(resa)
@@ -229,7 +228,7 @@ def charger_billets_de_resa(cur, resa):
     billets = []
     rows = r.select_billets_par_resa(cur, resa.id)
     for row in rows:
-        date_naissance = datetime.strptime(row[6], "%d/%m/%Y").date()
+        date_naissance = datetime.strptime(row[6], "%Y-%m-%d").date()
         billet = Billet(row[0], resa, *row[2:6], date_naissance, row[7])
         billets.append(billet)
         # print(billet)
@@ -274,7 +273,7 @@ def update_bd(db_name, compagnies, clients):
                           avion.date_derniere_revision,
                           avion.etat, avion.position)
                 r.insert_into(cur, 'Avion', colonnes, values)
-                print("insert {}".format(avion))
+                # print("insert {}".format(avion))
             else:
                 # Update avion dans bd
                 colonnes = ('id_config', 'id_aeroport', 'date_derniere_revision',
@@ -283,8 +282,52 @@ def update_bd(db_name, compagnies, clients):
                           avion.date_derniere_revision,
                           avion.etat, avion.position)
                 r.update(cur, 'Avion', colonnes, values, avion.id)
-                print("update {}".format(avion))
-    
+                # print("update {}".format(avion))
+    # Vols
+    # Pour chaque compagnie
+    for compagnie in compagnies:
+        for route in compagnie.routes:
+            for horaire in route.horaires:
+                for vol in horaire.vols:
+                    row = r.select_par_id(cur, 'Vol', vol.id)
+                    if not row:
+                        # Insérer vol dans bd
+                        colonnes = ('id','id_horaire','datetime_depart',
+                                    'datetime_arrivee','duree','id_avion',
+                                    'places_restantes_premiere',
+                                    'places_restantes_business',
+                                    'places_restantes_eco_plus',
+                                    'places_restantes_eco','statut','cabine')
+                        values = (vol.id, vol.horaire.id,
+                                  vol.datetime_depart,vol.datetime_arrivee,
+                                  "{}".format(vol.duree),
+                                  vol.avion.id,
+                                  vol.places_restantes_premiere,
+                                  vol.places_restantes_business,
+                                  vol.places_restantes_eco_plus,
+                                  vol.places_restantes_eco,
+                                  vol.statut, vol.cabine)
+                        r.insert_into(cur, 'Vol', colonnes, values)
+                        print("insert {}".format(vol))
+                    else:
+                        # Update vol dans bd
+                        colonnes = ('datetime_depart','datetime_arrivee',
+                                    'duree','id_avion',
+                                    'places_restantes_premiere',
+                                    'places_restantes_business',
+                                    'places_restantes_eco_plus',
+                                    'places_restantes_eco','statut','cabine')
+                        values = (vol.datetime_depart,
+                                  vol.datetime_arrivee,
+                                  "{}".format(vol.duree),
+                                  vol.avion.id,
+                                  vol.places_restantes_premiere,
+                                  vol.places_restantes_business,
+                                  vol.places_restantes_eco_plus,
+                                  vol.places_restantes_eco,
+                                  vol.statut, vol.cabine)
+                        r.update(cur, 'Vol', colonnes, values, vol.id)
+                        print("update {}".format(vol))
     valider_modifs(conn)
 
     # # Un dresseur avec un nom et une liste de pokemon

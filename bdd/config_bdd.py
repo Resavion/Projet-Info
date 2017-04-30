@@ -276,9 +276,9 @@ def creer_bdd(db_name):
     colonnes = ('id','id_route','id_compagnie','numero_vol','heure_depart','heure_arrivee','duree',
                 'periodicite','id_horaire_operateur','id_config_avion')
     horaires = (
-        (1,1,"BR",107,"12:45","15:40","3:55",None,None,1),
+        (1,1,"BR",107,"12:45","15:40","3h55",None,None,1),
         (2,2,"NH",5831,None,None,None,None,1,None),
-        (3,3,"JL",811,"18:00","21:10","4:10",None,None,2),
+        (3,3,"JL",811,"18:00","21:10","4h10",None,None,2),
         (4,4,"CI",9911,None,None,None,None,3,None)
     )
     for t in horaires:
@@ -289,8 +289,8 @@ def creer_bdd(db_name):
     colonnes = ('id','id_horaire','datetime_depart','datetime_arrivee','duree','id_avion','places_restantes_premiere',
                 'places_restantes_business','places_restantes_eco_plus','places_restantes_eco','statut')
     vols = (
-        (1,1,"27/04/2017-12:50","27/04/2017-15:50","4:00","B-16213",0,3,0,76,5),
-        (2,3,"27/04/2017-18:00","27/04/2017-21:10","4:10","JA608J",0,10,0,100,5),
+        (1,1,"2017-04-27 12:50:00","2017-04-27 15:50:00","4:00:00","B-16213",0,3,0,76,5),
+        (2,3,"2017-04-27 18:00:00","2017-04-27 21:10:00","4:10:00","JA608J",0,10,0,100,5),
     )
     for t in vols:
         r.insert_into(cur, 'Vol', colonnes, t)
@@ -299,8 +299,8 @@ def creer_bdd(db_name):
     # Client
     colonnes = ('id','nom','prenom','date_naissance')
     clients = (
-        (1,"Dupond","Michel","10/04/1970"),
-        (2,"Tartempion","Lucien","20/03/1960"),
+        (1,"Dupond","Michel","1970-04-10"),
+        (2,"Tartempion","Lucien","1960-03-20"),
     )
     for t in clients:
         r.insert_into(cur, 'Client', colonnes, t)
@@ -309,8 +309,8 @@ def creer_bdd(db_name):
     # Reservation
     colonnes = ('id','id_client','prix_total','date_achat')
     resas = (
-        (1,1,1300,"20/04/2017-23:59:59"),
-        (2,2,500,"19/04/2017-13:40:01"),
+        (1,1,1300,"2017-04-20 23:59:59"),
+        (2,2,500,"2017-04-19 13:40:01"),
     )
     for t in resas:
         r.insert_into(cur, 'Reservation', colonnes, t)
@@ -319,8 +319,8 @@ def creer_bdd(db_name):
     # Billet
     colonnes = ('id','id_reservation','tarif','nom_passager','prenom_passager','passeport','date_naissance','options')
     billets = (
-        (10001,1,1200,"Chaffouin","Antoine","123456D","15/05/1980",None),
-        (20002,2,400,"Tartempion","Lucien","123789E","20/03/1960",None),
+        (10001,1,1200,"Chaffouin","Antoine","123456D","1980-05-15",None),
+        (20002,2,400,"Tartempion","Lucien","123789E","1960-03-20",None),
     )
     for t in billets:
         r.insert_into(cur, 'Billet', colonnes, t)

@@ -1,11 +1,11 @@
 class Vol(object):
-    def __init__(self, id_vol, horaire, datetime_depart, datetime_arrivee, duree, avion,
+    def __init__(self, id, horaire, datetime_depart, datetime_arrivee, duree, avion,
                  places_restantes_premiere, places_restantes_business, places_restantes_eco_plus,
                  places_restantes_eco, statut, cabine=None):
         """
         Constructeur de la classe vol
 
-        :param id_vol: id du vol
+        :param id: id du vol
         :param horaire: horaire du vol
         :param datetime_depart: date et heure de depart du vol
         :param datetime_arrivee: date et heure d'arrivee du vol
@@ -18,7 +18,7 @@ class Vol(object):
         :param statut: statut indiquant l'etat du vol
         :param cabine: schema des places du vol
         """
-        self._id_vol = id_vol
+        self._id = id
         self._horaire = horaire
         self._datetime_depart = datetime_depart
         self._datetime_arrivee = datetime_arrivee
@@ -34,8 +34,8 @@ class Vol(object):
             self._cabine = horaire.config_avion.disposition
 
     @property
-    def id_vol(self):
-        return self._id_vol
+    def id(self):
+        return self._id
 
     @property
     def horaire(self):
@@ -86,12 +86,17 @@ class Vol(object):
         return self._cabine
 
     def __str__(self):
-        return "Vol {} {} {}{} - {:%d/%m/%Y %H:%M} -> {:%d/%m/%Y %H:%M}".\
-            format(self._id_vol,
+        txt = "Vol {} {} {}{} - {} -> {} - {:%d/%m/%Y %H:%M} -> {:%d/%m/%Y %H:%M}".\
+            format(self._id,
                    self._horaire.compagnie.code_icao,
-                   self._horaire.compagnie.id_compagnie,self._horaire.numero,
+                   self._horaire.compagnie.id_code_iata, self._horaire.numero,
+                   self._horaire.route.aeroport_depart.id_code_iata,
+                   self._horaire.route.aeroport_arrivee.id_code_iata,
                    self._datetime_depart,
                    self._datetime_arrivee)
+        if self._avion is not None:
+            txt += " - {}".format(self._avion.config.type_avion)
+        return txt
 
     def afficher_places(self):
         """

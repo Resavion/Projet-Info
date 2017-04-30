@@ -1,10 +1,10 @@
 class ConfigAvion(object):
-    def __init__(self, id_config_avion, nom, compagnie, type_avion, nb_place_premiere, nb_place_business,
+    def __init__(self, id, nom, compagnie, type_avion, nb_place_premiere, nb_place_business,
                  nb_place_eco_plus, nb_place_eco, nb_total_place, disposition):
         """
         Constructeur de la classe ConfigAvion
         
-        :param id_config_avion: identifiant de la configuration d'avion
+        :param id: identifiant de la configuration d'avion
         :param nom: nom de la configuration d'avion
         :param compagnie: compagnie qui utilise cette configuration
         :param type_avion: type de l'avion
@@ -15,7 +15,7 @@ class ConfigAvion(object):
         :param nb_total_place: nombre total de place dans l'avion
         :param disposition: schema des places dans l'avion
         """
-        self._id_config_avion = id_config_avion
+        self._id = id
         self._nom = nom
         self._compagnie = compagnie
         self._type_avion = type_avion
@@ -27,8 +27,8 @@ class ConfigAvion(object):
         self._disposition = disposition
 
     @property
-    def id_config_avion(self):
-        return self._id_config_avion
+    def id(self):
+        return self._id
 
     @property
     def nom(self):
@@ -67,8 +67,8 @@ class ConfigAvion(object):
         return self._disposition
 
     def __str__(self):
-        return "{} {} ({}) : {}F,{}C,{}P,{}Y : {} pax"\
-            .format(self._compagnie.id_compagnie,self._nom,
-                    self._type_avion,self._nb_place_premiere,
-                    self._nb_place_business,self._nb_place_eco_plus,
-                    self._nb_place_eco,self._nb_total_place)
+        return "{} {} ({}) : {}F/{}C/{}P/{}Y : {} pax"\
+            .format(self._compagnie.id_code_iata, self._nom,
+                    self._type_avion, self._nb_place_premiere,
+                    self._nb_place_business, self._nb_place_eco_plus,
+                    self._nb_place_eco, self._nb_total_place)

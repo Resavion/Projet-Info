@@ -93,20 +93,22 @@ def charger_bd(db_name):
                 billet.segments.append(segments)
         clients.append(client)
 
+    return aeroports, compagnies, clients
+
 
 def charger_aeroports(cur):
     aeroports = []
     rows = r.select_all(cur, 'Aeroport')
     for row in rows:
-        id_aeroportport = row[0]
+        aeroport = Aeroport(*row)
         # Pistes
-        rows_pistes = r.select_pistes_par_aeroport(cur, id_aeroportport)
+        rows_pistes = r.select_pistes_par_aeroport(cur, aeroport.id_code_iata)
         pistes = []
         for row_piste in rows_pistes:
-            piste = Piste(*row_piste)
+            piste = Piste(row_piste[0], aeroport, *row_piste[2:])
             pistes.append(piste)
             # print(piste)
-        aeroport = Aeroport(*row, pistes)
+        aeroport.pistes.extend(pistes)
         aeroports.append(aeroport)
         # print(aeroport)
     return aeroports
@@ -124,9 +126,9 @@ def charger_types_avions(cur):
 
 def charger_configs_de_compagnie(cur, types_avions, compagnie):
     configs = []
-    rows = r.select_all_par_compagnie(cur,'ConfigAvion',compagnie.id_compagnie)
+    rows = r.select_all_par_compagnie(cur,'ConfigAvion', compagnie.id_code_iata)
     for row in rows:
-        type_avion = [x for x in types_avions if x.id_type_avion == row[3]][0]
+        type_avion = [x for x in types_avions if x.id_nom == row[3]][0]
         config = ConfigAvion(*row[0:2], compagnie, type_avion, *row[4:])
         configs.append(config)
         # print(config)
@@ -135,26 +137,26 @@ def charger_configs_de_compagnie(cur, types_avions, compagnie):
 
 def charger_avions_de_compagnie(cur, aeroports, configs, compagnie):
     avions = []
-    rows = r.select_all_par_compagnie(cur,'Avion',compagnie.id_compagnie)
+    rows = r.select_all_par_compagnie(cur,'Avion', compagnie.id_code_iata)
     for row in rows:
-        config = [x for x in configs if x.id_config_avion == row[2]][0]
-        aeroport = [x for x in aeroports if x.id_aeroport == row[3]][0]
+        config = [x for x in configs if x.id == row[2]][0]
+        aeroport = [x for x in aeroports if x.id_code_iata == row[3]][0]
         date_construc = datetime.strptime(row[4],"%d/%m/%Y").date()
         date_der_rev = datetime.strptime(row[5],"%d/%m/%Y").date()
         avion = Avion(row[0], compagnie, config, aeroport,
                       date_construc, date_der_rev, *row[6:])
         avions.append(avion)
-        # print(avion)
+        print(avion)
     return avions
 
 
 def charger_routes_de_compagnie(cur, aeroports, compagnie):
     routes = []
-    rows = r.select_all_par_compagnie(cur,'Route',compagnie.id_compagnie)
+    rows = r.select_all_par_compagnie(cur,'Route', compagnie.id_code_iata)
     for row in rows:
         id_route = row[0]
-        dep = [x for x in aeroports if x.id_aeroport == row[2]][0]
-        arr = [x for x in aeroports if x.id_aeroport == row[3]][0]
+        dep = [x for x in aeroports if x.id_code_iata == row[2]][0]
+        arr = [x for x in aeroports if x.id_code_iata == row[3]][0]
         route = Route(id_route,compagnie,dep,arr,row[4],row[5])
         routes.append(route)
         # print(route)
@@ -163,10 +165,10 @@ def charger_routes_de_compagnie(cur, aeroports, compagnie):
 
 def charger_horaires_propres_de_route(cur, configs, route):
     horaires = []
-    rows = r.select_horaires_propres_par_route(cur, route.id_route)
+    rows = r.select_horaires_propres_par_route(cur, route.id)
     for row in rows:
         # Config
-        config = [x for x in configs if x.id_config_avion == row[9]][0]
+        config = [x for x in configs if x.id == row[9]][0]
         # Heures et duree
         dep = datetime.strptime(row[4], "%H:%M").time()
         arr = datetime.strptime(row[5], "%H:%M").time()
@@ -182,9 +184,9 @@ def charger_horaires_propres_de_route(cur, configs, route):
 
 def charger_horaires_codeshare_de_route(cur, configs, horaires, route):
     horaires_codeshare = []
-    rows = r.select_horaires_codeshare_par_route(cur, route.id_route)
+    rows = r.select_horaires_codeshare_par_route(cur, route.id)
     for row in rows:
-        horaire_operateur = [x for x in horaires if x.id_horaire == row[8]][0]
+        horaire_operateur = [x for x in horaires if x.id == row[8]][0]
         horaire_codeshare = Horaire(row[0], route, route.compagnie,
                                     *row[3:8], horaire_operateur)
         horaires_codeshare.append(horaire_codeshare)
@@ -194,13 +196,13 @@ def charger_horaires_codeshare_de_route(cur, configs, horaires, route):
 
 def charger_vols_de_horaire(cur, horaire):
     vols = []
-    rows = r.select_vols_par_horaire(cur, horaire.id_horaire)
+    rows = r.select_vols_par_horaire(cur, horaire.id)
     avions = horaire.compagnie.avions
     for row in rows:
         # Avion
         avion = None
         if row[5] is not None:
-            avion = [x for x in avions if x.id_avion == row[5]][0]
+            avion = [x for x in avions if x.id == row[5]][0]
         # Jours, heures et durees
         dep = datetime.strptime(row[2], "%d/%m/%Y-%H:%M")
         arr = datetime.strptime(row[3], "%d/%m/%Y-%H:%M")
@@ -215,7 +217,7 @@ def charger_vols_de_horaire(cur, horaire):
 
 def charger_resas_de_client(cur, client):
     resas = []
-    rows = r.select_resas_par_client(cur, client.id_client)
+    rows = r.select_resas_par_client(cur, client.id)
     for row in rows:
         achat = datetime.strptime(row[3], "%d/%m/%Y-%H:%M:%S")
         resa = Reservation(row[0], client, row[2], achat)
@@ -226,7 +228,7 @@ def charger_resas_de_client(cur, client):
 
 def charger_billets_de_resa(cur, resa):
     billets = []
-    rows = r.select_billets_par_resa(cur, resa.id_reservation)
+    rows = r.select_billets_par_resa(cur, resa.id)
     for row in rows:
         date_naissance = datetime.strptime(row[6], "%d/%m/%Y").date()
         billet = Billet(row[0], resa, *row[2:6], date_naissance, row[7])
@@ -237,11 +239,62 @@ def charger_billets_de_resa(cur, resa):
 
 def charger_segments_de_billet(cur, vols, horaires, billet):
     segments = []
-    rows = r.select_segments_par_billet(cur, billet.id_billet)
+    rows = r.select_segments_par_billet(cur, billet.id)
     for row in rows:
-        vol = [x for x in vols if x.id_vol == row[2]][0]
-        horaire = [x for x in horaires if x.id_horaire == row[3]][0]
+        vol = [x for x in vols if x.id == row[2]][0]
+        horaire = [x for x in horaires if x.id == row[3]][0]
         segment = Segment(row[0], billet, vol, horaire, *row[4:])
         segments.append(segment)
-        print(segment)
+        # print(segment)
     return segments
+
+
+def update_bd(db_name, compagnies, clients):
+    """
+    Charger en mémoire les informations contenues dans la bdd.
+
+    :param db_name: chemin de la base
+    :param compagnies: compagnies avec leurs routes, horaires, vols et avions
+    :param clients: clients avec leurs reservations, billets et segments
+    """
+    conn, cur = ouvrir_connexion(db_name)
+
+    # Avions
+    colonnes = ('id', 'id_compagnie', 'id_config', 'id_aeroport', 'date_construction',
+                'date_derniere_revision', 'id_etat', 'position')
+    # Pour chaque compagnie
+    for compagnie in compagnies:
+        for avion in compagnie.avions:
+            row = r.select_avion_par_id(cur, avion.id)
+            if not row:
+                # Insérer avion dans bd
+                values = (avion.id, avion.compagnie.id_code_iata,
+                          avion.config.id,)
+                r.insert_into(cur, 'Avion', colonnes, values)
+
+    # # Un dresseur avec un nom et une liste de pokemon
+    # # Les espèces existent déjà, juste nom suffit
+    # # Si le pokemon existe, mettre à jour (update), sinon créer (insert)
+    # # Si dresseur n'existe pas, créer (insert)
+    # conn, cur = ouvrir_connexion(db_name)
+    # row = r.select_dresseur_by_nom(cur, joueur.nom)
+    # if not row:
+    #     # Insérer dresseur dans bd
+    #     r.insert_into(cur, 'Dresseur', ('nom', 'type'), (joueur.nom, 1))
+    # # pour chaque pokemon
+    # for pok in joueur.pokemons:
+    #     row = r.select_pokemon_by_nom(cur, pok.nom)
+    #     if row:
+    #         # Update le pokemon
+    #         col = ('pv', 'niveau', 'experience')
+    #         values = (pok.pv, pok.niveau, pok.experience)
+    #         r.update(cur, 'Pokemon', col, values, pok.nom)
+    #     else:
+    #         # Insert le pokemon
+    #         col = ('nom', 'pv', 'niveau', 'experience', 'espece', 'dresseur')
+    #         values = (pok.nom, pok.pv, pok.niveau, pok.experience, pok.espece.nom, joueur.nom)
+    #         r.insert_into(cur, 'Pokemon', col, values)
+    #         # Insert le lien attaque/pok
+    #         for att in pok.attaques:
+    #             r.insert_into(cur, 'PokemonAtt', ('nom_pok', 'nom_att'), (pok.nom, att.nom))
+    # valider_modifs(conn)

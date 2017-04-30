@@ -1,16 +1,16 @@
 class Client(object):
-    def __init__(self, id_client, nom, prenom, date_naissance,
+    def __init__(self, id, nom, prenom, date_naissance,
                  reservations=None):
         """
         Constructeur de la classe client
         
-        :param id_client: identifiant du compte client 
+        :param id: identifiant du compte client 
         :param nom: nom du client
         :param prenom: prenom du client
         :param date_naissance: date de naissance du client
         :param reservations: liste des reservations du client
         """
-        self._id_client = id_client
+        self._id = id
         self._nom = nom
         self._prenom = prenom
         self._date_naissance = date_naissance
@@ -18,10 +18,9 @@ class Client(object):
             reservations = []
         self._reservations = reservations
 
-
     @property
-    def id_client(self):
-        return self._id_client
+    def id(self):
+        return self._id
 
     @property
     def nom(self):
@@ -41,7 +40,7 @@ class Client(object):
 
     def __str__(self):
         return "{:3d} {}, {} ({:%d/%m/%Y})"\
-            .format(self._id_client,self._nom,self._prenom,self._date_naissance)
+            .format(self._id, self._nom, self._prenom, self._date_naissance)
 
     def faire_reservation(self):
         """

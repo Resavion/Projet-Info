@@ -1,11 +1,11 @@
 class Compagnie(object):
-    def __init__(self, id_compagnie, nom_compagnie, code_icao, pays, code_continent, code_pays,
+    def __init__(self, id_code_iata, nom, code_icao, pays, code_continent, code_pays,
                  configs=None, avions=None, routes=None):
         """
          Constructeur de la classe compagnie
         
-        :param id_compagnie: identifiant de la compagnie
-        :param nom_compagnie: nom de la compagnie
+        :param id_code_iata: identifiant de la compagnie qui correspond au code iata
+        :param nom: nom de la compagnie
         :param code_icao: code icao de la compagnie
         :param pays: pays d'origine de la compagnie
         :param code_continent: code du continent
@@ -14,8 +14,8 @@ class Compagnie(object):
         :param avions: liste des avions possedes par la compagnie
         :param routes: liste des routes assurees par la compagnie
         """
-        self._id_compagnie = id_compagnie
-        self._nom_compagnie = nom_compagnie
+        self._id_code_iata = id_code_iata
+        self._nom = nom
         self._code_icao = code_icao
         self._pays = pays
         self._code_continent = code_continent
@@ -31,12 +31,12 @@ class Compagnie(object):
         self._routes = routes
 
     @property
-    def id_compagnie(self):
-        return self._id_compagnie
+    def id_code_iata(self):
+        return self._id_code_iata
 
     @property
-    def nom_compagnie(self):
-        return self._nom_compagnie
+    def nom(self):
+        return self._nom
 
     @property
     def code_icao(self):
@@ -68,8 +68,8 @@ class Compagnie(object):
 
     def __str__(self):
         return "{} {}, {} (IATA : {}, ICAO : {})"\
-            .format(self._id_compagnie,self._nom_compagnie,self._pays,
-                    self._id_compagnie,self._code_icao)
+            .format(self._id_code_iata, self._nom, self._pays,
+                    self._id_code_iata, self._code_icao)
 
     def ajouter_route(self):
         """

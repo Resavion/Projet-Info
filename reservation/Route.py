@@ -3,12 +3,12 @@ import reservation.Aeroport
 
 
 class Route(object):
-    def __init__(self, id_route, compagnie, aeroport_depart, aeroport_arrivee, geom, codeshare, 
+    def __init__(self, id, compagnie, aeroport_depart, aeroport_arrivee, geom, codeshare,
                  horaires=None):
         """
         Constructeur de la classe route
         
-        :param id_route: id de la route
+        :param id: id de la route
         :param compagnie: compagnie qui propose la route
         :param aeroport_depart: aeroport de depart de la route
         :param aeroport_arrivee: aeroport d'arrivee de la route
@@ -16,7 +16,7 @@ class Route(object):
         :param codeshare: booleen qui permet de savoir si un avion est partage par plusieurs compagnies
         :param horaires: liste des horaires sur cette route
         """
-        self._id_route = id_route
+        self._id = id
         self._compagnie = compagnie
         self._aeroport_depart = aeroport_depart
         self._aeroport_arrivee = aeroport_arrivee
@@ -28,8 +28,8 @@ class Route(object):
         self._horaires = horaires
 
     @property
-    def id_route(self):
-        return self._id_route
+    def id(self):
+        return self._id
 
     @property
     def compagnie(self):
@@ -61,14 +61,14 @@ class Route(object):
 
     def __str__(self):
         return "{} {} ({},{}) -> {} ({},{}) : {:.0f} km"\
-            .format(self._compagnie.id_compagnie,
-                    self._aeroport_depart.id_aeroport,
+            .format(self._compagnie.id_code_iata,
+                    self._aeroport_depart.id_code_iata,
                     self._aeroport_depart.municipalite,
                     self._aeroport_depart.code_pays,
-                    self._aeroport_arrivee.id_aeroport,
+                    self._aeroport_arrivee.id_code_iata,
                     self._aeroport_arrivee.municipalite,
                     self._aeroport_arrivee.code_pays,
-                    self._distance/1000)
+                    self._distance / 1000)
 
     @staticmethod
     def distance_haversine(dep, arr, radius=6371000):

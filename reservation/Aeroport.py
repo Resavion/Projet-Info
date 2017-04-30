@@ -1,10 +1,10 @@
 class Aeroport(object):
-    def __init__(self, id_aeroport, type_aero, nom, latitude_deg, longitude_deg, elevation_ft, code_continent,
-                 code_pays, municipalite, code_icao, pistes):
+    def __init__(self, id_code_iata, type_aero, nom, latitude_deg, longitude_deg, elevation_ft, code_continent,
+                 code_pays, municipalite, code_icao, pistes=None):
         """
         Constructeur de la classe aeroport
         
-        :param id_aeroport: identifiant de l'aeroport correspondant au iata code
+        :param id_code_iata: identifiant de l'aeroport correspondant au iata code
         :param type_aero: type de l'aeroport (grand, moyen, petit)
         :param nom: nom de l'aeroport
         :param latitude_deg: la latitude de l'aeroport
@@ -16,7 +16,7 @@ class Aeroport(object):
         :param code_icao: le code gps de l'aeroport
         :param pistes: liste des pistes de l'aeroport
         """
-        self._id_aeroport = id_aeroport
+        self._id_code_iata = id_code_iata
         self._type_aero = type_aero
         self._nom = nom
         self._latitude_deg = latitude_deg
@@ -26,11 +26,13 @@ class Aeroport(object):
         self._code_pays = code_pays
         self._municipalite = municipalite
         self._code_icao = code_icao
+        if pistes is None:
+            pistes = []
         self._pistes = pistes
 
     @property
-    def id_aeroport(self):
-        return self._id_aeroport
+    def id_code_iata(self):
+        return self._id_code_iata
 
     @property
     def type_aero(self):
@@ -68,11 +70,15 @@ class Aeroport(object):
     def code_icao(self):
         return self._code_icao
 
+    @property
+    def pistes(self):
+        return self._pistes
+
     def __str__(self):
         return "{} {}, {}, {} (IATA : {}, ICAO : {})"\
-            .format(self._id_aeroport,self._nom,
-                    self._municipalite,self._code_pays,
-                    self._id_aeroport,self._code_icao)
+            .format(self._id_code_iata, self._nom,
+                    self._municipalite, self._code_pays,
+                    self._id_code_iata, self._code_icao)
 
     def afficher_routes(self):
         """

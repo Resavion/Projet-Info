@@ -208,7 +208,8 @@ def inserer_jeu_test(db_name):
                 'code_pays','municipalite','code_icao')
     aeroports = (
         ("NRT","large_airport","Narita International Airport",35.7647018433,140.386001587,141,"AS","JP","Tokyo","RJAA"),
-        ("KHH", "large_airport","Kaohsiung International Airport",22.57710075378418,120.3499984741211, 31,"AS","TW","Kaohsiung City","RCKH")
+        ("KHH","large_airport","Kaohsiung International Airport",22.57710075378418,120.3499984741211, 31,"AS","TW","Kaohsiung City","RCKH"),
+        ("BKK","large_airport","Suvarnabhumi Airport",13.681099891662598,100.74700164794922,5,"AS","TH","Bangkok","VTBS")
     )
     for t in aeroports:
         r.insert_into(cur, 'Aeroport', colonnes, t)
@@ -218,7 +219,8 @@ def inserer_jeu_test(db_name):
     colonnes = ('id_aeroport','length_ft','le_identificateur','le_seuil_decale_ft','he_identificateur','he_seuil_decale_ft')
     pistes = (
         ("NRT",13123,"16R",'',"34L",2460),
-        ("KHH",10335,9,525,27,1477)
+        ("KHH",10335,9,525,27,1477),
+        ("BKK",12139,"01L",'',"19R",'')
     )
     for t in pistes:
         r.insert_into(cur, 'Piste', colonnes, t)
@@ -227,9 +229,9 @@ def inserer_jeu_test(db_name):
     # Compagnie
     colonnes = ('id','nom','code_icao','pays','code_continent','code_pays')
     compagnies = (
-        ("NH","All Nippon Airways","ANA","Japan","AS","JP"),
         ("BR","EVA Air","EVA","Taiwan","AS","TW"),
         ("CI","China Airlines","CAL","Taiwan","AS","TW"),
+        ("NH","All Nippon Airways","ANA","Japan","AS","JP"),
         ("JL","Japan Airlines","JAL","Japan","AS","JP")
     )
     for t in compagnies:
@@ -241,7 +243,8 @@ def inserer_jeu_test(db_name):
                 'altitude_vol_m','distance_decollage_m')
     types = (
         ("A321","321","A321",30000,5950,0.78,12000,1700),
-        ("B767-300ER","763","B763",90770,11070,0.8,12000,2400)
+        ("B767-300ER","763","B763",90770,11070,0.8,12000,2400),
+        ("B787-9","789","B789",138898,15700,0.85,13000,2900)
     )
     for t in types:
         r.insert_into(cur, 'TypeAvion', colonnes, t)
@@ -252,7 +255,8 @@ def inserer_jeu_test(db_name):
                 'nb_place_eco','nb_total_place','disposition')
     configs = (
         (1,"321","BR","A321",0,8,0,176,184,""),
-        (2,"A44","JL","B767-300ER",0,24,0,175,199,"")
+        (2,"A44","JL","B767-300ER",0,24,0,175,199,""),
+        (3,"789","NH","B787-9",0,40,14,192,246,"")
     )
     for t in configs:
         r.insert_into(cur, 'ConfigAvion', colonnes, t)
@@ -263,7 +267,9 @@ def inserer_jeu_test(db_name):
                 'position')
     avions = (
         ("B-16213","BR",1,"KHH","2014-10-10","2014-10-27",3,"POINT(120.3499984741211 22.57710075378418)"),
-        ("JA608J","JL",2,"NRT","2004-02-23","2014-05-01",3,"POINT(140.386001587 35.7647018433)")
+        ("JA608J","JL",2,"NRT","2004-02-23","2014-05-01",3,"POINT(140.386001587 35.7647018433)"),
+        ("JA880A","NH",3,"NRT","2016-07-28","2016-07-28",3,"POINT(140.386001587 35.7647018433)")
+
     )
     for t in avions:
         r.insert_into(cur, 'Avion', colonnes, t)
@@ -275,7 +281,8 @@ def inserer_jeu_test(db_name):
         (1,"BR","NRT","KHH","LINESTRING(140.386001587 35.7647018433,120.3499984741 22.5771007538)",0),
         (2,"NH","NRT","KHH","LINESTRING(140.386001587 35.7647018433,120.3499984741 22.5771007538)",0),
         (3,"JL","NRT","KHH","LINESTRING(140.386001587 35.7647018433,120.3499984741 22.5771007538)",0),
-        (4,"CI","NRT","KHH","LINESTRING(140.386001587 35.7647018433,120.3499984741 22.5771007538)",0)
+        (4,"CI","NRT","KHH","LINESTRING(140.386001587 35.7647018433,120.3499984741 22.5771007538)",0),
+        (7616,"NH","NRT","BKK","LINESTRING(140.386001587 35.7647018433,2.54999995232 49.0127983093)",0)
     )
     for t in routes:
         r.insert_into(cur, 'Route', colonnes, t)
@@ -288,7 +295,8 @@ def inserer_jeu_test(db_name):
         (1,1,"BR",107,"12:45","15:40","3h55",None,None,1),
         (2,2,"NH",5831,None,None,None,None,1,None),
         (3,3,"JL",811,"18:00","21:10","4h10",None,None,2),
-        (4,4,"CI",9911,None,None,None,None,3,None)
+        (4,4,"CI",9911,None,None,None,None,3,None),
+        (5,7616,"NH",807,"16:55","21:35","6h40",None,None,3)
     )
     for t in horaires:
         r.insert_into(cur, 'Horaire', colonnes, t)
@@ -300,6 +308,7 @@ def inserer_jeu_test(db_name):
     vols = (
         (1,1,"2017-04-27 12:50:00","2017-04-27 15:50:00","4:00:00","B-16213",0,3,0,76,5),
         (2,3,"2017-04-27 18:00:00","2017-04-27 21:10:00","4:10:00","JA608J",0,10,0,100,5),
+        (3,5,"2017-04-27 16:55:00","2017-04-27 21:35:00","6:40:00","JA880A",0,10,0,100,5)
     )
     for t in vols:
         r.insert_into(cur, 'Vol', colonnes, t)
@@ -352,3 +361,4 @@ if __name__ == '__main__':
     import os
     os.remove("resavion.db")
     creer_bdd("resavion.db")
+    inserer_jeu_test("resavion.db")

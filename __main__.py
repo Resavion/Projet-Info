@@ -65,7 +65,7 @@ if __name__ == '__main__':
     # Sinon : c'est un gestionnaire de compagnie
     else:
         # On demande de choisir une compagnie
-        compagnies.sort(key=operator.attrgetter('nom'))
+        compagnies.sort(key=lambda s: len(s.routes),reverse=True)
         compagnie = ihm.choisir(compagnies, "Choisissez une compagnie :")
 
     # Demander action :

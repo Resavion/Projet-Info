@@ -1,7 +1,7 @@
 class Vol(object):
     def __init__(self, id_vol, horaire, datetime_depart, datetime_arrivee, duree, avion,
                  places_restantes_premiere, places_restantes_business, places_restantes_eco_plus,
-                 places_restantes_eco, statut, cabine=None):
+                 places_restantes_eco, statut, cabine=None, segments=None):
         """
         Constructeur de la classe vol
 
@@ -17,6 +17,7 @@ class Vol(object):
         :param places_restantes_eco: le nombre de places eco restantes dans le vol
         :param statut: statut indiquant l'etat du vol
         :param cabine: schema des places du vol
+        :param segments: segments de billets concernant ce vol
         """
         self._id = id_vol
         self._horaire = horaire
@@ -29,9 +30,12 @@ class Vol(object):
         self._places_restantes_eco_plus = places_restantes_eco_plus
         self._places_restantes_eco = places_restantes_eco
         self._statut = statut
-        self._cabine = cabine
         if cabine is None:
-            self._cabine = horaire.config_avion.disposition
+            cabine = horaire.config_avion.disposition
+        self._cabine = cabine
+        if segments is None:
+            segments = []
+        self._segments = segments
 
     @property
     def id(self):
@@ -84,6 +88,10 @@ class Vol(object):
     @property
     def cabine(self):
         return self._cabine
+
+    @property
+    def segments(self):
+        return self._segments
 
     def __str__(self):
         txt = "Vol {} {} {}{} - {} -> {} - {:%d/%m/%Y %H:%M} -> {:%d/%m/%Y %H:%M}".\

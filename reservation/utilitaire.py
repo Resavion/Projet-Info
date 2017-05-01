@@ -201,6 +201,8 @@ def charger_vols_de_horaire(cur, horaire):
         # Vol
         vol = Vol(row[0], horaire, dep, arr, dur, avion, *row[6:])
         vols.append(vol)
+        if avion is not None:
+            avion.vols.append(vol)
         # print(vol)
     return vols
 
@@ -256,6 +258,7 @@ def charger_segments_de_billet(cur, horaires, vols, billet):
         horaire = [x for x in horaires if x.id == row[3]][0]
         segment = Segment(row[0], billet, vol, horaire, *row[4:])
         segments.append(segment)
+        vol.segments.append(segment)
         # print(segment)
     return segments
 

@@ -3,7 +3,7 @@ from datetime import date
 
 class Avion(object):
     def __init__(self, id_avion, compagnie, config, aeroport, date_construction, date_derniere_revision,
-                 etat, position):
+                 etat, position, vols=None):
         """
         Constructeur de la classe avion
         
@@ -15,6 +15,7 @@ class Avion(object):
         :param date_derniere_revision: derniere date de revision de l'avion
         :param etat: donne l'etat de l'avion, si il est en vol, au sol, non utilisable
         :param position: la position de l'avion en fonction de ses coordonnées
+        :param vols: vols assures par l'avion
         """
         self._id = id_avion
         self._compagnie = compagnie
@@ -24,6 +25,9 @@ class Avion(object):
         self._etat = etat
         self._aeroport = aeroport
         self._position = position
+        if vols is None:
+            vols = []
+        self._vols = vols
 
     @property
     def id(self):
@@ -56,6 +60,10 @@ class Avion(object):
     @property
     def position(self):
         return self._position
+
+    @property
+    def vols(self):
+        return self._vols
 
     @property
     def age(self):

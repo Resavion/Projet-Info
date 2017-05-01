@@ -159,7 +159,16 @@ def creer_bdd(db_name):
     executer_requete(cur, req)
     valider_modifs(conn)
 
-    # Insertion des éléments
+    fermer_connexion(cur, conn)
+
+
+def inserer_jeu_test(db_name):
+    """
+    Insertion des éléments du jeu de données test
+
+    La connexion à la base est refermée à la fin de la fonction.
+    """
+    conn, cur = ouvrir_connexion(db_name)
 
     # EnumAvion
     colonnes = ('etat',)

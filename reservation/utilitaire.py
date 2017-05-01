@@ -1,5 +1,4 @@
-from datetime import (datetime,timedelta,date)
-import ihm.console as ihm
+from datetime import (datetime, timedelta)
 from bdd.acces_bdd import (ouvrir_connexion,
                            fermer_connexion,
                            valider_modifs)
@@ -134,6 +133,7 @@ def charger_avions_de_compagnie(cur, aeroports, configs, compagnie):
         avion = Avion(row[0], compagnie, config, aeroport,
                       date_construc, date_der_rev, *row[6:])
         avions.append(avion)
+        aeroport.avions.append(avion)
         # print(avion)
     return avions
 
@@ -147,6 +147,8 @@ def charger_routes_de_compagnie(cur, aeroports, compagnie):
         arr = [x for x in aeroports if x.id_code_iata == row[3]][0]
         route = Route(id_route, compagnie, dep, arr, row[4], row[5])
         routes.append(route)
+        dep.routes_sortantes.append(route)
+        arr.routes_entrantes.append(route)
         # print(route)
     return routes
 
@@ -424,29 +426,3 @@ def update_segment(cur, segment):
         r.update(cur, 'Segment', colonnes, values, segment.id)
         print("update {}".format(segment))
 
-    # # Un dresseur avec un nom et une liste de pokemon
-    # # Les espèces existent déjà, juste nom suffit
-    # # Si le pokemon existe, mettre à jour (update), sinon créer (insert)
-    # # Si dresseur n'existe pas, créer (insert)
-    # conn, cur = ouvrir_connexion(db_name)
-    # row = r.select_dresseur_by_nom(cur, joueur.nom)
-    # if not row:
-    #     # Insérer dresseur dans bd
-    #     r.insert_into(cur, 'Dresseur', ('nom', 'type'), (joueur.nom, 1))
-    # # pour chaque pokemon
-    # for pok in joueur.pokemons:
-    #     row = r.select_pokemon_by_nom(cur, pok.nom)
-    #     if row:
-    #         # Update le pokemon
-    #         col = ('pv', 'niveau', 'experience')
-    #         values = (pok.pv, pok.niveau, pok.experience)
-    #         r.update(cur, 'Pokemon', col, values, pok.nom)
-    #     else:
-    #         # Insert le pokemon
-    #         col = ('nom', 'pv', 'niveau', 'experience', 'espece', 'dresseur')
-    #         values = (pok.nom, pok.pv, pok.niveau, pok.experience, pok.espece.nom, joueur.nom)
-    #         r.insert_into(cur, 'Pokemon', col, values)
-    #         # Insert le lien attaque/pok
-    #         for att in pok.attaques:
-    #             r.insert_into(cur, 'PokemonAtt', ('nom_pok', 'nom_att'), (pok.nom, att.nom))
-    # valider_modifs(conn)

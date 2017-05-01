@@ -67,8 +67,8 @@ class Compagnie(object):
         return self._routes
 
     def __str__(self):
-        return "{} {}, {} (IATA : {}, ICAO : {})"\
-            .format(self._id_code_iata, self._nom, self._pays,
+        return "{}, {} (IATA : {}, ICAO : {})"\
+            .format(self._nom, self._pays,
                     self._id_code_iata, self._code_icao)
 
     def ajouter_route(self):

@@ -1,3 +1,6 @@
+import ihm.console as ihm
+
+
 class Client(object):
     def __init__(self, id_client, nom, prenom, date_naissance,
                  reservations=None):
@@ -39,13 +42,20 @@ class Client(object):
         return self._reservations
 
     def __str__(self):
-        return "{:3d} {}, {} ({:%d/%m/%Y})"\
-            .format(self._id, self._nom, self._prenom, self._date_naissance)
+        return "{}, {} ({:%d/%m/%Y})"\
+            .format(self._nom, self._prenom, self._date_naissance)
 
     def faire_reservation(self):
         """
         Methode qui consiste a faire une reservation
         (saisir_critere, afficher_vols, choisir_vols, saisir_passager, payer..)
+        :return: 
+        """
+        pass
+
+    def consulter_reservations(self):
+        """
+        Methode qui permet d'afficher les reservations du client
         :return: 
         """
         pass
@@ -64,7 +74,7 @@ class Client(object):
         """
         pass
 
-    def supprimer_reservation(self):
+    def annuler_reservation(self):
         """
         Methode qui permet de supprimer la reservation
         :return: 

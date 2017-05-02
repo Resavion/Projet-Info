@@ -71,6 +71,15 @@ class Compagnie(object):
             .format(self._nom, self._pays,
                     self._id_code_iata, self._code_icao)
 
+    def afficher_routes(self):
+        """
+        Methode qui permet d'afficher les routes proposees par la compagnie
+        :return: 
+        """
+        for route in self._routes:
+            print(route)
+        return
+
     def ajouter_route(self):
         """
         Methode qui permet d'ajouter une route empruntée par la compagnie pour un vol
@@ -78,17 +87,9 @@ class Compagnie(object):
         """
         pass
 
-    def supprimer_route(self):
+    def suspendre_route(self):
         """
-        Methode pour supprimer une route au préalablement assignée à un vol
-        :return: 
-        """
-        pass
-
-
-    def afficher_stats(self):
-        """
-        Methode qui permet d'afficher les statistiques sur le nombre de passager, etc pour la compagnie
+        Methode pour suspendre une route proposee par la compagnie
         :return: 
         """
         pass
@@ -98,20 +99,21 @@ class Compagnie(object):
         Methode qui permet d'afficher l'emplacement des différents avions
         :return: 
         """
-        pass
-
-
-    def afficher_routes(self):
-        """
-        Methode qui permet d'afficher le chemin suivi par le passager avec les escales
-        :return: 
-        """
-        pass
+        for avion in self._avions:
+            print(avion)
+        return
 
     def affecter_avion(self):
         """
         Methode qui permet d'affecter un avion existant à un vol
-        
+
+        :return: 
+        """
+        pass
+
+    def afficher_stats(self):
+        """
+        Methode qui permet d'afficher les statistiques sur le nombre de passager, etc pour la compagnie
         :return: 
         """
         pass

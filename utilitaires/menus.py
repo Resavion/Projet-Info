@@ -35,6 +35,7 @@ def actions_client(clients):
         client.annuler_reservation()
     else:
         pass
+    return
 
 
 def ajouter_client(clients):
@@ -63,51 +64,51 @@ def ajouter_client(clients):
 
 
 def actions_compagnie(compagnies):
-    # On demande de choisir une compagnie
+    # On demande comment choisir une compagnie
     actions = ('Recherche par continent',
                'Recherche par code IATA ou ICAO',
                'Revenir au début')
     recherche = ihm.choisir(actions, "Choisissez un mode de recherche :")
-
+    compagnie = None
     # Si recherche par continents
     if recherche == actions[0]:
-        continents = {'Amérique du Nord': 'NA', 'Amérique du Sud': 'SA',
-                      'Europe': 'EU', 'Afrique': 'AF', 'Asie': 'AS',
-                      'Océanie': 'OC'}
-        nom = ihm.choisir([*continents.keys()],
-                          "Choisissez un continent :")
-        compagnies.sort(key=lambda s: len(s.routes), reverse=True)
-        compagnies_filtre = [x for x in compagnies
-                             if x.code_continent == continents[nom]]
-        borne_bas = 0
-        pas = 2
-        compagnie = None
-        while True:
-            borne_haut = min(len(compagnies_filtre), borne_bas + pas)
-            liste = compagnies_filtre[borne_bas:borne_haut]
-            if len(liste) == 0:
-                ihm.afficher("Il n'y a pas de compagnie disponible !")
-                break
-            if borne_bas > 0:
-                liste.append("Voir les compagnies précédentes")
-            if borne_haut < len(compagnies_filtre):
-                liste.append("Voir les compagnies suivantes")
-            # Faire le choix
-            compagnie = ihm.choisir(liste, "Choisissez une compagnie :")
-            if compagnie == "Voir les compagnies suivantes":
-                borne_bas = borne_haut
-            elif compagnie == "Voir les compagnies précédentes":
-                borne_haut = borne_bas
-                borne_bas -= pas
-            else:
-                print(compagnie)
-                break
+        compagnie = choisir_par_continent(compagnies)
     # Si recherche par code
     elif recherche == actions[1]:
-        test = True
+        compagnie = choisir_par_code(compagnies)
     # Sinon on revient au début
     else:
+        return
+
+    # Proposer les actions
+    actions = ('Afficher Avions', 'Gérer Avion', 'Ajouter Avion',
+               'Retirer Avion',
+               'Afficher Routes', 'Gérer Route', 'Ajouter Route',
+               'Suspendre Route',
+               'Afficher Statistiques',
+               'Revenir au début')
+    action = ihm.choisir(actions, "Choisissez une action :")
+    if action == actions[0]:
+        compagnie.afficher_avions()
+    elif action == actions[1]:
+        compagnie.gerer_avion()
+    elif action == actions[2]:
+        compagnie.ajouter_avion()
+    elif action == actions[3]:
+        compagnie.retirer_avion()
+    elif action == actions[4]:
+        compagnie.afficher_routes()
+    elif action == actions[5]:
+        compagnie.gerer_route()
+    elif action == actions[6]:
+        compagnie.ajouter_route()
+    elif action == actions[7]:
+        compagnie.suspendre_route()
+    elif action == actions[8]:
+        compagnie.afficher_stats()
+    else:
         pass
+    return
 
 
 def choisir_par_continent(compagnies):
@@ -149,4 +150,21 @@ def choisir_par_continent(compagnies):
         else:
             print(compagnie)
             break
+    return compagnie
+
+
+def choisir_par_code(compagnies):
+    compagnie = None
+    code = ihm.demander("Tapez le code IATA (2 caractères) "
+                        "ou ICAO (3 caractères) :")
+    results = [x for x in compagnies
+               if x.id_code_iata == code or x.code_icao == code]
+    if len(results) == 0:
+        ihm.afficher("Désolé, nous n'avons pas trouvé votre compagnie !")
+    elif len(results) > 1:
+        compagnie = ihm.choisir(results, "Précisez votre choix :")
+    else:
+        compagnie = results[0]
+    if compagnie is not None:
+        ihm.afficher("Vous allez gérer la compagnie {}".format(compagnie))
     return compagnie

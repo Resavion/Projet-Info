@@ -70,7 +70,13 @@ class Avion(object):
         when = self._date_construction
         on = date.today()
         was_earlier = (on.month, on.day) < (when.month, when.day)
-        return on.year - when.year - was_earlier
+        nb_annees = on.year - when.year - was_earlier
+        dernier_anniv = date(when.year + nb_annees, when.month, when.day)
+        prochain_anniv = date(when.year + nb_annees + 1, when.month, when.day)
+        jours_ecoules = (on - dernier_anniv).days
+        duree_annee = (prochain_anniv - dernier_anniv).days
+        ratio = jours_ecoules/duree_annee
+        return "{:.1f}".format(nb_annees + ratio)
 
     @date_derniere_revision.setter
     def date_derniere_revision(self, valeur):

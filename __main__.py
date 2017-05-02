@@ -6,6 +6,7 @@ import ihm.console as ihm
 from bdd.config_bdd import (creer_bdd, inserer_jeu_test)
 from reservation.utilitaire import (charger_bd, update_bd)
 from reservation.Client import Client
+from reservation.Compagnie import Compagnie
 
 
 if __name__ == '__main__':
@@ -65,8 +66,36 @@ if __name__ == '__main__':
     # Sinon : c'est un gestionnaire de compagnie
     else:
         # On demande de choisir une compagnie
-        compagnies.sort(key=lambda s: len(s.routes),reverse=True)
-        compagnie = ihm.choisir(compagnies, "Choisissez une compagnie :")
+        actions = ('Recherche par continent','Recherche par code IATA ou ICAO')
+        recherche = ihm.choisir(actions, "Choisissez un mode de recherche :")
+        if recherche == actions[0]:
+            continents = {'Amérique du Nord':'NA', 'Amérique du Sud':'SA',
+                          'Europe':'EU', 'Afrique':'AF', 'Asie':'AS',
+                          'Océanie':'OC'}
+            nom = ihm.choisir([*continents.keys()],
+                              "Choisissez un continent :")
+            compagnies.sort(key=lambda s: len(s.routes),reverse=True)
+            compagnies_filtre = [x for x in compagnies
+                                 if x.code_continent == continents[nom]]
+            borne_bas = 0
+            pas = 2
+            compagnie = None
+            while True:
+                borne_haut = min(len(compagnies_filtre), borne_bas+pas)
+                liste = compagnies_filtre[borne_bas:borne_haut]
+                if borne_bas > 0:
+                    liste.append("Voir les compagnies précédentes")
+                if borne_haut < len(compagnies_filtre):
+                    liste.append("Voir les compagnies suivantes")
+                compagnie = ihm.choisir(liste, "Choisissez une compagnie :")
+                if compagnie == "Voir les compagnies suivantes":
+                    borne_bas = borne_haut
+                elif compagnie == "Voir les compagnies précédentes":
+                    borne_haut = borne_bas
+                    borne_bas -= pas
+                else:
+                    break
+            print(compagnie)
 
     # Demander action :
 

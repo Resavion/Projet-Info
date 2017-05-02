@@ -10,13 +10,14 @@ C|O-- O-O- O--|5
 C|--O -O-O --O|6
 C|O-- O-O- O--|7
 C|--O -O-O --O|8
+ |>   ----   <|
  |>          <|
-C|O-- O-O- O--|9
+C|O-- ---- O--|9
 C|--O -O-O --O|10
 C|O-- O-O- O--|11
  |--- ---- ---|
-P|OOO OOOO OOO|15
-P|OOO OOOO OOO|16
+P|O-O O-OO O-O|15
+P|O-O O-OO O-O|16
  |--- ---- ---|
 Y|OOO O-OO OOO|20
 Y|OOO O-OO OOO|21
@@ -28,7 +29,7 @@ Y|OOO O-OO OOO|26
 Y|OOO O-OO OOO|27
  |>   ----   <|
  |>          <|
-Y|OOO      OOO|28
+Y|OOO ---- OOO|28
 Y|OOO O-OO OOO|29
 Y|OOO O-OO OOO|30
 Y|OOO O-OO OOO|31
@@ -41,8 +42,7 @@ Y|OOO O-OO OOO|37
 Y|OOO O-OO OOO|38
 Y|OOO O-OO OOO|39
 Y|OOO O-OO OOO|40
-Y|    O-OO    |41
-Y|    O-OO    |42
- |>          <|
+Y|--- O-OO ---|41
+Y|>   O-OO   <|42
  |>          <|
   ------------

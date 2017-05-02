@@ -83,30 +83,16 @@ def actions_compagnie(compagnies):
 
     # Proposer les actions
     while True:
-        actions = ('Afficher Avions', 'Gérer Avion', 'Ajouter Avion',
-                   'Retirer Avion',
-                   'Afficher Routes', 'Gérer Route', 'Ajouter Route',
-                   'Suspendre Route',
-                   'Afficher Statistiques',
+        actions = ('Gérer les avions',
+                   'Gérer les routes',
+                   'Afficher les statistiques',
                    'Revenir au début')
         action = ihm.choisir(actions, "Choisissez une action :")
         if action == actions[0]:
-            compagnie.afficher_avions()
+            actions_avions(compagnie)
         elif action == actions[1]:
-            compagnie.gerer_avion()
+            actions_routes(compagnie)
         elif action == actions[2]:
-            compagnie.ajouter_avion()
-        elif action == actions[3]:
-            compagnie.retirer_avion()
-        elif action == actions[4]:
-            compagnie.afficher_routes()
-        elif action == actions[5]:
-            compagnie.gerer_route()
-        elif action == actions[6]:
-            compagnie.ajouter_route()
-        elif action == actions[7]:
-            compagnie.suspendre_route()
-        elif action == actions[8]:
             compagnie.afficher_stats()
         else:
             break
@@ -169,3 +155,111 @@ def choisir_par_code(compagnies):
     if compagnie is not None:
         ihm.afficher("Vous allez gérer la compagnie {}".format(compagnie))
     return compagnie
+
+
+def actions_avions(compagnie):
+    # Proposer les actions
+    while True:
+        actions = ('Afficher la liste des avions',
+                   'Afficher une carte des avions',
+                   'Gérer un avion',
+                   'Ajouter un avion',
+                   'Retirer un avion',
+                   'Revenir au menu précédent')
+        action = ihm.choisir(actions, "Choisissez une action :")
+        if action == actions[0]:
+            compagnie.afficher_infos_avions()
+        elif action == actions[1]:
+            compagnie.afficher_carte_avions()
+        elif action == actions[2]:
+            gerer_avion(compagnie)
+        elif action == actions[3]:
+            compagnie.ajouter_avion()
+        elif action == actions[4]:
+            compagnie.retirer_avion()
+        else:
+            break
+    return
+
+
+def gerer_avion(compagnie):
+    avion = None
+    code = ihm.demander("Tapez l'identifiant de l'avion :")
+    results = [x for x in compagnie.avions if x.id == code]
+    if len(results) == 0:
+        ihm.afficher("Désolé, nous n'avons pas trouvé votre avion !")
+        return
+    avion = results[0]
+    ihm.afficher("Vous allez gérer l'avion {}".format(avion))
+    # Proposer les actions
+    while True:
+        actions = ("Afficher une carte de l'avion",
+                   "Afficher les vols de l'avion",
+                   "Afficher les statistiques",
+                   'Revenir au menu précédent')
+        action = ihm.choisir(actions, "Choisissez une action :")
+        if action == actions[0]:
+            avion.afficher_carte()
+        elif action == actions[1]:
+            avion.afficher_vols()
+        elif action == actions[2]:
+            avion.afficher_statistiques()
+        else:
+            break
+    return
+
+
+def actions_routes(compagnie):
+    # Proposer les actions
+    while True:
+        actions = ('Afficher la liste des routes',
+                   'Afficher une carte des routes',
+                   'Gérer une route',
+                   'Ajouter une route',
+                   'Suspendre une route',
+                   'Revenir au menu précédent')
+        action = ihm.choisir(actions, "Choisissez une action :")
+        if action == actions[0]:
+            compagnie.afficher_infos_routes()
+        elif action == actions[1]:
+            compagnie.afficher_carte_routes()
+        elif action == actions[2]:
+            gerer_route(compagnie)
+        elif action == actions[3]:
+            compagnie.ajouter_route()
+        elif action == actions[4]:
+            compagnie.suspendre_route()
+        else:
+            break
+    return
+
+
+def gerer_route(compagnie):
+    route = None
+    code = ihm.demander("Tapez l'identifiant de la route :")
+    results = [x for x in compagnie.routes if x.id == code]
+    if len(results) == 0:
+        ihm.afficher("Désolé, nous n'avons pas trouvé votre route !")
+        return
+    route = results[0]
+    ihm.afficher("Vous allez gérer la route {}".format(route))
+    # Proposer les actions
+    while True:
+        actions = ("Afficher une carte de la route",
+                   "Afficher les horaires de la route",
+                   "Gérer un horaire",
+                   "Afficher les statistiques",
+                   'Revenir au menu précédent')
+        action = ihm.choisir(actions, "Choisissez une action :")
+        if action == actions[0]:
+            route.afficher_carte()
+        elif action == actions[1]:
+            route.afficher_horaires()
+        elif action == actions[2]:
+            pass
+        elif action == actions[3]:
+            route.afficher_statistiques()
+        else:
+            break
+    return
+

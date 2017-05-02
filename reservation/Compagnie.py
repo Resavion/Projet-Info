@@ -74,7 +74,7 @@ class Compagnie(object):
             .format(self._nom, self._pays,
                     self._id_code_iata, self._code_icao)
 
-    def afficher_avions(self):
+    def afficher_infos_avions(self):
         """
         Methode qui permet d'afficher l'emplacement des differents avions
         :return: 
@@ -91,13 +91,14 @@ class Compagnie(object):
         """
         pass
 
-    def afficher_routes(self):
+    def afficher_infos_routes(self):
         """
         Methode qui permet d'afficher les routes proposees par la compagnie
         :return: 
         """
         for route in self._routes:
             print(route)
+        ihm.demander("Tapez sur une touche pour revenir au menu")
         return
 
     def ajouter_route(self):

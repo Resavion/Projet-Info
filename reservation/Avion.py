@@ -1,5 +1,6 @@
 from datetime import date
-from reservation.Enums import EnumAvion
+
+import ihm.console as ihm
 
 
 class Avion(object):
@@ -84,7 +85,7 @@ class Avion(object):
         self._date_derniere_revision = valeur
 
     def __str__(self):
-        txt = "{} {} - {} - Config {} : {}F/{}C/{}P/{}Y ({} pax) - " \
+        txt = "{} - Id : {} - {} - Config {} : {}F/{}C/{}P/{}Y ({} pax) - " \
                "Age : {} ans (1er vol : {}, revision : {}) - {}"\
               .format(self._compagnie.id_code_iata, self._id,
                       self._config.type_avion, self._config.nom,
@@ -99,3 +100,15 @@ class Avion(object):
         if self.aeroport is not None:
             txt += " - à {}".format(self.aeroport.id_code_iata)
         return txt
+
+    def afficher_carte(self):
+        pass
+
+    def afficher_vols(self):
+        for vol in self._vols:
+            print(vol)
+        ihm.demander("Tapez sur une touche pour revenir au menu")
+        return
+
+    def afficher_statistiques(self):
+        pass

@@ -64,50 +64,52 @@ def ajouter_client(clients):
 
 
 def actions_compagnie(compagnies):
-    # On demande comment choisir une compagnie
-    actions = ('Recherche par continent',
-               'Recherche par code IATA ou ICAO',
-               'Revenir au début')
-    recherche = ihm.choisir(actions, "Choisissez un mode de recherche :")
     compagnie = None
-    # Si recherche par continents
-    if recherche == actions[0]:
-        compagnie = choisir_par_continent(compagnies)
-    # Si recherche par code
-    elif recherche == actions[1]:
-        compagnie = choisir_par_code(compagnies)
-    # Sinon on revient au début
-    else:
-        return
+    while compagnie is None:
+        # On demande comment choisir une compagnie
+        actions = ('Recherche par continent',
+                   'Recherche par code IATA ou ICAO',
+                   'Revenir au début')
+        recherche = ihm.choisir(actions, "Choisissez un mode de recherche :")
+        # Si recherche par continents
+        if recherche == actions[0]:
+            compagnie = choisir_par_continent(compagnies)
+        # Si recherche par code
+        elif recherche == actions[1]:
+            compagnie = choisir_par_code(compagnies)
+        # Sinon on revient au début
+        else:
+            return recherche
 
     # Proposer les actions
-    actions = ('Afficher Avions', 'Gérer Avion', 'Ajouter Avion',
-               'Retirer Avion',
-               'Afficher Routes', 'Gérer Route', 'Ajouter Route',
-               'Suspendre Route',
-               'Afficher Statistiques',
-               'Revenir au début')
-    action = ihm.choisir(actions, "Choisissez une action :")
-    if action == actions[0]:
-        compagnie.afficher_avions()
-    elif action == actions[1]:
-        compagnie.gerer_avion()
-    elif action == actions[2]:
-        compagnie.ajouter_avion()
-    elif action == actions[3]:
-        compagnie.retirer_avion()
-    elif action == actions[4]:
-        compagnie.afficher_routes()
-    elif action == actions[5]:
-        compagnie.gerer_route()
-    elif action == actions[6]:
-        compagnie.ajouter_route()
-    elif action == actions[7]:
-        compagnie.suspendre_route()
-    elif action == actions[8]:
-        compagnie.afficher_stats()
-    else:
-        pass
+    while True:
+        actions = ('Afficher Avions', 'Gérer Avion', 'Ajouter Avion',
+                   'Retirer Avion',
+                   'Afficher Routes', 'Gérer Route', 'Ajouter Route',
+                   'Suspendre Route',
+                   'Afficher Statistiques',
+                   'Revenir au début')
+        action = ihm.choisir(actions, "Choisissez une action :")
+        if action == actions[0]:
+            compagnie.afficher_avions()
+        elif action == actions[1]:
+            compagnie.gerer_avion()
+        elif action == actions[2]:
+            compagnie.ajouter_avion()
+        elif action == actions[3]:
+            compagnie.retirer_avion()
+        elif action == actions[4]:
+            compagnie.afficher_routes()
+        elif action == actions[5]:
+            compagnie.gerer_route()
+        elif action == actions[6]:
+            compagnie.ajouter_route()
+        elif action == actions[7]:
+            compagnie.suspendre_route()
+        elif action == actions[8]:
+            compagnie.afficher_stats()
+        else:
+            break
     return
 
 
@@ -147,8 +149,7 @@ def choisir_par_continent(compagnies):
         elif compagnie == "Voir les compagnies précédentes":
             borne_haut = borne_bas
             borne_bas -= pas
-        else:
-            print(compagnie)
+        else:  # On a choisi une compagnie
             break
     return compagnie
 

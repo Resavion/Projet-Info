@@ -1,3 +1,6 @@
+import ihm.console as ihm
+
+
 class Compagnie(object):
     def __init__(self, id_code_iata, nom, code_icao, pays, code_continent, code_pays,
                  configs=None, avions=None, routes=None):
@@ -71,6 +74,23 @@ class Compagnie(object):
             .format(self._nom, self._pays,
                     self._id_code_iata, self._code_icao)
 
+    def afficher_avions(self):
+        """
+        Methode qui permet d'afficher l'emplacement des differents avions
+        :return: 
+        """
+        for avion in self._avions:
+            print(avion)
+        ihm.demander("Tapez sur une touche pour revenir au menu")
+        return
+
+    def affecter_avion(self):
+        """
+        Methode qui permet d'affecter un avion existant à un vol
+        :return: 
+        """
+        pass
+
     def afficher_routes(self):
         """
         Methode qui permet d'afficher les routes proposees par la compagnie
@@ -90,23 +110,6 @@ class Compagnie(object):
     def suspendre_route(self):
         """
         Methode pour suspendre une route proposee par la compagnie
-        :return: 
-        """
-        pass
-
-    def afficher_avions(self):
-        """
-        Methode qui permet d'afficher l'emplacement des différents avions
-        :return: 
-        """
-        for avion in self._avions:
-            print(avion)
-        return
-
-    def affecter_avion(self):
-        """
-        Methode qui permet d'affecter un avion existant à un vol
-
         :return: 
         """
         pass

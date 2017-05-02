@@ -74,11 +74,22 @@ def select_billets_par_resa(cur, id_resa):
     return cur.fetchall()
 
 
+def select_options_par_billet(cur, id_billet):
+    req = "SELECT id_option FROM BilletOptions WHERE id_billet = ?"
+    executer_requete(cur, req, (id_billet,))
+    return cur.fetchall()
+
+
 def select_segments_par_billet(cur, id_billet):
     req = "SELECT * FROM Segment WHERE id_billet = ?"
     executer_requete(cur, req, (id_billet,))
     return cur.fetchall()
 
+
+def select_options_par_segment(cur, id_segment):
+    req = "SELECT id_option FROM SegmentOptions WHERE id_segment = ?"
+    executer_requete(cur, req, (id_segment,))
+    return cur.fetchall()
 
 #
 # def select_esp_pok_by_nom(cur, colonnes, nom_espece):

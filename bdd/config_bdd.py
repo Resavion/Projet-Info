@@ -144,7 +144,6 @@ def creer_bdd(db_name):
                                   prenom_passager text,
                                   passeport text,
                                   date_naissance text,
-                                  options text,
                                   foreign key(id_reservation) references Reservation(id))"""
     executer_requete(cur, req)
     req = """create table Segment (id integer primary key AUTOINCREMENT NOT NULL,
@@ -152,10 +151,21 @@ def creer_bdd(db_name):
                                    id_vol integer,
                                    id_horaire integer,
                                    place text,
-                                   option EnumOption,
                                    foreign key(id_billet) references Billet(id),
                                    foreign key(id_vol) references Vol(id),
                                    foreign key(id_horaire) references Horaire(id))"""
+    executer_requete(cur, req)
+    req = """create table BilletOptions (id integer primary key AUTOINCREMENT NOT NULL,
+                                   id_billet integer,
+                                   id_option integer,
+                                   foreign key(id_billet) references Billet(id),
+                                   foreign key(id_option) references EnumOption(id))"""
+    executer_requete(cur, req)
+    req = """create table SegmentOptions (id integer primary key AUTOINCREMENT NOT NULL,
+                                   id_segment integer,
+                                   id_option integer,
+                                   foreign key(id_segment) references Segment(id),
+                                   foreign key(id_option) references EnumOption(id))"""
     executer_requete(cur, req)
     valider_modifs(conn)
 
@@ -173,9 +183,9 @@ def inserer_jeu_test(db_name):
     # EnumAvion
     colonnes = ('etat',)
     enumavion = (
-        ("en revision",),
-        ("en vol",),
-        ("a terre",)
+        ("en_revision",),
+        ("en_vol",),
+        ("au_sol",)
     )
     for t in enumavion:
         r.insert_into(cur, 'EnumAvion', colonnes, t)
@@ -184,16 +194,17 @@ def inserer_jeu_test(db_name):
     # EnumOption
     colonnes = ('option',)
     enumoption = (
-        ("vegetarien",)
+        ("vegetarien",),
+        ("assurance_annulation",)
     )
-    for t in enumavion:
+    for t in enumoption:
         r.insert_into(cur, 'EnumOption', colonnes, t)
     valider_modifs(conn)
 
     # EnumStatutVol
     colonnes = ('statut',)
     enumstatutvol = (
-        ("a l'heure",),
+        ("a_l_heure",),
         ("retarde",),
         ("embarquement",),
         ("annule",),
@@ -335,23 +346,41 @@ def inserer_jeu_test(db_name):
     valider_modifs(conn)
 
     # Billet
-    colonnes = ('id','id_reservation','tarif','nom_passager','prenom_passager','passeport','date_naissance','options')
+    colonnes = ('id','id_reservation','tarif','nom_passager','prenom_passager','passeport','date_naissance')
     billets = (
-        (10001,1,1200,"Chaffouin","Antoine","123456D","1980-05-15",None),
-        (20002,2,400,"Tartempion","Lucien","123789E","1960-03-20",None),
+        (10001,1,1200,"Chaffouin","Antoine","123456D","1980-05-15"),
+        (20002,2,400,"Tartempion","Lucien","123789E","1960-03-20"),
     )
     for t in billets:
         r.insert_into(cur, 'Billet', colonnes, t)
     valider_modifs(conn)
 
     # Segment
-    colonnes = ('id_billet','id_vol','id_horaire','place','option')
+    colonnes = ('id_billet','id_vol','id_horaire','place')
     segments = (
-        (10001,1,2,"36A",1),
-        (20002,2,3,"45H",None),
+        (10001,1,2,"36A"),
+        (20002,2,3,"45H"),
     )
     for t in segments:
         r.insert_into(cur, 'Segment', colonnes, t)
+    valider_modifs(conn)
+
+    # BilletOptions
+    colonnes = ('id_billet','id_option')
+    billetoptions = (
+        (10001,2),
+    )
+    for t in billetoptions:
+        r.insert_into(cur, 'BilletOptions', colonnes, t)
+    valider_modifs(conn)
+
+    # SegmentOptions
+    colonnes = ('id_segment','id_option')
+    segmentoptions = (
+        (1,1),
+    )
+    for t in segmentoptions:
+        r.insert_into(cur, 'SegmentOptions', colonnes, t)
     valider_modifs(conn)
 
     fermer_connexion(cur, conn)

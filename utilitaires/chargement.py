@@ -3,6 +3,7 @@ from bdd.acces_bdd import (ouvrir_connexion,
                            fermer_connexion,
                            valider_modifs)
 import bdd.requetes as r
+from reservation.Enums import (EnumAvion, EnumOption, EnumStatutVol)
 from reservation.Aeroport import Aeroport
 from reservation.Avion import Avion
 from reservation.Billet import Billet
@@ -130,8 +131,9 @@ def charger_avions_de_compagnie(cur, aeroports, configs, compagnie):
         aeroport = [x for x in aeroports if x.id_code_iata == row[3]][0]
         date_construc = datetime.strptime(row[4],"%Y-%m-%d").date()
         date_der_rev = datetime.strptime(row[5],"%Y-%m-%d").date()
+        etat = EnumAvion(row[6])
         avion = Avion(row[0], compagnie, config, aeroport,
-                      date_construc, date_der_rev, *row[6:])
+                      date_construc, date_der_rev, etat, row[7])
         avions.append(avion)
         aeroport.avions.append(avion)
         # print(avion)
@@ -244,7 +246,9 @@ def charger_billets_de_resa(cur, resa):
     rows = r.select_billets_par_resa(cur, resa.id)
     for row in rows:
         date_naissance = datetime.strptime(row[6], "%Y-%m-%d").date()
-        billet = Billet(row[0], resa, *row[2:6], date_naissance, row[7])
+        options_ids = r.select_options_par_billet(cur, row[0])
+        options = [EnumOption(*x) for x in options_ids]
+        billet = Billet(row[0], resa, *row[2:6], date_naissance, options)
         billets.append(billet)
         # print(billet)
     return billets
@@ -256,7 +260,9 @@ def charger_segments_de_billet(cur, horaires, vols, billet):
     for row in rows:
         vol = [x for x in vols if x.id == row[2]][0]
         horaire = [x for x in horaires if x.id == row[3]][0]
-        segment = Segment(row[0], billet, vol, horaire, *row[4:])
+        options_ids = r.select_options_par_segment(cur, row[0])
+        options = [EnumOption(*x) for x in options_ids]
+        segment = Segment(row[0], billet, vol, horaire, row[4], options)
         segments.append(segment)
         vol.segments.append(segment)
         # print(segment)

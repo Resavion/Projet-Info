@@ -1,5 +1,7 @@
 import math as ma
 
+import ihm.console as ihm
+
 
 class Route(object):
     def __init__(self, id_route, compagnie, aeroport_depart, aeroport_arrivee, geom, codeshare,
@@ -140,11 +142,14 @@ class Route(object):
     def afficher_horaires(self):
         """
         Methode qui permet d'afficher les horaires ou cette route est empruntée
-        
         :return: 
         """
+        for horaire in self._horaires:
+            print(horaire)
+        ihm.demander("Tapez sur une touche pour revenir au menu")
+        return
 
-    def afficher_route(self):
+    def afficher_carte(self):
         """
         Methode qui permet d'afficher la route reliant deux aeroports
         :return: 
@@ -158,5 +163,84 @@ class Route(object):
         :return: 
         """
         pass
-
-    
+    #
+    # # Methode pour faire une carte de la trace au sol du satellite
+    # # !!! N'EST PLUS A coder !!!
+    # # En entree,
+    # # ae       = demi-grand axe de l'ellipsoide (m)
+    # # fe       = applatissement de l'ellipsoide
+    # # GM       = constante fondamentale x masse terrestre (m^3/s^2)
+    # # duration = duree de la trace (MJD)
+    # # start    = epoque de debut de la trace (MJD)
+    # # show     = affiche la carte ou non (bool)
+    # # annot    = affiche le nom du satellite ou non (bool)
+    # def plot_track(self, ae, fe, GM, duration=1, start=None, show=True, annot=True):
+    #     'Methode pour faire une carte de la trace au sol du satellite'
+    #
+    #     # Par defaut, debut de la trace a l'epoque de reference
+    #     if (start is None):
+    #         start = self.ref_epoch
+    #
+    #     # Calcul de l'excentricite
+    #     ee = ma.sqrt(2. * fe - ma.pow(fe, 2))
+    #
+    #     # Ajout du fond de carte (si la carte ne fait pas partie d'une composition)
+    #     if (show):
+    #         # Lecture du trait de cotes
+    #         coords_latlon = aux.lit_fic_coords('../Data/coast.txt')
+    #         # Transfo en Mercator
+    #         x, y = aux.mercator(coords_latlon, ee, 0, 0, 6378137.0)
+    #         # Ajout a la carte
+    #         plt.fill(x, y, 'bisque', linewidth=0.1)
+    #
+    #     nb_steps = int(ma.floor(duration * 24 * 60))  # 1 step par minute
+    #     # Si la duree est 0, un seul pas
+    #     if (nb_steps < 1):
+    #         nb_steps = 1
+    #     list_coords = np.zeros((nb_steps, 2))
+    #     i = 0
+    #     # Calcul des positions a chaque instant t
+    #     for t in np.linspace(start, start + duration, nb_steps):
+    #         self.compute_position_keplerian(t)
+    #         self.compute_position_cartesian(GM)
+    #         self.celestial_to_terrestrial()
+    #         lon, lat, h = aux.geocentric_to_geodetic(self.pos_curr_ter, ae, fe)
+    #         lat_deg, lon_deg = aux.rad_to_deg(lat), aux.rad_to_deg(lon)
+    #         list_coords[i, :] = lat_deg, lon_deg
+    #         i += 1
+    #     # Transfo en Mercator
+    #     xs, ys = aux.mercator(list_coords, ee, 0, 0, 6378137.0)
+    #     # Ajout a la carte
+    #     if (show):
+    #         plt.plot(xs, ys, 'b.')
+    #     else:  # symbole plus petit et couleur aleatoire si partie de composition
+    #         colors = 'bgrcmy'
+    #         color = colors[np.random.randint(len(colors))]
+    #         plt.plot(xs, ys, '{},'.format(color))  # pixel pour trace
+    #         plt.plot(xs[-1], ys[-1], '{}.'.format(color))  # point pour derniere position
+    #
+    #     # Parametrage de la carte
+    #     plt.axis([-1300000000.0, 1300000000.0, -1500000000.0, 2000000000.0])
+    #     plt.tick_params(axis='both', which='both', bottom='off', top='off', \
+    #                     right='off', left='off')
+    #     frame1 = plt.gca()
+    #     frame1.axes.xaxis.set_ticklabels([])
+    #     frame1.axes.yaxis.set_ticklabels([])
+    #     frame1.set_axis_bgcolor('lightcyan')
+    #
+    #     # Ajout d'un tag avec le nom sur le dernier point de la trace
+    #     if (annot):
+    #         fig = plt.gcf()
+    #         ax = fig.add_subplot(111)
+    #         ax.annotate('{0:s}'.format(self.code), xy=(xs[-1], ys[-1]), xytext=(1.5, 1.5), \
+    #                     fontsize=8, textcoords='offset points')
+    #
+    #     # Affichage
+    #     if (show):
+    #         if (duration == 0):
+    #             plt.title('Trace du satellite {0:s} a l\'epoque {1:.1f}' \
+    #                       .format(self.code, start))
+    #         else:
+    #             plt.title('Trace du satellite {0:s} sur la periode {1:.1f}-{2:.1f}' \
+    #                       .format(self.code, start, start + duration))
+    #         plt.show()

@@ -87,7 +87,7 @@ class Horaire(object):
         return self._vols
 
     def __str__(self):
-        return "{} {:4s} {} {:%H:%M} -> {} {:%H:%M} ({}h{})"\
+        return "{} Id : {:4s} - {} {:%H:%M} -> {} {:%H:%M} ({}h{})"\
             .format(self._compagnie.id_code_iata, str(self._numero),
                     self._route.aeroport_depart.id_code_iata,
                     self.heure_depart,

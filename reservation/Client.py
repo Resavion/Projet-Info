@@ -54,11 +54,9 @@ class Client(object):
         pass
 
     def consulter_reservations(self):
-        """
-        Methode qui permet d'afficher les reservations du client
-        :return: 
-        """
-        pass
+        ihm.afficher("Il y a {} réservation(s)".format(len(self._reservations)))
+        ihm.afficher_paginer(self._reservations, "Réservations", pas=10)
+        return
 
     def consulter_reservation(self):
         """

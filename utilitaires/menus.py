@@ -70,7 +70,8 @@ def actions_compagnie(compagnies):
         actions = ('Recherche par continent',
                    'Recherche par code IATA ou ICAO',
                    'Revenir au début')
-        recherche = ihm.choisir(actions, "Choisissez un mode de recherche :")
+        recherche = ihm.choisir(
+            actions, "Choisissez un mode de recherche de la compagnie :")
         # Si recherche par continents
         if recherche == actions[0]:
             compagnie = choisir_par_continent(compagnies)
@@ -84,6 +85,7 @@ def actions_compagnie(compagnies):
     # Proposer les actions
     while True:
         actions = ('Gérer les avions',
+                   "Gérer les configurations d'avion",
                    'Gérer les routes',
                    'Afficher les statistiques',
                    'Revenir au début')
@@ -91,8 +93,10 @@ def actions_compagnie(compagnies):
         if action == actions[0]:
             actions_avions(compagnie)
         elif action == actions[1]:
-            actions_routes(compagnie)
+            compagnie.afficher_configs()
         elif action == actions[2]:
+            actions_routes(compagnie)
+        elif action == actions[3]:
             compagnie.afficher_stats()
         else:
             break
@@ -117,33 +121,15 @@ def choisir_par_continent(compagnies):
     # On filtre les compagnies par nombre de routes
     compagnies_filtre.sort(key=lambda s: len(s.routes), reverse=True)
 
-    borne_bas = 0
-    pas = 2
-    compagnie = None
-    while True:
-        borne_haut = min(len(compagnies_filtre), borne_bas + pas)
-        # On affiche seulement quelques compagnies à la fois
-        liste = compagnies_filtre[borne_bas:borne_haut]
-        if borne_bas > 0:
-            liste.append("Voir les compagnies précédentes")
-        if borne_haut < len(compagnies_filtre):
-            liste.append("Voir les compagnies suivantes")
-        # Faire le choix
-        compagnie = ihm.choisir(liste, "Choisissez une compagnie :")
-        if compagnie == "Voir les compagnies suivantes":
-            borne_bas = borne_haut
-        elif compagnie == "Voir les compagnies précédentes":
-            borne_haut = borne_bas
-            borne_bas -= pas
-        else:  # On a choisi une compagnie
-            break
+    compagnie = ihm.choisir_paginer(
+        compagnies_filtre, "Choisissez une compagnie :", pas=10)
     return compagnie
 
 
 def choisir_par_code(compagnies):
     compagnie = None
-    code = ihm.demander("Tapez le code IATA (2 caractères) "
-                        "ou ICAO (3 caractères) :")
+    code = ihm.demander(
+        "Tapez le code IATA (2 caractères) ou ICAO (3 caractères) :")
     results = [x for x in compagnies
                if x.id_code_iata == code or x.code_icao == code]
     if len(results) == 0:
@@ -161,7 +147,7 @@ def actions_avions(compagnie):
     # Proposer les actions
     while True:
         actions = ('Afficher la liste des avions',
-                   'Afficher une carte des avions',
+                   'Afficher une carte de la position des avions',
                    'Gérer un avion',
                    'Ajouter un avion',
                    'Retirer un avion',
@@ -184,16 +170,13 @@ def actions_avions(compagnie):
 
 def gerer_avion(compagnie):
     avion = None
-    code = ihm.demander("Tapez l'identifiant de l'avion :")
-    results = [x for x in compagnie.avions if x.id == code]
-    if len(results) == 0:
-        ihm.afficher("Désolé, nous n'avons pas trouvé votre avion !")
-        return
-    avion = results[0]
+    avions = compagnie.avions
+    avions.sort(key=lambda s: s.id, reverse=True)
+    avion = ihm.choisir_paginer(avions, "Choisissez un avion :")
     ihm.afficher("Vous allez gérer l'avion {}".format(avion))
     # Proposer les actions
     while True:
-        actions = ("Afficher une carte de l'avion",
+        actions = ("Afficher une carte de la position de l'avion",
                    "Afficher les vols de l'avion",
                    "Afficher les statistiques",
                    'Revenir au menu précédent')

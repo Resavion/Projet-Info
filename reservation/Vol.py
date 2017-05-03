@@ -94,14 +94,24 @@ class Vol(object):
         return self._segments
 
     def __str__(self):
-        txt = "Vol {} {} {}{} - {} -> {} - {:%d/%m/%Y %H:%M} -> {:%d/%m/%Y %H:%M}".\
-            format(self._id,
-                   self._horaire.compagnie.code_icao,
-                   self._horaire.compagnie.id_code_iata, self._horaire.numero,
-                   self._horaire.route.aeroport_depart.id_code_iata,
-                   self._horaire.route.aeroport_arrivee.id_code_iata,
-                   self._datetime_depart,
-                   self._datetime_arrivee)
+        txt = "Vol {} {} {}{} - {} -> {} - {:%d/%m/%Y %H:%M} -> {:%d/%m/%Y %H:%M} - " \
+              "Places restantes : F:{}/{} C:{}/{} P:{}/{} Y:{}/{}"\
+            .format(self._id,
+                    self._horaire.compagnie.code_icao,
+                    self._horaire.compagnie.id_code_iata,
+                    self._horaire.numero,
+                    self._horaire.route.aeroport_depart.id_code_iata,
+                    self._horaire.route.aeroport_arrivee.id_code_iata,
+                    self._datetime_depart,
+                    self._datetime_arrivee,
+                    self._places_restantes_premiere,
+                    self._horaire.config_avion.nb_places_premiere,
+                    self._places_restantes_business,
+                    self._horaire.config_avion.nb_places_business,
+                    self._places_restantes_eco_plus,
+                    self._horaire.config_avion.nb_places_eco_plus,
+                    self._places_restantes_eco,
+                    self._horaire.config_avion.nb_places_eco)
         if self._avion is not None:
             txt += " - {}".format(self._avion.config.type_avion)
         return txt

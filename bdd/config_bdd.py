@@ -339,7 +339,7 @@ def inserer_jeu_test(db_name):
     colonnes = ('id','id_client','prix_total','date_achat')
     resas = (
         (1,1,1300,"2017-04-20 23:59:59"),
-        (2,2,500,"2017-04-19 13:40:01"),
+        (2,1,500,"2017-04-19 13:40:01"),
     )
     for t in resas:
         r.insert_into(cur, 'Reservation', colonnes, t)

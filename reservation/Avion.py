@@ -89,25 +89,28 @@ class Avion(object):
                "Age : {} ans (1er vol : {}, revision : {}) - {}"\
               .format(self._compagnie.id_code_iata, self._id,
                       self._config.type_avion, self._config.nom,
-                      self._config.nb_place_premiere,
-                      self._config.nb_place_business,
-                      self._config.nb_place_eco_plus,
-                      self._config.nb_place_eco,
-                      self._config.nb_total_place,
+                      self._config.nb_places_premiere,
+                      self._config.nb_places_business,
+                      self._config.nb_places_eco_plus,
+                      self._config.nb_places_eco,
+                      self._config.nb_total_places,
                       self.age, self._date_construction,
                       self._date_derniere_revision,
                       self._etat)
         if self.aeroport is not None:
-            txt += " - à {}".format(self.aeroport.id_code_iata)
+            txt += " - à {}".format(self.aeroport)
         return txt
 
     def afficher_carte(self):
         pass
 
     def afficher_vols(self):
-        for vol in self._vols:
-            print(vol)
-        ihm.demander("Tapez sur une touche pour revenir au menu")
+        """
+        Methode qui permet d'afficher les vols assures par l'avion
+        :return: 
+        """
+        ihm.afficher("Il y a {} vol(s)".format(len(self._vols)))
+        ihm.afficher_paginer(self._vols, "Vols", pas=10)
         return
 
     def afficher_statistiques(self):

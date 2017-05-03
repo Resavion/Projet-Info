@@ -39,7 +39,7 @@ class Reservation(object):
         return self._billets
 
     def __str__(self):
-        return "Réservation n°{:05d} - Par : {}, {} - Total : {} € - " \
+        return "Id : {:05d} - Par : {}, {} - Total : {} € - " \
                "Le : {:%d/%m/%Y à %Hh%M}"\
             .format(self._id,
                     self._client.nom, self._client.prenom,

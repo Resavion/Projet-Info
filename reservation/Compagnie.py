@@ -76,13 +76,19 @@ class Compagnie(object):
 
     def afficher_infos_avions(self):
         """
+        Methode qui permet d'afficher les infos des differents avions
+        :return: 
+        """
+        ihm.afficher("Il y a {} avion(s)".format(len(self._avions)))
+        ihm.afficher_paginer(self._avions, "Avions", pas=10)
+        return
+
+    def afficher_carte_avions(self):
+        """
         Methode qui permet d'afficher l'emplacement des differents avions
         :return: 
         """
-        for avion in self._avions:
-            print(avion)
-        ihm.demander("Tapez sur une touche pour revenir au menu")
-        return
+        pass
 
     def affecter_avion(self):
         """
@@ -91,14 +97,22 @@ class Compagnie(object):
         """
         pass
 
+    def afficher_configs(self):
+        """
+        Methode qui permet d'afficher les configs d'avion utilisees par la compagnie
+        :return: 
+        """
+        ihm.afficher("Il y a {} configuration(s)".format(len(self._configs)))
+        ihm.afficher_paginer(self._configs, "Configurations", pas=10)
+        return
+
     def afficher_infos_routes(self):
         """
         Methode qui permet d'afficher les routes proposees par la compagnie
         :return: 
         """
-        for route in self._routes:
-            print(route)
-        ihm.demander("Tapez sur une touche pour revenir au menu")
+        ihm.afficher("Il y a {} route(s)".format(len(self._configs)))
+        ihm.afficher_paginer(self._configs, "Routes", pas=10)
         return
 
     def ajouter_route(self):

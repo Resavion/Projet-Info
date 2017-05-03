@@ -135,3 +135,60 @@ class Compagnie(object):
         :return: 
         """
         pass
+
+    def chercher_routes(self, aer_dep, aer_arr, escales_max):
+        routes_directes = []
+        routes_1escale = []
+        routes_2escales = []
+
+        routes = [x for x in self.routes if x.aeroport_depart == aer_dep]
+        aeroports_visites = [aer_dep]
+
+        route_directe = [x for x in routes if x.aeroport_arrivee == aer_arr]
+        if route_directe:
+            routes_directes.extend(route_directe)
+
+        if escales_max > 0:
+            routes_indirectes = [x for x in routes if x.aeroport_arrivee != aer_arr]
+            aeroports_visites.extend([x.aeroport_arrivee for x in routes_indirectes])
+
+            for route_indirecte in routes_indirectes:
+                routes_sortantes, route_1escale = self.routes_avec_1escale(
+                    self, aeroports_visites, route_indirecte, aer_arr
+                )
+                if route_1escale:
+                    routes_1escale.append(route_1escale)
+
+                if escales_max > 1:
+                    for route_sortante in routes_sortantes:
+                        route_2escales = self.route_avec_2escales(
+                            self, route_indirecte, route_sortante, aer_arr
+                        )
+                        if route_2escales:
+                            routes_2escales.append(route_2escales)
+
+        return routes_directes, routes_1escale, routes_2escales
+
+    @staticmethod
+    def routes_avec_1escale(compagnie, aeroports_visites, route1, aer_arr):
+        escale = route1.aeroport_arrivee
+        routes2 = [
+            x for x in compagnie.routes
+            if x.aeroport_depart == escale
+               and x.aeroport_arrivee not in aeroports_visites
+        ]
+        route_1escale = [x for x in routes2 if x.aeroport_arrivee == aer_arr]
+        if route_1escale:
+            return routes2, [route1, *route_1escale]
+        return routes2
+
+    @staticmethod
+    def route_avec_2escales(compagnie, route1, route2, aer_arr):
+        escale = route2.aeroport_arrivee
+        route_2escales = [
+            x for x in compagnie.routes
+            if x.aeroport_depart == escale and x.aeroport_arrivee == aer_arr
+        ]
+        if route_2escales:
+            return [route1, route2, *route_2escales]
+        return None

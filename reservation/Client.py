@@ -54,7 +54,29 @@ class Client(object):
         :return: 
         """
         criteres = self.saisir_criteres(aeroports)
-        self.afficher_vols(criteres, compagnies, aeroports)
+
+        routes_directes = []
+        routes_1escale = []
+        routes_2escales = []
+        aer_dep, aer_arr = criteres[:2]
+        escales_max = criteres[-1]
+        for compagnie in compagnies:
+            routes_0, routes_1, routes_2 = compagnie.chercher_routes(aer_dep, aer_arr, escales_max)
+            routes_directes.extend(routes_0)
+            routes_1escale.extend(routes_1)
+            routes_2escales.extend(routes_2)
+
+        print("routes directes")
+        for route in routes_directes:
+            print(route)
+        print("routes 1 escale")
+        for routes in routes_1escale:
+            print(*routes)
+        print("routes 2 escales")
+        for routes in routes_2escales:
+            print(*routes)
+
+
         return
 
     @staticmethod
@@ -140,68 +162,6 @@ class Client(object):
         type_vol = ihm.choisir(liste_choix, "Choisissez un type de vol :")
         ihm.afficher("Vous avez choisi : {}".format(type_vol))
         return liste_choix.index(type_vol)
-
-    @staticmethod
-    def chercher_vols(criteres, compagnies):
-        aer_dep, aer_arr, date_dep, date_arr = criteres[:4]
-        nb_adultes, nb_enfants, classe, escales_max = criteres[4:]
-
-        routes_directes = []
-        routes_1escale = []
-        routes_2escales = []
-
-        for compagnie in compagnies:
-            routes = [x for x in compagnie.routes if x.aeroport_depart == aer_dep]
-            aeroports_visites = [aer_dep]
-            route_directe = [x for x in routes if x.aeroport_arrivee == aer_arr]
-            if route_directe:
-                routes_directes.extend(route_directe)
-
-            if escales_max > 0:
-                routes_indirectes = [x for x in routes if x.aeroport_arrivee != aer_arr]
-                aeroports_visites.extend([x.aeroport_arrivee for x in routes_indirectes])
-
-                for route_indirecte in routes_indirectes:
-                    routes_sortantes, route_1escale = Client.routes_avec_1escale(
-                        compagnie, aeroports_visites, route_indirecte, aer_arr
-                    )
-                    if route_1escale:
-                        routes_1escale.append(route_1escale)
-
-                    if escales_max > 1:
-                        for route_sortante in routes_sortantes:
-                            route_2escales = Client.route_avec_2escales(
-                                compagnie, route_indirecte, route_sortante, aer_arr
-                            )
-                            if route_2escales:
-                                routes_2escales.append(route_2escales)
-
-        return routes_directes, routes_1escale, routes_2escales
-
-    @staticmethod
-    def routes_avec_1escale(compagnie, aeroports_visites, route1, aer_arr):
-        escale = route1.aeroport_arrivee
-        routes2 = [
-            x for x in compagnie.routes
-            if x.aeroport_depart == escale
-            and x.aeroport_arrivee not in aeroports_visites
-        ]
-        route_1escale = [x for x in routes2 if x.aeroport_arrivee == aer_arr]
-        if route_1escale:
-            return routes2, [route1, route_1escale]
-        return routes2
-
-    @staticmethod
-    def route_avec_2escales(compagnie, route1, route2, aer_arr):
-        escale = route2.aeroport_arrivee
-        route_2escales = [
-            x for x in compagnie.routes
-            if x.aeroport_depart == escale and x.aeroport_arrivee == aer_arr
-        ]
-        if route_2escales:
-            return [route1, route2, route_2escales]
-        return None
-
 
     def consulter_reservations(self):
         ihm.afficher("Il y a {} réservation(s)".format(len(self._reservations)))

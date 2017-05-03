@@ -121,27 +121,127 @@ class Vol(object):
         Methode qui permet d'afficher les places disponibles et non disponibles dans un avion
         :return: 
         """
-        pass
+        print(self._cabine)
 
-    def reserver_place(self,avion): # rang, colonne):
+    def reserver_place(self, rangee, colonne):
         """
-        Methode qui permet de reserver une place dans un vol
+        Methode qui permet de reserver une place dans un vol en changeant le signe de 
+        la place "O" en "." pour l'affichage.
+        Elle met à jour le nombre de place selon la classe
         :return: 
         """
+
+        rangee = rangee - 1
         rangs = avion
-        for rang in rangs.split("\n"):
-            print(rang)
+        list_rang = rangs.split("\n")
+        # on recupere l'indice de la colonne
+        colonne = list_rang[0].index(colonne) - 2
+        # on cree une chaine de caractere vide pour reformer l'avion une fois la place changee
+        avion_change = ""
+        # on cree le debut de l'avion
+        for rang in list_rang[0:2]:
+            avion_change += rang + "\n"
+        for rang in list_rang[2:-1]:
+            # on recupere le numero du rang
+            num_rg = rang.split("|")[2]
+            # on recupere le corps de l'avion
+            body_rg = rang.split("|")[1]
+            # on recupere la classe du rang
+            classe_rg = rang.split("|")[0]
+            changement = False
+            if num_rg == str(rangee + 1):
+                # on teste si le client a choisi une place libre ou non
+                if body_rg[colonne] == ".":
+                    print('Cette place est déjà occupée.')
+                elif body_rg[colonne] == "O":
+                    # changement des places restantes
+                    if classe_rg == "F":
+                        self._places_restantes_premiere -= 1
+                    elif classe_rg == "C":
+                        self._places_restantes_business -= 1
+                    elif classe_rg == "P":
+                        self._places_restantes_eco_plus -= 1
+                    elif classe_rg == "Y":
+                        self._places_restantes_eco -= 1
+                    # on change le "O" en "." pour la place donnée
+                    drapeau = list(body_rg)
+                    drapeau[colonne] = "."
+                    # on regroupe tous les morceaux pour reformer l'avion
+                    body_rg = "".join(drapeau)
+                else:
+                    pass
+                rang_chang = (classe_rg, body_rg, num_rg)
+                rang_chang = "|".join(rang_chang)
+                changement = True
+            if changement:
+                avion_change += rang_chang + "\n"
+            else:
+                avion_change += rang + "\n"
 
-        #"""accroché a une chaine de caractere"""".replace("l","L")
+        for rang in list_rang[-1]:
+            avion_change += rang
+        # on sauvegarde le nouvel avion
+        self._cabine = avion_change
 
 
 
-    def liberer_place(self):
+
+    def liberer_place(self, rangee, colonne):
         """
-        Methode qui permet de liberer une place dans un vol
+        Methode qui permet de liberer une place dans un vol en changeant le signe de 
+        la place "." en "O" pour l'affichage.
+        Elle met à jour le nombre de place selon la classe
         :return: 
         """
-        pass
+
+        rangee = rangee - 1
+        rangs = avion
+        list_rang = rangs.split("\n")
+        # on recupere l'indice de la colonne
+        colonne = list_rang[0].index(colonne) - 2
+        # on cree une chaine de caractere vide pour reformer l'avion une fois la place changee
+        avion_change = ""
+        # on cree le debut de l'avion
+        for rang in list_rang[0:2]:
+            avion_change += rang + "\n"
+        for rang in list_rang[2:-1]:
+            # on recupere le numero du rang
+            num_rg = rang.split("|")[2]
+            # on recupere le corps de l'avion
+            body_rg = rang.split("|")[1]
+            # on recupere la classe du rang
+            classe_rg = rang.split("|")[0]
+            if num_rg == str(rangee + 1):
+                if body_rg[colonne] == ".":
+                    # changement des places restantes
+                    if classe_rg == "F":
+                        self._places_restantes_premiere += 1
+                    elif classe_rg == "C":
+                        self._places_restantes_business += 1
+
+                    elif classe_rg == "P":
+                        self._places_restantes_eco_plus += 1
+
+                    elif classe_rg == "Y":
+                        self._places_restantes_eco += 1
+                    # on change le "." en "O" pour la place donnée
+                    drapeau = list(body_rg)
+                    drapeau[colonne] = "O"
+                    # on regroupe tous les morceaux pour reformer l'avion
+                    body_rg = "".join(drapeau)
+                rang_chang = (classe_rg, body_rg, num_rg)
+                rang_chang = "|".join(rang_chang)
+                changement = True
+            if changement:
+                avion_change += rang_chang + "\n"
+            else:
+                avion_change += rang + "\n"
+        for rang in list_rang[-1]:
+            avion_change += rang
+        # on sauvegarde le nouvel avion
+        self._cabine = avion_change
+
+
 
     def retarder_vol(self):
         """
@@ -220,52 +320,158 @@ Y|OO  OOOO  --|42
   ------------"""
     #print(avion)
 
-    def reserver_place(avion, rangee, colonne):
+    def reserver_place(avion, rangee, colonne,F,C,P,Y):
         """
-        Methode qui permet de reserver une place dans un vol
+        Methode qui permet de reserver une place dans un vol en changeant le signe de 
+        la place "O" en "." pour l'affichage.
+        Elle met à jour le nombre de place selon la classe
         :return: 
         """
+        #print('F',F,'C',C,'P',P,'Y',Y)
+        places_restantes_premiere = F
+        places_restantes_business = C
+        places_restantes_eco_plus = P
+        places_restantes_eco = Y
+
         rangee = rangee - 1
         rangs = avion
-        #for rang in rangs.split("\n"):
-        #print(rangs.split("\n")[rangee])
         list_rang = rangs.split("\n")
         colonne = list_rang[0].index(colonne) - 2
-
-        classe_rg5 = list_rang[5].split("|")[0]
-        classe_rga = list_rang[0].split("|")[0]
-        body_rg5 = list_rang[5].split("|")[1]
-        num_rg5 = list_rang[5].split("|")[2]
-     #   print(classe_rg5)
-  #      print(classe_rga)
-   #     print(body_rg5)
-   #     print(num_rg5)
+        avion_change = ""
+        for rang in list_rang[0:2]:
+            avion_change+= rang + "\n"
         for rang in list_rang[2:-1]:
             num_rg = rang.split("|")[2]
             body_rg = rang.split("|")[1]
+            classe_rg = rang.split("|")[0]
+            changement = False
             if num_rg == str(rangee+1):
-                 # print (body_rg[colonne])
                 if body_rg[colonne] == "O":
+                    # changement des places restantes
+                    if classe_rg == "F":
+                        places_restantes_premiere -= 1
+                        #self._places_restantes_premiere -= 1
+                    elif classe_rg == "C":
+                        places_restantes_business -= 1
+                        #self._places_restantes_business -= 1
+
+                    elif classe_rg == "P":
+                        places_restantes_eco_plus -= 1
+                        #self._places_restantes_eco_plus -= 1
+
+                    elif classe_rg == "Y":
+                        #self._places_restantes_eco -= 1
+                        places_restantes_eco -= 1
+
+
                     drapeau = list(body_rg)
                     drapeau[colonne]="."
                     body_rg = "".join(drapeau)
                     print(body_rg)
+                    print(classe_rg)
+                rang_chang = (classe_rg, body_rg, num_rg)
+                rang_chang = "|".join(rang_chang)
+                changement = True
+            if changement:
+                avion_change += rang_chang + "\n"
+            else:
+                avion_change += rang + "\n"
 
-        # reassembler tous les elements
+        for rang in list_rang[-1]:
+            avion_change += rang
+
+        #self._cabine = avion_change
+
+        print('F', places_restantes_premiere, 'C', places_restantes_business, 'P', places_restantes_eco_plus,
+              'Y', places_restantes_eco)
+        return avion_change
+
+
 
             # """accroché a une chaine de caractere"""".replace("l","L")
 
+    print('CACA qui pue')
+    avion1=reserver_place(avion,1,'A',8,52,24,180)
+    print(avion1)
+
+
+    def afficher_places(avion):
+        """
+        Methode qui permet d'afficher les places disponibles et non disponibles dans un avion
+        :return: 
+        """
+        print(avion)
+
+    print('CACA')
+    #afficher_places(avion)
+
+    def liberer_place(avion, rangee, colonne,F,C,P,Y):
+        """
+        Methode qui permet de liberer une place dans un vol
+        :return: 
+        """
+        print('F',F,'C',C,'P',P,'Y',Y)
+        places_restantes_premiere = F
+        places_restantes_business = C
+        places_restantes_eco_plus = P
+        places_restantes_eco = Y
+
+        rangee = rangee - 1
+        rangs = avion
+        list_rang = rangs.split("\n")
+        colonne = list_rang[0].index(colonne) - 2
+        avion_change = ""
+        for rang in list_rang[0:2]:
+            avion_change += rang + "\n"
+        for rang in list_rang[2:-1]:
+            num_rg = rang.split("|")[2]
+            body_rg = rang.split("|")[1]
+            classe_rg = rang.split("|")[0]
+            changement = False
+            if num_rg == str(rangee + 1):
+                if body_rg[colonne] == ".":
+                    # changement des places restantes
+                    if classe_rg == "F":
+                        places_restantes_premiere += 1
+                        # self._places_restantes_premiere += 1
+                    elif classe_rg == "C":
+                        places_restantes_business += 1
+                        # self._places_restantes_business += 1
+
+                    elif classe_rg == "P":
+                        places_restantes_eco_plus += 1
+                        # self._places_restantes_eco_plus += 1
+
+                    elif classe_rg == "Y":
+                        # self._places_restantes_eco += 1
+                        places_restantes_eco += 1
+
+                    drapeau = list(body_rg)
+                    drapeau[colonne] = "X"
+                    body_rg = "".join(drapeau)
+                    print(body_rg)
+                    print(classe_rg)
+                rang_chang = (classe_rg, body_rg, num_rg)
+                rang_chang = "|".join(rang_chang)
+                changement = True
+            if changement:
+                avion_change += rang_chang + "\n"
+            else:
+                avion_change += rang + "\n"
+        for rang in list_rang[-1]:
+            avion_change += rang
+
+        # self._cabine = avion_change
+
+        print('F', places_restantes_premiere, 'C', places_restantes_business, 'P', places_restantes_eco_plus,
+              'Y', places_restantes_eco)
+        return avion_change
 
 
 
-
-
-
-  #  body_rg = rang.split("|")[1]
-   # if num_rg == rangee:
-    #    print(body_rg)
-
-    reserver_place(avion,1,'A')
+    avion2 = liberer_place(avion1,1,'A',7,52,24,180)
+    print('CACA2')
+    print(avion2)
 
 
 

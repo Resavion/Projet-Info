@@ -22,7 +22,7 @@ if __name__ == '__main__':
 
         # Si Client
         if choix == modes[0]:
-            menus.actions_client(clients)
+            menus.actions_client(clients, compagnies, aeroports)
         # Si Compagnie
         elif choix == modes[1]:
             menus.actions_compagnie(compagnies)

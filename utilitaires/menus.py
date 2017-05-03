@@ -4,7 +4,7 @@ import ihm.console as ihm
 from reservation.Client import Client
 
 
-def actions_client(clients):
+def actions_client(clients, compagnies, aeroports):
     # Choisir un client existant ou nouveau
     comptes = [client for client in clients]
     comptes.append('Nouveau client')
@@ -20,21 +20,22 @@ def actions_client(clients):
     # Le client est chargé
     ihm.afficher("Bonjour {} !".format(client.prenom))
 
-    # Demander action : Faire, Consulter, Modifier, Annuler
-    actions = ('Faire une réservation', 'Consulter ses réservations',
-               'Modifier une réservation', 'Annuler une réservation',
-               'Revenir au début')
-    action = ihm.choisir(actions, "Choisissez une action :")
-    if action == actions[0]:
-        client.faire_reservation()
-    elif action == actions[1]:
-        client.consulter_reservations()
-    elif action == actions[2]:
-        client.modifier_reservation()
-    elif action == actions[3]:
-        client.annuler_reservation()
-    else:
-        pass
+    while True:
+        # Demander action : Faire, Consulter, Modifier, Annuler
+        actions = ('Faire une réservation', 'Consulter ses réservations',
+                   'Modifier une réservation', 'Annuler une réservation',
+                   'Revenir au début')
+        action = ihm.choisir(actions, "Choisissez une action :")
+        if action == actions[0]:
+            client.faire_reservation(compagnies, aeroports)
+        elif action == actions[1]:
+            client.consulter_reservations()
+        elif action == actions[2]:
+            client.modifier_reservation()
+        elif action == actions[3]:
+            client.annuler_reservation()
+        else:
+            break
     return
 
 

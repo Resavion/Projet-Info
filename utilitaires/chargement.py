@@ -46,6 +46,11 @@ def charger_bd(db_name):
 
 
 def charger_aeroports(cur):
+    """
+    Methode qui permet
+    :param cur: 
+    :return: 
+    """
     aeroports = []
     rows = r.select_all(cur, 'Aeroport')
     for row in rows:

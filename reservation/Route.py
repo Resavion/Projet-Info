@@ -1,6 +1,8 @@
 import math as ma
+# import numpy as np
 
 import ihm.console as ihm
+import utilitaires.earth as earth
 
 
 class Route(object):
@@ -149,11 +151,7 @@ class Route(object):
         ihm.demander("Tapez sur une touche pour revenir au menu")
         return
 
-    def afficher_carte(self):
-        """
-        Methode qui permet d'afficher la route reliant deux aeroports
-        :return: 
-        """
+    def chercher_horaire(self, date):
         pass
 
     def afficher_plan_vol(self):
@@ -163,6 +161,28 @@ class Route(object):
         :return: 
         """
         pass
+
+    def afficher_carte(self, start=None, show=True, annot=True):
+        """
+        Methode qui permet d'afficher la route reliant deux aeroports
+        :return: 
+        """
+        ae = earth.A
+        fe = earth.F
+        mu = earth.GM
+        ee = earth.E
+
+        # # Ajout du fond de carte (si la carte ne fait pas partie d'une composition)
+        # if show:
+        #     # Lecture du trait de cotes
+        #     coords_latlon = aux.lit_fic_coords('../Data/coast.txt')
+        #     # Transfo en Mercator
+        #     x, y = aux.mercator(coords_latlon, ee, 0, 0, 6378137.0)
+        #     # Ajout a la carte
+        #     plt.fill(x, y, 'bisque', linewidth=0.1)
+        return
+
+
     #
     # # Methode pour faire une carte de la trace au sol du satellite
     # # !!! N'EST PLUS A coder !!!

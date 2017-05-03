@@ -135,7 +135,3 @@ class Compagnie(object):
         :return: 
         """
         pass
-
-
-
-    

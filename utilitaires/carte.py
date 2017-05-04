@@ -118,3 +118,39 @@ def add_arrow(line, position=None, direction='right', size=15, color=None):
         arrowprops=dict(arrowstyle="->", color=color),
         size=size
     )
+
+
+def waypoint(lat1_deg, lon1_deg, lat2_deg, lon2_deg, frac, dist, radius=6371000):
+    delta = dist/radius
+    a = ma.sin((1. - frac)*delta)/ma.sin(delta)
+    b = ma.sin(frac*delta)/ma.sin(delta)
+    lat1 = ma.radians(lat1_deg)
+    lat2 = ma.radians(lat2_deg)
+    lon1 = ma.radians(lon1_deg)
+    lon2 = ma.radians(lon2_deg)
+    x = a * ma.cos(lat1) * ma.cos(lon1) + b * ma.cos(lat2) * ma.cos(lon2)
+    y = a * ma.cos(lat1) * ma.sin(lon1) + b * ma.cos(lat2) * ma.sin(lon2)
+    z = a * ma.sin(lat1) + b * ma.sin(lat2)
+    lat = ma.atan2(z, ma.sqrt(x**2 + y**2))
+    lon = ma.atan2(y, x)
+    return lat, lon
+
+
+def bearing(lat1_deg, lon1_deg, lat2_deg, lon2_deg):
+    dlon = ma.radians(lon2_deg - lon1_deg)
+    lat1 = ma.radians(lat1_deg)
+    lat2 = ma.radians(lat2_deg)
+    y = ma.sin(dlon) * ma.cos(lat2)
+    x = ma.cos(lat1) * ma.sin(lat2) - ma.sin(lat1) * ma.cos(lat2) * ma.cos(dlon)
+    return ma.degrees(ma.atan2(y, x))
+
+
+def distance_haversine(lat1_deg, lon1_deg, lat2_deg, lon2_deg, radius=6371000):
+    """ note that the default distance is in meters """
+    dlat = ma.radians(lat2_deg - lat1_deg)
+    dlon = ma.radians(lon2_deg - lon1_deg)
+    lat1 = ma.radians(lat1_deg)
+    lat2 = ma.radians(lat2_deg)
+    a = ma.sin(dlat / 2) * ma.sin(dlat / 2) + ma.sin(dlon / 2) * ma.sin(dlon / 2) * ma.cos(lat1) * ma.cos(lat2)
+    c = 2 * ma.atan2(ma.sqrt(a), ma.sqrt(1 - a))
+    return c * radius

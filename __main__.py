@@ -15,14 +15,14 @@ if __name__ == '__main__':
 
     aeroports, compagnies, clients = charger_bd(db_name)
 
-    client = clients[0]
-    #print(clients[0])
-    # for reservation in client.reservations:
-    #     print(reservation)
-    reservation = client.reservations[0]
-    reservation.fournir_recapitulatif()
+    # client = clients[0]
+    # #print(clients[0])
+    # # for reservation in client.reservations:
+    # #     print(reservation)
+    # reservation = client.reservations[0]
+    # reservation.fournir_recapitulatif()
 
-
+    compagnies[2].afficher_carte_routes()
 
     # while True:
     #     # Choisir un mode d'utilisation

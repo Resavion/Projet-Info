@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 import ihm.console as ihm
 import utilitaires.earth as earth
-from utilitaires.carte import (mercator, add_arrow)
+from utilitaires.carte import (mercator, add_arrow, distance_haversine)
 
 
 class Route(object):
@@ -26,7 +26,10 @@ class Route(object):
         self._aeroport_depart = aeroport_depart
         self._aeroport_arrivee = aeroport_arrivee
         self._geom = geom
-        self._distance = self.distance_haversine(aeroport_depart, aeroport_arrivee)
+        self._distance = distance_haversine(aeroport_depart.latitude_deg,
+                                            aeroport_depart.longitude_deg,
+                                            aeroport_arrivee.latitude_deg,
+                                            aeroport_arrivee.longitude_deg)
         self._codeshare = codeshare
         if horaires is None:
             horaires = []
@@ -77,41 +80,6 @@ class Route(object):
                     self._aeroport_arrivee.code_pays,
                     self._distance / 1000,
                     len(self._horaires))
-
-    @staticmethod
-    def distance_haversine(dep, arr, radius=6371000):
-        """ note that the default distance is in meters """
-        dlat = ma.radians(arr.latitude_deg - dep.latitude_deg)
-        dlon = ma.radians(arr.longitude_deg - dep.longitude_deg)
-        lat1 = ma.radians(dep.latitude_deg)
-        lat2 = ma.radians(arr.latitude_deg)
-        a = ma.sin(dlat / 2) * ma.sin(dlat / 2) + ma.sin(dlon / 2) * ma.sin(dlon / 2) * ma.cos(lat1) * ma.cos(lat2)
-        c = 2 * ma.atan2(ma.sqrt(a), ma.sqrt(1 - a))
-        return c * radius
-
-    @staticmethod
-    def bearing(self, dep, arr):
-        dlon = ma.radians(arr.longitude_deg - dep.longitude_deg)
-        lat1 = ma.radians(dep.latitude_deg)
-        lat2 = ma.radians(arr.latitude_deg)
-        y = ma.sin(dlon) * ma.cos(lat2)
-        x = ma.cos(lat1) * ma.sin(lat2) - ma.sin(lat1) * ma.cos(lat2) * ma.cos(dlon)
-        return ma.degrees(ma.atan2(y, x))
-
-    def waypoint(self, dep, arr, frac, radius=6371000):
-        delta = self._distance/radius
-        a = ma.sin((1. - frac)*delta)/ma.sin(delta)
-        b = ma.sin(frac*delta)/ma.sin(delta)
-        lat1 = ma.radians(dep.latitude_deg)
-        lat2 = ma.radians(arr.latitude_deg)
-        lon1 = ma.radians(dep.longitude_deg)
-        lon2 = ma.radians(arr.longitude_deg)
-        x = a * ma.cos(lat1) * ma.cos(lon1) + b * ma.cos(lat2) * ma.cos(lon2)
-        y = a * ma.cos(lat1) * ma.sin(lon1) + b * ma.cos(lat2) * ma.sin(lon2)
-        z = a * ma.sin(lat1) + b * ma.sin(lat2)
-        lat = ma.atan2(z, ma.sqrt(x**2 + y**2))
-        lon = ma.atan2(y, x)
-        return lat, lon
 
     def ajouter_horaire(self):
         """
@@ -170,14 +138,12 @@ class Route(object):
         :return: 
         """
 
-        ee = earth.E
-
         # Ajout du fond de carte (si la carte ne fait pas partie d'une composition)
         if show:
             # Lecture du trait de cotes
             coords_latlon = np.genfromtxt('utilitaires/coast.txt', delimiter=" ")
             # Transfo en Mercator
-            x, y = mercator(coords_latlon, ee, 0, 0, 6378137.0)
+            x, y = mercator(coords_latlon, earth.E, 0, 0, earth.A)
             # Ajout a la carte
             plt.fill(x, y, 'bisque', linewidth=0.1)
 
@@ -188,7 +154,7 @@ class Route(object):
         list_coords[1, 0] = self._aeroport_arrivee.latitude_deg
         list_coords[1, 1] = self._aeroport_arrivee.longitude_deg
         # Transfo en Mercator
-        xs, ys = mercator(list_coords, ee, 0, 0, 6378137.0)
+        xs, ys = mercator(list_coords, earth.E, 0, 0, earth.A)
         # Ajout a la carte
         plt.plot(xs, ys, 'b.')
         ligne = plt.plot(xs, ys, 'b-')[0]

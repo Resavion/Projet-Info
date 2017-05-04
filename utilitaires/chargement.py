@@ -208,7 +208,8 @@ def charger_routes_de_compagnie(cur, aeroports, compagnie):
 
 def charger_horaires_propres_de_route(cur, configs, route):
     """
-    Methode qui permet de charger l'horaire propre (c'est-à-dire un horaire assuré en propre par la compagnie)
+    Methode qui permet de charger l'horaire propre 
+    (c'est-à-dire un horaire assuré en propre par la compagnie)
     d'une route par rapport à une compagnie
     
     :param cur: curseur
@@ -228,8 +229,8 @@ def charger_horaires_propres_de_route(cur, configs, route):
         t       = datetime.strptime(row[6], "%Hh%M")
         dur     = timedelta(hours=t.hour, minutes=t.minute)
         # Horaire
-        horaire = Horaire(row[0], route, route.compagnie, row[3],
-                          dep, arr, dur, row[7], row[8], config)
+        horaire = Horaire(row[0], route, row[3], dep, arr, dur,
+                          row[7], row[8], config)
         horaires.append(horaire)
         # print(horaire)
     return horaires
@@ -237,8 +238,8 @@ def charger_horaires_propres_de_route(cur, configs, route):
 
 def charger_horaires_codeshare_de_route(cur, horaires, route):
     """
-    Methode qui permet de charger les horaires partagés d'une route (c'est-à-dire un horaire qui n'est pas assuré en propre 
-    par la compagnie)
+    Methode qui permet de charger les horaires partagés d'une route 
+    (c'est-à-dire un horaire qui n'est pas assuré en propre par la compagnie)
     
     :param cur: curseur
     :param horaires: la liste des horaires propres de toutes les compagnies
@@ -250,8 +251,7 @@ def charger_horaires_codeshare_de_route(cur, horaires, route):
     rows               = r.select_horaires_codeshare_par_route(cur, route.id)
     for row in rows:
         horaire_operateur = [x for x in horaires if x.id == row[8]][0]
-        horaire_codeshare = Horaire(row[0], route, route.compagnie,
-                                    *row[3:8], horaire_operateur)
+        horaire_codeshare = Horaire(row[0], route, *row[3:8], horaire_operateur)
         horaires_codeshare.append(horaire_codeshare)
         # print(horaire_codeshare)
     return horaires_codeshare

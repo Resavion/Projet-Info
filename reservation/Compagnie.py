@@ -126,14 +126,12 @@ class Compagnie(object):
         :return: 
         """
 
-        ee = earth.E
-
         # Ajout du fond de carte (si la carte ne fait pas partie d'une composition)
         if show:
             # Lecture du trait de cotes
             coords_latlon = np.genfromtxt('utilitaires/coast.txt')
             # Transfo en Mercator
-            x, y = mercator(coords_latlon, ee, 0, 0, 6378137.0)
+            x, y = mercator(coords_latlon, earth.E, 0, 0, 6378137.0)
             # Ajout a la carte
             plt.fill(x, y, 'bisque', linewidth=0.1)
 

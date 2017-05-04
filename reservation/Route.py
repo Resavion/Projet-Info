@@ -4,7 +4,8 @@ import matplotlib.pyplot as plt
 
 import ihm.console as ihm
 import utilitaires.earth as earth
-from utilitaires.carte import (mercator, add_arrow, distance_haversine)
+from utilitaires.carte import (mercator, add_arrow, distance_haversine,
+                               densif_geodesique)
 
 
 class Route(object):
@@ -154,9 +155,14 @@ class Route(object):
         list_coords[1, 0] = self._aeroport_arrivee.latitude_deg
         list_coords[1, 1] = self._aeroport_arrivee.longitude_deg
         # Transfo en Mercator
-        xs, ys = mercator(list_coords, earth.E, 0, 0, earth.A)
+        xs0, ys0 = mercator(list_coords, earth.E, 0, 0, earth.A)
+        # Ajout points a la carte
+        plt.plot(xs0, ys0, 'b.')
+        # Densification suivant la ligne geodesique
+        new_coords = densif_geodesique(list_coords, self._distance)
+        # Transfo en Mercator
+        xs, ys = mercator(new_coords, earth.E, 0, 0, earth.A)
         # Ajout a la carte
-        plt.plot(xs, ys, 'b.')
         ligne = plt.plot(xs, ys, 'b-')[0]
         add_arrow(ligne)
 
@@ -173,8 +179,8 @@ class Route(object):
         if annot:
             fig = plt.gcf()
             ax = fig.add_subplot(111)
-            for X, Y, T in zip(xs, ys, [self._aeroport_depart.id_code_iata,
-                                        self._aeroport_arrivee.id_code_iata]):
+            for X, Y, T in zip(xs0, ys0, [self._aeroport_depart.id_code_iata,
+                                          self._aeroport_arrivee.id_code_iata]):
                 ax.annotate('{0:s}'.format(T), xy=(X, Y), xytext=(4, -4), \
                             fontsize=10, textcoords='offset points')
 

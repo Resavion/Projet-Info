@@ -121,6 +121,18 @@ def add_arrow(line, position=None, direction='right', size=15, color=None):
 
 
 def waypoint(lat1_deg, lon1_deg, lat2_deg, lon2_deg, frac, dist, radius=6371000):
+    """
+    Calcule les coordonnees d'un point intermediaire le long d'une geodesique
+    
+    :param lat1_deg: latitude en degres du point de depart
+    :param lon1_deg: longitude en degres du point de depart 
+    :param lat2_deg: latitude en degres du point d'arrivee
+    :param lon2_deg: longitude en degres du point d'arrivee
+    :param frac: position du point intermediaire (entre 0 et 1)
+    :param dist: distance entre les deux points
+    :param radius: rayon moyen de la Terre
+    :return: latitude et longitude en degres du point intermediaire
+    """
     delta = dist/radius
     a = ma.sin((1. - frac)*delta)/ma.sin(delta)
     b = ma.sin(frac*delta)/ma.sin(delta)
@@ -133,7 +145,9 @@ def waypoint(lat1_deg, lon1_deg, lat2_deg, lon2_deg, frac, dist, radius=6371000)
     z = a * ma.sin(lat1) + b * ma.sin(lat2)
     lat = ma.atan2(z, ma.sqrt(x**2 + y**2))
     lon = ma.atan2(y, x)
-    return lat, lon
+    lat_deg = ma.degrees(lat)
+    lon_deg = ma.degrees(lon)
+    return lat_deg, lon_deg
 
 
 def bearing(lat1_deg, lon1_deg, lat2_deg, lon2_deg):
@@ -154,3 +168,18 @@ def distance_haversine(lat1_deg, lon1_deg, lat2_deg, lon2_deg, radius=6371000):
     a = ma.sin(dlat / 2) * ma.sin(dlat / 2) + ma.sin(dlon / 2) * ma.sin(dlon / 2) * ma.cos(lat1) * ma.cos(lat2)
     c = 2 * ma.atan2(ma.sqrt(a), ma.sqrt(1 - a))
     return c * radius
+
+
+def densif_geodesique(list_coords, dist):
+    # Pour 1 point tous les 100 kms environ : calculer le ratio et waypoint
+    nb_points = ma.floor(dist/1e5)
+    lat1_deg, lon1_deg = list_coords[0, :]
+    lat2_deg, lon2_deg = list_coords[1, :]
+    new_coords = np.zeros((nb_points+1, 2))
+    new_coords[0, :] = list_coords[0, :]
+    for i in range(1,nb_points):
+        frac = i/nb_points
+        lat, lon = waypoint(lat1_deg, lon1_deg, lat2_deg, lon2_deg, frac, dist)
+        new_coords[i, :] = lat, lon
+    new_coords[nb_points, :] = list_coords[1, :]
+    return new_coords

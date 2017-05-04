@@ -1,4 +1,9 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
 import ihm.console as ihm
+import utilitaires.earth as earth
+from utilitaires.carte import mercator
 
 
 class Compagnie(object):
@@ -108,12 +113,38 @@ class Compagnie(object):
 
     def afficher_infos_routes(self):
         """
-        Methode qui permet d'afficher les routes proposees par la compagnie
+        Methode qui permet d'afficher la liste des routes de la compagnie
         :return: 
         """
         ihm.afficher("Il y a {} route(s)".format(len(self._configs)))
         ihm.afficher_paginer(self._configs, "Routes", pas=10)
         return
+
+    def afficher_carte_routes(self, show=True, annot=True):
+        """
+        Methode qui permet d'afficher la carte des routes de la compagnie
+        :return: 
+        """
+
+        ee = earth.E
+
+        # Ajout du fond de carte (si la carte ne fait pas partie d'une composition)
+        if show:
+            # Lecture du trait de cotes
+            coords_latlon = np.genfromtxt('utilitaires/coast.txt')
+            # Transfo en Mercator
+            x, y = mercator(coords_latlon, ee, 0, 0, 6378137.0)
+            # Ajout a la carte
+            plt.fill(x, y, 'bisque', linewidth=0.1)
+
+        # Ajout de la carte de chaque station
+        for route in self._routes:
+            route.afficher_carte(show=False, annot=annot)
+
+        # Affichage
+        if show:
+            plt.title('Carte du reseau {0:s}'.format(self._nom))
+            plt.show()
 
     def ajouter_route(self):
         """
@@ -175,7 +206,7 @@ class Compagnie(object):
         routes2 = [
             x for x in compagnie.routes
             if x.aeroport_depart == escale
-               and x.aeroport_arrivee not in aeroports_visites
+            and x.aeroport_arrivee not in aeroports_visites
         ]
         route_1escale = [x for x in routes2 if x.aeroport_arrivee == aer_arr]
         if route_1escale:

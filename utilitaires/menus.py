@@ -219,13 +219,7 @@ def actions_routes(compagnie):
 
 
 def gerer_route(compagnie):
-    route = None
-    code = ihm.demander("Tapez l'identifiant de la route :")
-    results = [x for x in compagnie.routes if x.id == int(code)]
-    if len(results) == 0:
-        ihm.afficher("Désolé, nous n'avons pas trouvé votre route !")
-        return
-    route = results[0]
+    route = ihm.choisir_paginer(compagnie.routes, "Choisissez la route :")
     ihm.afficher("Vous allez gérer la route {}".format(route))
     # Proposer les actions
     while True:

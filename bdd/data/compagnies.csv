@@ -1,0 +1,533 @@
+id;nom;code_icao;pays;code_continent;code_pays
+2B;Aerocondor;ARD;Portugal;EU;PT
+2I;Star Peru (2I);;Peru;SA;PE
+2J;Air Burkina;VBW;Burkina Faso;AF;BF
+2K;Aerolineas Galapagos (Aerogal);GLG;Ecuador;SA;EC
+2L;Helvetic Airways;OAW;Switzerland;EU;CH
+2N;NextJet;NTJ;Sweden;EU;SE
+2O;Air Salone;;Sierra Leone;AF;SL
+2P;Air Philippines;GAP;Philippines;AS;PH
+3E;Air Choice One;;United States;NA;US
+3G;Atlant-Soyuz Airlines;AYZ;Russia;EU;RU
+3K;Jetstar Asia Airways;JSA;Singapore;AS;SG
+3L;Intersky;ISK;Austria;EU;AT
+3M;Silver Airways (3M);;United States;NA;US
+3O;Air Arabia Maroc;;Morocco;AF;MA
+3P;Tiara Air;TNM;Aruba;NA;AW
+3R;Moskovia Airlines;GAI;Russia;EU;RU
+3S;Air Antilles Express;;Guadeloupe;NA;GP
+3U;Sichuan Airlines;CSC;China;AS;CN
+4B;Boutique Air (Priv);BTQ;United States;NA;US
+4D;Air Sinai;ASD;Egypt;AF;EG
+4G;Gazpromavia;GZP;Russia;EU;RU
+4H;United Airways;UBD;Bangladesh;AS;BD
+4K;Askari Aviation;AAS;Pakistan;AS;PK
+4M;LAN Argentina;DSM;Argentina;SA;AR
+4N;Air North Charter - Canada;ANT;Canada;NA;CA
+4O;Interjet (ABC Aerolineas);;Mexico;NA;MX
+4Q;Safi Airlines;;Afghanistan;AS;AF
+4T;Belair Airlines;BHP;Switzerland;EU;CH
+4U;Germanwings;GWI;Germany;EU;DE
+5C;CAL Cargo Air Lines;ICL;Israel;AS;IL
+5G;Skyservice Airlines;SSV;Canada;NA;CA
+5H;Fly540;FFV;Kenya;AF;KE
+5J;Cebu Pacific;CEB;Philippines;AS;PH
+5M;Sibaviatrans;SIB;Russia;EU;RU
+5N;Aeroflot-Nord;AUL;Russia;EU;RU
+5P;Pal airlines;;Chile;SA;CL
+5Q;BQB Lineas Aereas;;Uruguay;SA;UY
+5T;Canadian North;MPE;Canada;NA;CA
+5Z;VivaColombia;VVC;Colombia;SA;CO
+6E;IndiGo Airlines;IGO;India;AS;IN
+6H;Israir;ISR;Israel;AS;IL
+6I;Fly 6ix;;Sierra Leone;AF;SL
+6R;Alrosa Mirny Air Enterprise;DRU;Russia;EU;RU
+6T;Air Mandalay;;Burma;AS;MM
+6W;Saratov Aviation Division;SOV;Russia;EU;RU
+6Y;SmartLynx Airlines;;Latvia;EU;LV
+7C;Jeju Air;JJA;Republic of Korea;AS;KR
+7E;Aeroline GmbH;AWU;Germany;EU;DE
+7F;First Air;FAB;Canada;NA;CA
+7G;Star Flyer;SFJ;Japan;AS;JP
+7H;Era Alaska;ERR;United States;NA;US
+7I;Insel Air (7I/INC) (Priv);;Netherlands Antilles;NA;BQ
+7J;Tajik Air;;Tajikistan;AS;TJ
+7M;Mongolian International Air Lines ;ZTF;Mongolia;AS;MN
+7P;Metro Batavia;BTV;Indonesia;AS;ID
+7R;Svyaz Rossiya;SJM;Russia;EU;RU
+8B;BusinessAir;BCC;Thailand;AS;TH
+8D;Astair;;Russia;EU;RU
+8E;Bering Air;BRG;United States;NA;US
+8I;Myway Airlines;;Italy;EU;IT
+8L;Cargo Plus Aviation;CGP;United Arab Emirates;AS;AE
+8M;Myanmar Airways International;MMM;Myanmar;AS;MM
+8P;Pacific Coastal Airline;PCO;Canada;NA;CA
+8Q;Onur Air;OHY;Turkey;AS;TR
+8R;TRIP Linhas A;TIB;Brazil;SA;BR
+8T;Air Tindi;;Canada;NA;CA
+8U;Afriqiyah Airways;AAW;Libya;AF;LY
+8V;Astral Aviation;ACP;Kenya;AF;KE
+9C;China SSS;;China;AS;CN
+9E;Pinnacle Airlines;FLG;United States;NA;US
+9K;Cape Air;KAP;United States;NA;US
+9N;Regional Air Iceland;N78;Iceland;EU;IS
+9Q;PB Air;PBA;Thailand;AS;TH
+9R;SATENA;NSE;Colombia;SA;CO
+9U;Air Moldova;MLD;Moldova;EU;MD
+9V;Volotea Costa Rica;VC9;Costa Rica;NA;CR
+9W;Jet Airways;JAI;India;AS;IN
+A2;All America;AL2;United States;NA;US
+A3;Aegean Airlines;AEE;Greece;EU;GR
+A4;Southern Winds Airlines;SWD;Argentina;SA;AR
+A5;Airlinair;RLA;France;EU;FR
+A9;Georgian Airways;TGZ;Georgia;AS;GE
+AA;American Airlines;AAL;United States;NA;US
+AB;Air Berlin;BER;Germany;EU;DE
+AC;Air Canada;ACA;Canada;NA;CA
+AD;Azul;AZU;Brazil;SA;BR
+AE;Mandarin Airlines;MDA;Taiwan;AS;TW
+AF;Air France;AFR;France;EU;FR
+AH;Air Algerie;DAH;Algeria;AF;DZ
+AI;Air India Limited;AIC;India;AS;IN
+AK;AirAsia;AXM;Malaysia;AS;MY
+AM;AeroMéxico;AMX;Mexico;NA;MX
+AP;Air One;ADH;Italy;EU;IT
+AR;Aerolineas Argentinas;ARG;Argentina;SA;AR
+AS;Alaska Airlines;ASA;United States;NA;US
+AT;Royal Air Maroc;RAM;Morocco;AF;MA
+AV;Avianca - Aerovias Nacionales de Colombia;AVA;Colombia;SA;CO
+AW;Asian Wings Airways;AWM;Burma;AS;MM
+AY;Finnair;FIN;Finland;EU;FI
+AZ;Alitalia;AZA;Italy;EU;IT
+B2;Belavia Belarusian Airlines;BRU;Belarus;EU;BY
+B5;Flightline;FLT;United Kingdom;EU;GB
+B6;JetBlue Airways;JBU;United States;NA;US
+B7;Uni Air;UIA;Taiwan;AS;TW
+B9;Air Bangladesh;BGD;Bangladesh;AS;BD
+BA;British Airways;BAW;United Kingdom;EU;GB
+BB;Seaborne Airlines;SBS;United States;NA;US
+BC;Skymark Airlines;SKY;Japan;AS;JP
+BE;Flybe;BEE;United Kingdom;EU;GB
+BF;Aero-Service;RSR;Congo (Kinshasa);AF;CD
+BG;Biman Bangladesh Airlines;BBC;Bangladesh;AS;BD
+BH;Hawkair;;Canada;NA;CA
+BI;Royal Brunei Airlines;RBA;Brunei;AS;BN
+BJ;Nouvel Air Tunisie;LBT;Tunisia;AF;TN
+BK;Potomac Air;PDC;United States;NA;US
+BL;Jetstar Pacific;PIC;Vietnam;AS;VN
+BM;Air Sicilia;;Italy;EU;IT
+BP;Air Botswana;BOT;Botswana;AF;BW
+BR;EVA Air;EVA;Taiwan;AS;TW
+BT;Air Baltic;BTI;Latvia;EU;LV
+BU;Baikotovitchestrian Airlines ;BUU;American Samoa;OC;AS
+BV;Blue Panorama Airlines;BPA;Italy;EU;IT
+BW;Caribbean Airlines;BWA;Trinidad and Tobago;NA;TT
+BX;Air Busan;ABL;Republic of Korea;AS;KR
+BY;Thomsonfly;TOM;United Kingdom;EU;GB
+CA;Air China;CCA;China;AS;CN
+CC;Air Atlanta Icelandic;ABD;Iceland;EU;IS
+CE;Nationwide Airlines;NTW;South Africa;AF;ZA
+CG;Airlines PNG;TOK;Papua New Guinea;OC;PG
+CI;China Airlines;CAL;Taiwan;AS;TW
+CM;Copa Airlines;CMP;Panama;NA;PA
+CN;Canadian National Airways;YCP;Canada;NA;CA
+CU;Cubana de Aviación;CUB;Cuba;NA;CU
+CX;Cathay Pacific;CPA;Hong Kong;AS;HK
+CY;Cyprus Airways;CYP;Cyprus;AS;CY
+CZ;China Southern Airlines;CSN;China;AS;CN
+D2;Severstal Air Company;;Russia;EU;RU
+D3;Daallo Airlines;DAO;Djibouti;AF;DJ
+D6;Interair South Africa;ILN;South Africa;AF;ZA
+D7;AirAsia X;XAX;Malaysia;AS;MY
+DC;Golden Air;GAO;Sweden;EU;SE
+DD;Nok Air;NOK;Thailand;AS;TH
+DE;Condor Flugdienst;CFG;Germany;EU;DE
+DG;South East Asian Airlines;SRQ;Philippines;AS;PH
+DH;Dennis Sky;DSY;Israel;AS;IL
+DL;Delta Air Lines;DAL;United States;NA;US
+DN;Senegal Airlines;SGG;Senegal;AF;SN
+DT;TAAG Angola Airlines;DTA;Angola;AF;AO
+DV;Scat Air;VSV;Kazakhstan;AS;KZ
+DX;DAT Danish Air Transport;DTR;Denmark;EU;DK
+DY;Norwegian Air Shuttle;NAX;Norway;EU;NO
+DZ;Starline.kz;;Kazakhstan;AS;KZ
+E2;Eagle Atlantic Airlines;;Ghana;AF;GH
+E5;Air Arabia Egypt;RBG;Egypt;AF;EG
+E8;City Airways;GTA;Thailand;AS;TH
+E9;Compagnie Africaine d\\'Aviation;;Congo (Kinshasa);AF;CD
+EF;Far Eastern Air Transport;EFA;Taiwan;AS;TW
+EG;Japan Asia Airways;JAA;Japan;AS;JP
+EI;Aer Lingus;EIN;Ireland;EU;IE
+EK;Emirates;UAE;United Arab Emirates;AS;AE
+EL;Air Nippon;ANK;Japan;AS;JP
+EN;Air Dolomiti;DLA;Italy;EU;IT
+EO;Express One International;LHN;United States;NA;US
+EP;Iran Aseman Airlines;IRC;Iran;AS;IR
+EQ;TAME;TAE;Ecuador;SA;EC
+ET;Ethiopian Airlines;ETH;Ethiopia;AF;ET
+EU;Empresa Ecuatoriana De Aviacion;EEA;Ecuador;SA;EC
+EW;Eurowings;EWG;Germany;EU;DE
+EY;Etihad Airways;ETD;United Arab Emirates;AS;AE
+F5;Fly One;FI5;Moldova;EU;MD
+F7;Flybaboo;BBO;Switzerland;EU;CH
+F9;Frontier Airlines;FFT;United States;NA;US
+FB;Bulgaria Air;LZB;Bulgaria;EU;BG
+FD;Thai AirAsia;AIQ;Thailand;AS;TH
+FG;Ariana Afghan Airlines;AFG;Afghanistan;AS;AF
+FI;Icelandair;ICE;Iceland;EU;IS
+FJ;Air Pacific;FJI;Fiji;OC;FJ
+FL;AirTran Airways;TRS;United States;NA;US
+FM;Shanghai Airlines;CSH;China;AS;CN
+FO;Airlines Of Tasmania;ATM;Australia;OC;AU
+HQ;Thomas Cook Airlines;TCW;Belgium;EU;BE
+FR;Ryanair;RYR;Ireland;EU;IE
+FS;Servicios de Transportes A;STU;Argentina;SA;AR
+FV;Rossiya-Russian Airlines;SDM;Russia;EU;RU
+FW;Ibex Airlines;IBX;Japan;AS;JP
+FY;Firefly;FFM;Malaysia;AS;MY
+FZ;Fly Dubai;FDB;United Arab Emirates;AS;AE
+G3;Gol Transportes Aéreos;GLO;Brazil;SA;BR
+G4;Allegiant Air;AAY;United States;NA;US
+G5;Huaxia;;China;AS;CN
+G8;Go Air;GOW;India;AS;IN
+G9;Air Arabia;ABY;United Arab Emirates;AS;AE
+GA;Garuda Indonesia;GIA;Indonesia;AS;ID
+GE;TransAsia Airways;TNA;Taiwan;AS;TW
+GF;Gulf Air Bahrain;GBA;Bahrain;AS;BH
+GK;Genesis;;Pakistan;AS;PK
+GL;Air Greenland;GRL;Denmark;EU;DK
+GR;Aurigny Air Services;AUR;United Kingdom;EU;GB
+GS;Air Foyle;UPA;United Kingdom;EU;GB
+GV;Aero Flight;ARF;Germany;EU;DE
+GY;Gabon Airlines;GBK;Gabon;AF;GA
+GZ;Air Rarotonga;RAR;Cook Islands;OC;CK
+H2;Sky Airline;SKU;Chile;SA;CL
+H7;Eagle Air;;Uganda;AF;UG
+HA;Hawaiian Airlines;HAL;United States;NA;US
+HD;Hokkaido International Airlines;ADO;Japan;AS;JP
+HF;Hapagfly;HLF;Germany;EU;DE
+HG;Niki;NLY;Austria;EU;AT
+HI;Papillon Grand Canyon Helicopters;;United States;NA;US
+HK;Yangon Airways;;Burma;AS;MM
+HM;Air Seychelles;SEY;Seychelles;AF;SC
+HN;Hankook Airline;HNX;Republic of Korea;AS;KR
+HO;Juneyao Airlines;DKH;China;AS;CN
+HR;China United Airlines;CUA;China;AS;CN
+HU;Hainan Airlines;CHH;China;AS;CN
+HV;Transavia Holland;TRA;Netherlands;EU;NL
+HW;Hello;FHE;Switzerland;EU;CH
+HX;Hong Kong Airlines;CRK;Hong Kong;AS;HK
+HY;Uzbekistan Airways;UZB;Uzbekistan;AS;UZ
+HZ;Sat Airlines;SOZ;Kazakhstan;AS;KZ
+I4;International AirLink;;Jamaica;NA;JM
+I6;MexicanaLink;MXI;Mexico;NA;MX
+I8;IzAvia;;Russia;EU;RU
+I9;Air Italy;AEY;Italy;EU;IT
+IB;Iberia Airlines;IBE;Spain;EU;ES
+ID;Interlink Airlines;ITK;South Africa;AF;ZA
+IE;Solomon Airlines;SOL;Solomon Islands;OC;SB
+IG;Meridiana;ISS;Italy;EU;IT
+IR;Iran Air;IRA;Iran;AS;IR
+IX;Air India Express;AXB;India;AS;IN
+IY;Yemenia;IYE;Yemen;AS;YE
+IZ;Arkia Israel Airlines;AIZ;Israel;AS;IL
+J2;Azerbaijan Airlines;AHY;Azerbaijan;AS;AZ
+J3;Northwestern Air;PLR;Canada;NA;CA
+J4;ALAK;;Russia;EU;RU
+J5;Alaska Seaplane Service;;United States;NA;US
+J8;Berjaya Air;BVT;Malaysia;AS;MY
+J9;Jazeera Airways;JZR;Kuwait;AS;KW
+JA;Air Bosna;BON;Bosnia and Herzegovina;EU;BA
+JD;Japan Air System;JAS;Japan;AS;JP
+JE;Mango;MNO;South Africa;AF;ZA
+JH;Fuji Dream Airlines;;Japan;AS;JP
+JJ;TAM Brazilian Airlines;TAM;Brazil;SA;BR
+JL;Japan Airlines;JAL;Japan;AS;JP
+JN;Excel Airways;XLA;United Kingdom;EU;GB
+JP;Adria Airways;ADR;Slovenia;EU;SI
+JQ;Jetstar Airways;JST;Australia;OC;AU
+JS;Air Koryo;KOR;Democratic People's Republic of Korea;AS;KP
+JT;Lion Mentari Airlines;LNI;Indonesia;AS;ID
+JU;Air Serbia;ASL;Serbia;EU;RS
+JV;Bearskin Lake Air Service;BLS;Canada;NA;CA
+JW;Arrow Air;APW;United States;NA;US
+JY;Aereonautica militare;AXZ;Italy;EU;IT
+K2;Eurolot;ELO;Poland;EU;PL
+K5;SeaPort Airlines;SQH;United States;NA;US
+K6;Cambodia Angkor Air (K6);;Cambodia;AS;KH
+K8;Zambia Skyways;;Zambia;AF;ZM
+KA;Dragonair;HDA;Hong Kong;AS;HK
+KB;Druk Air;DRK;Bhutan;AS;BT
+KC;Air Astana;KZR;Kazakhstan;AS;KZ
+KE;Korean Air;KAL;Republic of Korea;AS;KR
+KK;Atlasjet;KKK;Turkey;AS;TR
+KL;KLM Royal Dutch Airlines;KLM;Netherlands;EU;NL
+KM;Air Malta;AMC;Malta;EU;MT
+KN;China United;;China;AS;CN
+KO;Alaska Central Express;AER;United States;NA;US
+KQ;Kenya Airways;KQA;Kenya;AF;KE
+KR;Comores Airlines;CWK;Comoros;AF;KM
+KS;Peninsula Airways;PEN;United States;NA;US
+KU;Kuwait Airways;KAC;Kuwait;AS;KW
+KX;Cayman Airways;CAY;Cayman Islands;NA;KY
+KY;KSY;KSY;Greece;EU;GR
+L6;Mauritania Airlines International;MAI;Mauritania;AF;MR
+LA;LAN Airlines;LAN;Chile;SA;CL
+LC;Varig Log;VLO;Brazil;SA;BR
+LF;FlyNordic;NDC;Sweden;EU;SE
+LG;Luxair;LGL;Luxembourg;EU;LU
+LH;Lufthansa;DLH;Germany;EU;DE
+LI;Leeward Islands Air Transport;LIA;Antigua and Barbuda;NA;AG
+LJ;Jin Air;JNA;Republic of Korea;AS;KR
+LM;Linhas A;LAM;Mozambique;AF;MZ
+LN;Libyan Arab Airlines;LAA;Libya;AF;LY
+LO;LOT Polish Airlines;LOT;Poland;EU;PL
+LR;LACSA;LRC;Costa Rica;NA;CR
+LS;Jet2.com;EXS;United Kingdom;EU;GB
+LT;Air Lituanica;LTU;Lithuania;EU;LT
+LV;Albanian Airlines;LBC;Albania;EU;AL
+LW;Pacific Wings;NMI;United States;NA;US
+LX;Swiss International Air Lines;SWR;Switzerland;EU;CH
+LY;El Al Israel Airlines;ELY;Israel;AS;IL
+M3;ABSA - Aerolinhas Brasileiras;TUS;Brazil;SA;BR
+M4;Marysya Airlines;1QA;Russia;EU;RU
+M5;Kenmore Air;KEN;United States;NA;US
+M9;Motor Sich;MSI;Ukraine;EU;UA
+MD;Air Madagascar;MDG;Madagascar;AF;MG
+ME;Middle East Airlines;MEA;Lebanon;AS;LB
+MF;Xiamen Airlines;CXA;China;AS;CN
+MH;Malaysia Airlines;MAS;Malaysia;AS;MY
+MI;SilkAir;SLK;Singapore;AS;SG
+MJ;L;LPR;Argentina;SA;AR
+MK;Air Mauritius;MAU;Mauritius;AF;MU
+MM;Peach Aviation;;Japan;AS;JP
+MN;Comair;CAW;South Africa;AF;ZA
+MO;Abu Dhabi Amiri Flight;AUH;United Arab Emirates;AS;AE
+MR;Homer Air;OME;Germany;EU;DE
+MS;Egyptair;MSR;Egypt;AF;EG
+MT;Thomas Cook Airlines;TCX;United Kingdom;EU;GB
+MU;China Eastern Airlines;CES;China;AS;CN
+MW;Maya Island Air;MYD;Belize;NA;BZ
+NF;Air Vanuatu;AVN;Vanuatu;OC;VU
+NH;All Nippon Airways;ANA;Japan;AS;JP
+NK;Spirit Airlines;NKS;United States;NA;US
+NL;Shaheen Air International;SAI;Pakistan;AS;PK
+NP;Nile Air;NIA;Egypt;AF;EG
+NS;Caucasus Airlines;;Georgia;AS;GE
+NT;Binter Canarias;IBB;Spain;EU;ES
+NU;Japan Transocean Air;JTA;Japan;AS;JP
+NX;Air Macau;AMU;Macao;AS;MO
+NY;Air Iceland;FXI;Iceland;EU;IS
+NZ;Air New Zealand;ANZ;New Zealand;OC;NZ
+O6;Oceanair;ONE;Brazil;SA;BR
+OA;Olympic Airlines;OAL;Greece;EU;GR
+OB;Astrakhan Airlines;ASZ;Russia;EU;RU
+OC;Catovair;;Mauritius;AF;MU
+OD;Malindo Air;MXD;Malaysia;AS;MY
+OJ;Overland Airways;OLA;Nigeria;AF;NG
+OK;Czech Airlines;CSA;Czech Republic;EU;CZ
+OM;MIAT Mongolian Airlines;MGL;Mongolia;AS;MN
+ON;Nauru Air Corporation;RON;Nauru;OC;NR
+OR;Arkefly;TFL;Netherlands;EU;NL
+OS;Austrian Airlines;AUA;Austria;EU;AT
+OU;Croatia Airlines;CTN;Croatia;EU;HR
+OV;Estonian Air;ELL;Estonia;EU;EE
+OX;Orient Thai Airlines;OEA;Thailand;AS;TH
+OY;Omni Air International;OAE;United States;NA;US
+OZ;Asiana Airlines;AAR;Republic of Korea;AS;KR
+P0;Proflight Commuter Services;;Zambia;AF;ZM
+P4;Patriot Airways;;United States;NA;US
+P9;Peruvian Airlines;;Peru;SA;PE
+PC;Pegasus Airlines;PGT;Turkey;AS;TR
+PD;Porter Airlines;POE;Canada;NA;CA
+PE;Air Europe;AEL;Italy;EU;IT
+PG;Bangkok Airways;BKP;Thailand;AS;TH
+PI;Piedmont Airlines (1948-1989);PDT;United States;NA;US
+PJ;Air Saint Pierre;SPM;France;EU;FR
+PK;Pakistan International Airlines;PIA;Pakistan;AS;PK
+PL;Aeroper;PLI;Peru;SA;PE
+PM;Tropic Air;TOS;Belize;NA;BZ
+PN;West Air China;CHB;China;AS;CN
+PQ;LSM Airlines;LOO;Russia;EU;RU
+PR;Philippine Airlines;PAL;Philippines;AS;PH
+PS;Ukraine International Airlines;AUI;Ukraine;EU;UA
+PV;PAN Air;PNR;Spain;EU;ES
+PW;Precision Air;PRF;Tanzania;AF;TZ
+PX;Air Niugini;ANG;Papua New Guinea;OC;PG
+PY;Surinam Airways;SLM;Suriname;SA;SR
+PZ;TAM Mercosur;LAP;Paraguay;SA;PY
+Q2;Maldivian;;Maldives;AS;MV
+Q3;SOCHI AIR CHATER;QER;Russia;EU;RU
+Q6;Aero Condor Peru;CDP;Peru;SA;PE
+Q7;SkyBahamas Airlines;;Bahamas;NA;BS
+Q8;Pacific East Asia Cargo Airlines;PEC;Philippines;AS;PH
+Q9;Arik Niger;NAK;Niger;AF;NE
+QB;Georgian National Airlines;GFG;Georgia;AS;GE
+QC;Camair-co;;Cameroon;AF;CM
+QF;Qantas;QFA;Australia;OC;AU
+QG;Citilink Indonesia;;Indonesia;AS;ID
+QH;Air Florida;FLZ;United States;NA;US
+QL;Aero Lanka;RLN;Sri Lanka;AS;LK
+QR;Qatar Airways;QTR;Qatar;AS;QA
+QS;Travel Service;TVS;Czech Republic;EU;CZ
+QU;East African;UGX;Uganda;AF;UG
+QV;Lao Airlines;LAO;Lao Peoples Democratic Republic;AS;LA
+QZ;Indonesia AirAsia;AWQ;Indonesia;AS;ID
+R2;Orenburg Airlines;ORB;Russia;EU;RU
+R3;Aircompany Yakutia;SYL;Russia;EU;RU
+R7;Aserca Airlines;OCA;Venezuela;SA;VE
+RA;Royal Nepal Airlines;RNA;Nepal;AS;NP
+RC;Atlantic Airways;FLI;Faroe Islands;EU;FO
+RG;VRG Linhas Aereas;VRN;Brazil;SA;BR
+RI;Mandala Airlines;MDL;Indonesia;AS;ID
+RJ;Royal Jordanian;RJA;Jordan;AS;JO
+RL;Royal Falcon;RFJ;Jordan;AS;JO
+RO;Tarom;ROT;Romania;EU;RO
+RQ;Kam Air;KMF;Afghanistan;AS;AF
+RX;Rainbow Air Polynesia;RPO;United States;NA;US
+RZ;Euro Exec Express;;Sweden;EU;SE
+S2;Air Sahara;RSH;India;AS;IN
+S3;Santa Barbara Airlines;BBR;Venezuela;SA;VE
+S4;SATA International;RZO;Portugal;EU;PT
+S5;Shuttle America;TCF;United States;NA;US
+S6;Salmon Air;;United States;NA;US
+S7;S7 Airlines;SBI;Russia;EU;RU
+S9;Starbow Airlines;;Ghana;AF;GH
+SA;South African Airways;SAA;South Africa;AF;ZA
+SB;Air Caledonie International;ACI;France;EU;FR
+SC;Shandong Airlines;CDG;China;AS;CN
+SD;Sudan Airways;SUD;Sudan;AF;SD
+SE;XL Airways France;SEU;France;EU;FR
+SG;Spicejet;SEJ;India;AS;IN
+SH;Sharp Airlines;SHA;Australia;OC;AU
+SI;Skynet Airlines;SIH;Ireland;EU;IE
+SJ;Sriwijaya Air;SJY;Indonesia;AS;ID
+SK;Scandinavian Airlines System;SAS;Sweden;EU;SE
+SN;Brussels Airlines;DAT;Belgium;EU;BE
+SP;SATA Air Acores;SAT;Portugal;EU;PT
+SQ;Singapore Airlines;SIA;Singapore;AS;SG
+SS;Corsairfly;CRL;France;EU;FR
+ST;Germania;GMI;Germany;EU;DE
+SU;Aeroflot Russian Airlines;AFL;Russia;EU;RU
+SV;Saudi Arabian Airlines;SVA;Saudi Arabia;AS;SA
+SW;Air Namibia;NMB;Namibia;AF;NA
+SX;SkyWork Airlines ;;Switzerland;EU;CH
+SY;Sun Country Airlines;SCX;United States;NA;US
+SZ;Salzburg arrows;;Austria;EU;AT
+T3;Eastern Airways;EZE;United Kingdom;EU;GB
+T5;Turkmenistan Airlines;TUA;Turkmenistan;AS;TM
+T7;Twin Jet;TJT;France;EU;FR
+TA;Grupo TACA;TAT;Costa Rica;NA;CR
+TD;Atlantis European Airways;LUR;Armenia;AS;AM
+TE;FlyLal;LIL;Lithuania;EU;LT
+TF;Malmö Aviation;SCW;Sweden;EU;SE
+TG;Thai Airways International;THA;Thailand;AS;TH
+TJ;T.J. Air;TJA;United States;NA;US
+TK;Turkish Airlines;THY;Turkey;AS;TR
+TL;Airnorth;ANO;Australia;OC;AU
+TM;Air Mozambique;;Mozambique;AF;MZ
+TN;Air Tahiti Nui;THT;France;EU;FR
+TO;Transavia France;TVF;France;EU;FR
+TP;TAP Portugal;TAP;Portugal;EU;PT
+TR;Tiger Airways;TGW;Singapore;AS;SG
+TS;Air Transat;TSC;Canada;NA;CA
+TT;Tiger Airways Australia;TGW;Australia;OC;AU
+TU;Tunisair;TAR;Tunisia;AF;TN
+TV;Virgin Express;VEX;Belgium;EU;BE
+TW;Tway Airlines;TWB;Republic of Korea;AS;KR
+TX;Air Caraïbes;FWI;France;EU;FR
+TY;Iberworld;IWD;Spain;EU;ES
+TZ;Scoot;SCO;Singapore;AS;SG
+U2;easyJet;EZY;United Kingdom;EU;GB
+U6;Ural Airlines;SVR;Russia;EU;RU
+U7;Northern Dene Airways;;Canada;NA;CA
+UA;United Airlines;UAL;United States;NA;US
+UD;Hex'Air;HER;France;EU;FR
+UE;Nasair;NAS;Eritrea;AF;ER
+UG;Tuninter;TUI;Tunisia;AF;TN
+UJ;AlMasria Universal Airlines;LMU;Egypt;AF;EG
+UL;SriLankan Airlines;ALK;Sri Lanka;AS;LK
+UM;Air Zimbabwe;AZW;Zimbabwe;AF;ZW
+UN;Transaero Airlines;TSO;Russia;EU;RU
+UO;Hong Kong Express Airways;HKE;Hong Kong;AS;HK
+UP;Bahamasair;BHS;Bahamas;NA;BS
+UR;UTair-Express;;Russia;EU;RU
+US;US Airways;USA;United States;NA;US
+UU;Air Austral;REU;France;EU;FR
+UX;Air Europa;AEA;Spain;EU;ES
+V0;Conviasa;VCV;Venezuela;SA;VE
+V3;Carpatair;KRP;Romania;EU;RO
+V7;VOLOTEA Airways;VOE;Spain;EU;ES
+V9;Star1 Airlines;HCW;Lithuania;EU;LT
+VA;Virgin Australia;VOZ;Australia;OC;AU
+VF;Valuair;VLU;Singapore;AS;SG
+VH;Virgin Pacific;VNP;Fiji;OC;FJ
+VJ;Royal Air Cambodge;RAC;Cambodia;AS;KH
+VN;Vietnam Airlines;HVN;Vietnam;AS;VN
+VQ;Viking Hellas;VKH;Greece;EU;GR
+VR;TACV;TCV;Portugal;EU;PT
+VS;Virgin Atlantic Airways;VIR;United Kingdom;EU;GB
+VT;Air Tahiti;VTA;French Polynesia;OC;PF
+VW;Aeromar;TAO;Mexico;NA;MX
+VX;Virgin America;VRD;United States;NA;US
+VY;Vueling Airlines;VLG;Spain;EU;ES
+W2;Maastricht Airlines;;Netherlands;EU;NL
+W3;World Scale Airlines;WSS;United States;NA;US
+W4;AeroWorld ;WER;Russia;EU;RU
+W5;Mahan Air;IRM;Iran;AS;IR
+W6;Wizz Air;WZZ;Hungary;EU;HU
+W9;Air Bagan;JAB;Myanmar;AS;MM
+WB;Rwandair Express;RWD;Rwanda;AF;RW
+WF;Widerøe;WIF;Norway;EU;NO
+WJ;WebJet Linhas A;WEB;Brazil;SA;BR
+WM;Windward Islands Airways;;Netherlands Antilles;NA;BQ
+WN;Southwest Airlines;SWA;United States;NA;US
+WP;Island Air (WP);MKU;United States;NA;US
+WS;WestJet;WJA;Canada;NA;CA
+WU;Wizz Air Ukraine;WAU;Ukraine;EU;UA
+WW;bmibaby;BMI;United Kingdom;EU;GB
+WX;CityJet;BCY;Ireland;EU;IE
+WY;Oman Air;OMA;Oman;AS;OM
+X3;TUIfly;HLX;Germany;EU;DE
+XK;Corse-Mediterranee;CCM;France;EU;FR
+XL;Aerolane;LNE;Ecuador;SA;EC
+XQ;SunExpress;SXS;Turkey;AS;TR
+XV;BVI Airways;;British Virgin Islands;NA;VG
+XY;Nas Air;KNE;Saudi Arabia;AS;SA
+Y4;Volaris;VOI;Mexico;NA;MX
+Y5;Asia Wings;AWA;Kazakhstan;AS;KZ
+Y7;NordStar Airlines;;Russia;EU;RU
+Y9;Kish Air;IRK;Iran;AS;IR
+YC;Ciel Canadien;YCC;Canada;NA;CA
+YK;Cyprus Turkish Airlines;;Turkey;AS;TR
+YM;Montenegro Airlines;MGX;Montenegro;EU;ME
+YO;TransHolding System;TYS;Brazil;SA;BR
+YQ;Polet Airlines (Priv);;Russia;EU;RU
+YR;SENIC AIRLINES;;United States;NA;US
+YT;Yeti Airways;;Nepal;AS;NP
+Z2;Zest Air;;Philippines;AS;PH
+Z4;Zoom Airlines;OOM;Canada;NA;CA
+Z6;ZABAIKAL AIRLINES;ZTT;Russia;EU;RU
+Z8;Amaszonas;AZN;Bolivia;SA;BO
+Z9;Flightlink Tanzania;;Tanzania;AF;TZ
+ZB;Monarch Airlines;MON;United Kingdom;EU;GB
+ZE;Eastar Jet;ESR;Republic of Korea;AS;KR
+ZH;Shenzhen Airlines;CSZ;China;AS;CN
+ZI;Aigle Azur;AAF;France;EU;FR
+ZK;Great Lakes Airlines;GLA;United States;NA;US
+ZL;Regional Express;RXA;Australia;OC;AU
+ZM;Apache Air;IWA;United States;NA;US
+VB;VivaAerobus;VIV;Mexico;NA;MX
+X1;Isles of Scilly Skybus;IOS;United Kingdom;EU;GB
+IO;IrAero;IAE;Russia;EU;RU
+2Z;Passaredo Linhas Aéreas;PTB;Brazil;SA;BR
+GQ;Sky Express;SEH;Greece;EU;GR
+YI;Air Sunshine;RSI;United States;NA;US
+IL;Trigana Air Service;TGN;Indonesia;AS;ID
+2G;Angara Airlines;AGU;Russia;EU;RU
+FE;Far Eastern Air Transport;FEA;Taiwan;AS;TW
+QN;Air Armenia;ARR;Armenia;AS;AM
+F2;Safarilink Aviation;XLK;Kenya;AF;KE
+M6;Amerijet International;AJT;United States;NA;US
+3J;Jubba Airways;JUB;Somalia;AF;SO
+E7;Estafeta Carga Aerea;ESF;Mexico;NA;MX

@@ -1,3 +1,5 @@
+import csv
+
 from bdd.acces_bdd import executer_requete
 
 
@@ -90,3 +92,11 @@ def select_options_par_segment(cur, id_segment):
     req = "SELECT id_option FROM SegmentOptions WHERE id_segment = ?"
     executer_requete(cur, req, (id_segment,))
     return cur.fetchall()
+
+
+def insert_from_file(cur, filename, table, delim=';'):
+    with open(filename, 'r', newline='', encoding='utf-8') as infh:
+        rows = list(csv.reader(infh, delimiter=delim))
+        col = rows[0]
+        for row in rows[1:]:
+            insert_into(cur, table, col, row)

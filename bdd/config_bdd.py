@@ -1,3 +1,5 @@
+import csv
+
 from bdd.acces_bdd import (ouvrir_connexion,
                            executer_requete,
                            valider_modifs,
@@ -63,11 +65,11 @@ def creer_bdd(db_name):
                                     nom text,
                                     id_compagnie text,
                                     id_type_avion text,
-                                    nb_place_premiere integer,
-                                    nb_place_business integer,
-                                    nb_place_eco_plus integer,
-                                    nb_place_eco integer,
-                                    nb_total_place integer,
+                                    nb_places_premiere integer,
+                                    nb_places_business integer,
+                                    nb_places_eco_plus integer,
+                                    nb_places_eco integer,
+                                    nb_total_places integer,
                                     disposition text,
                                     foreign key(id_compagnie) references Compagnie(id),
                                     foreign key(id_type_avion) references TypeAvion(id))"""
@@ -262,8 +264,8 @@ def inserer_jeu_test(db_name):
     valider_modifs(conn)
 
     # ConfigAvion
-    colonnes = ('id','nom','id_compagnie','id_type_avion','nb_place_premiere','nb_place_business','nb_place_eco_plus',
-                'nb_place_eco','nb_total_place','disposition')
+    colonnes = ('id','nom','id_compagnie','id_type_avion','nb_places_premiere','nb_places_business','nb_places_eco_plus',
+                'nb_places_eco','nb_total_places','disposition')
     configs = (
         (1,"321","BR","A321",0,8,0,176,184,""),
         (2,"A44","JL","B767-300ER",0,24,0,175,199,""),
@@ -395,8 +397,62 @@ def inserer_jeu_test(db_name):
     fermer_connexion(cur, conn)
 
 
+def inserer_jeu_fichiers(db_name):
+    """
+    Insertion des éléments du jeu de données a partir des fichiers
+
+    La connexion à la base est refermée à la fin de la fonction.
+    """
+    conn, cur = ouvrir_connexion(db_name)
+
+    # EnumAvion
+    colonnes = ('etat',)
+    enumavion = (
+        ("en_revision",),
+        ("en_vol",),
+        ("au_sol",)
+    )
+    for t in enumavion:
+        r.insert_into(cur, 'EnumAvion', colonnes, t)
+    valider_modifs(conn)
+
+    # EnumOption
+    colonnes = ('option',)
+    enumoption = (
+        ("vegetarien",),
+        ("assurance_annulation",)
+    )
+    for t in enumoption:
+        r.insert_into(cur, 'EnumOption', colonnes, t)
+    valider_modifs(conn)
+
+    # EnumStatutVol
+    colonnes = ('statut',)
+    enumstatutvol = (
+        ("a_l_heure",),
+        ("retarde",),
+        ("embarquement",),
+        ("annule",),
+        ("arrive",)
+    )
+    for t in enumstatutvol:
+        r.insert_into(cur, 'EnumStatutVol', colonnes, t)
+    valider_modifs(conn)
+
+    r.insert_from_file(cur, 'data/aeroports.csv', 'Aeroport')
+    r.insert_from_file(cur, 'data/pistes.csv', 'Piste')
+    r.insert_from_file(cur, 'data/compagnies.csv', 'Compagnie')
+    r.insert_from_file(cur, 'data/types_avions.csv', 'TypeAvion')
+    r.insert_from_file(cur, 'data/configs_avions.csv', 'ConfigAvion')
+    r.insert_from_file(cur, 'data/avions.csv', 'Avion')
+    r.insert_from_file(cur, 'data/routes.csv', 'Route')
+    valider_modifs(conn)
+
+    fermer_connexion(cur, conn)
+
+
 if __name__ == '__main__':
     import os
     os.remove("resavion.db")
     creer_bdd("resavion.db")
-    inserer_jeu_test("resavion.db")
+    inserer_jeu_fichiers("resavion.db")

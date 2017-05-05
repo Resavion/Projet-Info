@@ -22,33 +22,33 @@ if __name__ == '__main__':
     # reservation = client.reservations[0]
     # reservation.fournir_recapitulatif()
 
-    compagnies[2].afficher_carte_routes()
+    # compagnies[2].afficher_carte_routes()
 
-    # while True:
-    #     # Choisir un mode d'utilisation
-    #     modes = ('Client', 'Compagnie', 'Visualisation seule', 'Quitter')
-    #     choix = ihm.choisir(modes, "Choisissez un mode d'utilisation :")
-    #
-    #     # Si Client
-    #     if choix == modes[0]:
-    #         menus.actions_client(clients, compagnies, aeroports)
-    #     # Si Compagnie
-    #     elif choix == modes[1]:
-    #         menus.actions_compagnie(compagnies)
-    #     # Si Visualisation
-    #     elif choix == modes[2]:
-    #         pass
-    #     # Sinon on veut quitter le programme
-    #     else:
-    #         break
-    #
-    # ihm.afficher("Vous quittez le programme.")
-    # liste_choix = ('Oui', 'Non')
-    # choix = ihm.choisir(liste_choix,
-    #                     "Voulez-vous sauvegarder vos modifications ?")
-    # if choix == 'Oui':
-    #     update_bd(db_name, compagnies, clients)
-    #     ihm.afficher("Sauvegarde effectuée ! À bientôt !")
-    # else:
-    #     ihm.afficher("Les modifications n'ont pas été enregistrées.\n"
-    #                  "À bientôt !")
+    while True:
+        # Choisir un mode d'utilisation
+        modes = ('Client', 'Compagnie', 'Visualisation seule', 'Quitter')
+        choix = ihm.choisir(modes, "Choisissez un mode d'utilisation :")
+
+        # Si Client
+        if choix == modes[0]:
+            menus.actions_client(clients, compagnies, aeroports)
+        # Si Compagnie
+        elif choix == modes[1]:
+            menus.actions_compagnie(compagnies)
+        # Si Visualisation
+        elif choix == modes[2]:
+            pass
+        # Sinon on veut quitter le programme
+        else:
+            break
+
+    ihm.afficher("Vous quittez le programme.")
+    liste_choix = ('Oui', 'Non')
+    choix = ihm.choisir(liste_choix,
+                        "Voulez-vous sauvegarder vos modifications ?")
+    if choix == 'Oui':
+        update_bd(db_name, compagnies, clients)
+        ihm.afficher("Sauvegarde effectuée ! À bientôt !")
+    else:
+        ihm.afficher("Les modifications n'ont pas été enregistrées.\n"
+                     "À bientôt !")

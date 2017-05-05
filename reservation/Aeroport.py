@@ -1,4 +1,9 @@
+from collections import defaultdict
+
+
 class Aeroport(object):
+    id_index = defaultdict(list)
+
     def __init__(self, id_code_iata, type_aero, nom, latitude_deg, longitude_deg,
                  elevation_ft, code_continent, code_pays, municipalite, code_icao,
                  pistes=None, avions=None, routes_entrantes=None, routes_sortantes=None):
@@ -42,6 +47,7 @@ class Aeroport(object):
         if routes_sortantes is None:
             routes_sortantes = []
         self._routes_sortantes = routes_sortantes
+        Aeroport.id_index[id_code_iata].append(self)
 
     @property
     def id_code_iata(self):
@@ -98,6 +104,10 @@ class Aeroport(object):
     @property
     def routes_sortantes(self):
         return self._routes_sortantes
+
+    @classmethod
+    def find_by_id(cls, id_code_iata):
+        return Aeroport.id_index[id_code_iata]
 
     def __str__(self):
         return "{} {}, {}, {} (IATA : {}, ICAO : {})"\

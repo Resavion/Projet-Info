@@ -163,8 +163,11 @@ class Route(object):
         # Transfo en Mercator
         xs, ys = mercator(new_coords, earth.E, 0, 0, earth.A)
         # Ajout a la carte
-        ligne = plt.plot(xs, ys, 'b-')[0]
-        add_arrow(ligne)
+        style = 'b'
+        if self._codeshare:
+            style = 'c'
+        ligne = plt.plot(xs, ys, style+'-')[0]
+        # add_arrow(ligne)
 
         # Parametrage de la carte
         plt.axis([-1200000000.0, 1250000000.0, -1100000000.0, 1800000000.0])

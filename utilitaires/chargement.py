@@ -66,7 +66,7 @@ def charger_aeroports(cur):
             # print(piste)
         aeroport.pistes.extend(pistes)
         aeroports.append(aeroport)
-        # print(aeroport)
+        print(aeroport)
     return aeroports
 
 
@@ -82,7 +82,7 @@ def charger_types_avions(cur):
     for row in rows:
         type_avion = TypeAvion(*row)
         types_avions.append(type_avion)
-        # print(type_avion)
+        print(type_avion)
     return types_avions
 
 
@@ -123,7 +123,7 @@ def charger_compagnies(cur, aeroports, types_avions):
                 horaire.vols.extend(vols)
                 vols_tout.extend(vols)
         compagnies.append(compagnie)
-        # print(compagnie)
+        print(compagnie)
     # Horaires en codeshare
     for compagnie in compagnies:
         for route in compagnie.routes:
@@ -149,7 +149,7 @@ def charger_configs_de_compagnie(cur, types_avions, compagnie):
         type_avion = [x for x in types_avions if x.id_nom == row[3]][0]
         config     = ConfigAvion(*row[0:2], compagnie, type_avion, *row[4:])
         configs.append(config)
-        # print(config)
+        print(config)
     return configs
 
 
@@ -168,15 +168,15 @@ def charger_avions_de_compagnie(cur, aeroports, configs, compagnie):
     rows   = r.select_all_par_compagnie(cur,'Avion', compagnie.id_code_iata)
     for row in rows:
         config        = [x for x in configs if x.id == row[2]][0]
-        aeroport      = [x for x in aeroports if x.id_code_iata == row[3]][0]
+        aeroport      = Aeroport.find_by_id(row[3])[0]
         date_construc = datetime.strptime(row[4],"%Y-%m-%d").date()
         date_der_rev  = datetime.strptime(row[5],"%Y-%m-%d").date()
         etat          = EnumAvion(row[6])
         avion         = Avion(row[0], compagnie, config, aeroport,
-                      date_construc, date_der_rev, etat, row[7])
+                              date_construc, date_der_rev, etat, row[7])
         avions.append(avion)
         aeroport.avions.append(avion)
-        # print(avion)
+        print(avion)
     return avions
 
 
@@ -194,15 +194,15 @@ def charger_routes_de_compagnie(cur, aeroports, compagnie):
     rows   = r.select_all_par_compagnie(cur,'Route', compagnie.id_code_iata)
     for row in rows:
         id_route = row[0]
-        dep      = [x for x in aeroports if x.id_code_iata == row[2]][0]
-        arr      = [x for x in aeroports if x.id_code_iata == row[3]][0]
+        dep      = Aeroport.find_by_id(row[2])[0]
+        arr      = Aeroport.find_by_id(row[3])[0]
         # row[4] = geom : linestring entre les deux aeroports en WKT
         # row[5] = codeshare : booleen qui permet de savoir si un avion est partage par plusieurs compagnies
         route    = Route(id_route, compagnie, dep, arr, row[4], row[5])
         routes.append(route)
         dep.routes_sortantes.append(route)
         arr.routes_entrantes.append(route)
-        # print(route)
+        print(route)
     return routes
 
 

@@ -129,7 +129,7 @@ class Compagnie(object):
         # Ajout du fond de carte (si la carte ne fait pas partie d'une composition)
         if show:
             # Lecture du trait de cotes
-            coords_latlon = np.genfromtxt('utilitaires/coast.txt')
+            coords_latlon = np.genfromtxt('utilitaires/coast2.txt')
             # Transfo en Mercator
             x, y = mercator(coords_latlon, earth.E, 0, 0, earth.A)
             # Ajout a la carte

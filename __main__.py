@@ -19,8 +19,22 @@ if __name__ == '__main__':
     #print(clients[0])
     # for reservation in client.reservations:
     #     print(reservation)
-    reservation = client.reservations[0]
-    reservation.fournir_recapitulatif()
+    # reservation = client.reservations[0]
+    # reservation.fournir_recapitulatif()
+
+    # for compagnie in compagnies:
+    #     print(compagnie)
+
+    # airline = compagnies[2]
+    # print(airline)
+    for compagnie in compagnies:
+        print(compagnie)
+        for route in compagnie.routes:
+
+            print(route)
+
+    def afficher_aeroports():
+        pass
 
     # while True:
     #     # Choisir un mode d'utilisation

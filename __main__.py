@@ -14,7 +14,7 @@ if __name__ == '__main__':
         inserer_jeu_test(db_name)
 
     aeroports, compagnies, clients = charger_bd(db_name)
-
+    print('\n')
     client = clients[0]
     #print(clients[0])
     # for reservation in client.reservations:

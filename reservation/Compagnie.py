@@ -123,7 +123,7 @@ class Compagnie(object):
     def afficher_carte_routes(self, show=True, annot=True):
         """
         Methode qui permet d'afficher la carte des routes de la compagnie
-        :return: 
+        :return:
         """
 
         # Ajout du fond de carte (si la carte ne fait pas partie d'une composition)

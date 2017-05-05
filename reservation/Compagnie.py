@@ -116,14 +116,14 @@ class Compagnie(object):
         Methode qui permet d'afficher la liste des routes de la compagnie
         :return: 
         """
-        ihm.afficher("Il y a {} route(s)".format(len(self._configs)))
-        ihm.afficher_paginer(self._configs, "Routes", pas=10)
+        ihm.afficher("Il y a {} route(s)".format(len(self._routes)))
+        ihm.afficher_paginer(self._routes, "Routes", pas=10)
         return
 
     def afficher_carte_routes(self, show=True, annot=True):
         """
         Methode qui permet d'afficher la carte des routes de la compagnie
-        :return: 
+        :return: None
         """
 
         # Ajout du fond de carte (si la carte ne fait pas partie d'une composition)
@@ -131,7 +131,7 @@ class Compagnie(object):
             # Lecture du trait de cotes
             coords_latlon = np.genfromtxt('utilitaires/coast.txt')
             # Transfo en Mercator
-            x, y = mercator(coords_latlon, earth.E, 0, 0, 6378137.0)
+            x, y = mercator(coords_latlon, earth.E, 0, 0, earth.A)
             # Ajout a la carte
             plt.fill(x, y, 'bisque', linewidth=0.1)
 
@@ -143,6 +143,8 @@ class Compagnie(object):
         if show:
             plt.title('Carte du reseau {0:s}'.format(self._nom))
             plt.show()
+
+        return
 
     def ajouter_route(self):
         """

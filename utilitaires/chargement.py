@@ -53,6 +53,7 @@ def charger_aeroports(cur):
     :return: la liste des aeroports
     """
 
+    print("Chargement des aeroports...")
     aeroports = []
     rows      = r.select_all(cur, 'Aeroport')
     for row in rows:
@@ -66,7 +67,7 @@ def charger_aeroports(cur):
             # print(piste)
         aeroport.pistes.extend(pistes)
         aeroports.append(aeroport)
-        print(aeroport)
+        # print(aeroport)
     return aeroports
 
 
@@ -77,12 +78,13 @@ def charger_types_avions(cur):
     :param cur: curseur
     :return: la liste des types d'avion
     """
+
     types_avions = []
     rows         = r.select_all(cur,'TypeAvion')
     for row in rows:
         type_avion = TypeAvion(*row)
         types_avions.append(type_avion)
-        print(type_avion)
+        # print(type_avion)
     return types_avions
 
 
@@ -96,6 +98,7 @@ def charger_compagnies(cur, aeroports, types_avions):
     :return: toutes les compagnies avec leurs horaires et leurs vols
     """
 
+    print("Chargement des compagnies...")
     compagnies    = []
     horaires_tout = []
     vols_tout     = []
@@ -123,7 +126,7 @@ def charger_compagnies(cur, aeroports, types_avions):
                 horaire.vols.extend(vols)
                 vols_tout.extend(vols)
         compagnies.append(compagnie)
-        print(compagnie)
+        # print(compagnie)
     # Horaires en codeshare
     for compagnie in compagnies:
         for route in compagnie.routes:
@@ -149,7 +152,7 @@ def charger_configs_de_compagnie(cur, types_avions, compagnie):
         type_avion = [x for x in types_avions if x.id_nom == row[3]][0]
         config     = ConfigAvion(*row[0:2], compagnie, type_avion, *row[4:])
         configs.append(config)
-        print(config)
+        # print(config)
     return configs
 
 
@@ -176,7 +179,7 @@ def charger_avions_de_compagnie(cur, aeroports, configs, compagnie):
                               date_construc, date_der_rev, etat, row[7])
         avions.append(avion)
         aeroport.avions.append(avion)
-        print(avion)
+        # print(avion)
     return avions
 
 
@@ -190,6 +193,7 @@ def charger_routes_de_compagnie(cur, aeroports, compagnie):
     :return: la liste des routes qu'une compagnie effectue
     """
 
+    print("Chargement des routes de {}...".format(compagnie))
     routes = []
     rows   = r.select_all_par_compagnie(cur,'Route', compagnie.id_code_iata)
     for row in rows:
@@ -202,7 +206,7 @@ def charger_routes_de_compagnie(cur, aeroports, compagnie):
         routes.append(route)
         dep.routes_sortantes.append(route)
         arr.routes_entrantes.append(route)
-        print(route)
+        # print(route)
     return routes
 
 
@@ -297,6 +301,7 @@ def charger_clients(cur, horaires, vols):
     :param vols: la liste de tous les vols
     :return: la liste de tous les clients
     """
+
     clients = []
     rows    = r.select_all(cur, 'Client')
     for row in rows:
@@ -325,6 +330,7 @@ def charger_resas_de_client(cur, client):
     :param client: le client dont on veut charger les reservations
     :return: la liste des reservations
     """
+
     resas = []
     rows  = r.select_resas_par_client(cur, client.id)
     for row in rows:
@@ -367,6 +373,7 @@ def charger_segments_de_billet(cur, horaires, vols, billet):
     :param billet: l'objet billet
     :return: la liste des segments
     """
+
     segments = []
     rows     = r.select_segments_par_billet(cur, billet.id)
     for row in rows:
@@ -481,6 +488,7 @@ def update_avion(cur, avion):
                     avion.date_derniere_revision, avion.etat, avion.position)
         r.update(cur, 'Avion', colonnes, values, avion.id)
         print("update {}".format(avion))
+    return
 
 
 def update_vol(cur, vol):
@@ -521,6 +529,7 @@ def update_vol(cur, vol):
                     vol.statut, vol.cabine)
         r.update(cur, 'Vol', colonnes, values, vol.id)
         print("update {}".format(vol))
+    return
 
 
 def update_billet(cur, billet):
@@ -553,6 +562,7 @@ def update_billet(cur, billet):
                     billet.date_naissance, billet.options)
         r.update(cur, 'Billet', colonnes, values, billet.id)
         print("update {}".format(billet))
+    return
 
 
 def update_segment(cur, segment):
@@ -579,3 +589,4 @@ def update_segment(cur, segment):
                     segment.place, segment.options)
         r.update(cur, 'Segment', colonnes, values, segment.id)
         print("update {}".format(segment))
+    return

@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import ihm.console as ihm
 import utilitaires.earth as earth
 from utilitaires.carte import (mercator, add_arrow, distance_haversine,
-                               densif_geodesique)
+                               densif_geodesique, decoupe_ligne)
 
 
 class Route(object):
@@ -158,16 +158,22 @@ class Route(object):
         xs0, ys0 = mercator(list_coords, earth.E, 0, 0, earth.A)
         # Ajout points a la carte
         plt.plot(xs0, ys0, 'b.')
+
         # Densification suivant la ligne geodesique
         new_coords = densif_geodesique(list_coords, self._distance)
-        # Transfo en Mercator
-        xs, ys = mercator(new_coords, earth.E, 0, 0, earth.A)
-        # Ajout a la carte
-        style = 'b'
-        if self._codeshare:
-            style = 'c'
-        ligne = plt.plot(xs, ys, style+'-')[0]
-        # add_arrow(ligne)
+        tab_listes = decoupe_ligne(new_coords)
+        for coords in tab_listes:
+            # Transfo en Mercator
+            xs, ys = mercator(coords, earth.E, 0, 0, earth.A)
+            # Ajout a la carte
+            style = 'b'
+            if self._codeshare:
+                style = 'c'
+            largeur = 0.1
+            if show:
+                largeur = 0.5
+            ligne = plt.plot(xs, ys, style+'-', linewidth=largeur)[0]
+            # add_arrow(ligne)
 
         # Parametrage de la carte
         plt.axis([-1200000000.0, 1250000000.0, -1100000000.0, 1800000000.0])

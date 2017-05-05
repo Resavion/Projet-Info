@@ -122,8 +122,10 @@ def choisir_par_continent(compagnies):
     # On filtre les compagnies par nombre de routes
     compagnies_filtre.sort(key=lambda s: len(s.routes), reverse=True)
 
+    # Choix dans une liste paginee
     compagnie = ihm.choisir_paginer(
         compagnies_filtre, "Choisissez une compagnie :", pas=10)
+    ihm.afficher("Vous allez gérer la compagnie {}".format(compagnie))
     return compagnie
 
 

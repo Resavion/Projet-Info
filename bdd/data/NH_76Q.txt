@@ -1,26 +1,31 @@
-  AB CDE FG
+  AC DFG HK
   ---------
  |>       <|
  |>  ---  <|
 C|OO -O- OO|1
-C|-- --- OO|2
-C|OO -O- --|3
-C|OO -O- OO|5
-C|-- --- OO|6
-C|OO -O- --|7
-C|OO -O- OO|8
-C|OO -O- OO|10
-C|OO -O- OO|11
+C|OO -O- OO|2
  |-- --- --|
+Y|OO OOO OO|5
+Y|OO OOO OO|6
+Y|OO OOO OO|7
+Y|OO OOO OO|8
+Y|OO OOO OO|9
+Y|OO OOO OO|10
+Y|OO OOO OO|11
+Y|OO OOO OO|12
+Y|OO OOO OO|13
+Y|OO OOO OO|14
 Y|OO OOO OO|15
 Y|OO OOO OO|16
 Y|OO OOO OO|17
 Y|OO OOO OO|18
-Y|-- OOO OO|19
+Y|OO OOO --|19
+Y|OO       |20
  |>  ---  <|
  |>       <|
-Y|OO --- OO|22
-Y|OO     OO|23
+Y|OO OOO OO|21
+Y|OO OOO OO|22
+Y|OO OOO OO|23
 Y|OO OOO OO|24
 Y|OO OOO OO|25
 Y|OO OOO OO|26
@@ -39,8 +44,8 @@ Y|OO OOO OO|38
 Y|OO OOO OO|39
 Y|OO OOO OO|40
 Y|OO OOO OO|41
-Y|OO OOO OO|43
-Y|OO OOO --|45
- |>  ---  <|
+Y|OO OOO   |42
+Y|   OOO   |43
+ |>       <|
  |>       <|
   ---------

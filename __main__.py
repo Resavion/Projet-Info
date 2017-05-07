@@ -1,4 +1,6 @@
 import os
+from pytz import timezone
+from datetime import datetime
 
 import ihm.console as ihm
 from bdd.config_bdd import (creer_bdd, inserer_jeu_test)
@@ -21,8 +23,6 @@ if __name__ == '__main__':
     # #     print(reservation)
     # reservation = client.reservations[0]
     # reservation.fournir_recapitulatif()
-
-    # compagnies[2].afficher_carte_routes()
 
     while True:
         # Choisir un mode d'utilisation

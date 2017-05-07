@@ -1,6 +1,6 @@
-import math as ma
 import numpy as np
 import matplotlib.pyplot as plt
+from collections import defaultdict
 
 import ihm.console as ihm
 import utilitaires.earth as earth
@@ -9,6 +9,8 @@ from utilitaires.carte import (mercator, add_arrow, distance_haversine,
 
 
 class Route(object):
+    cle_index = defaultdict()
+
     def __init__(self, id_route, compagnie, aeroport_depart, aeroport_arrivee, geom, codeshare,
                  horaires=None):
         """
@@ -35,6 +37,11 @@ class Route(object):
         if horaires is None:
             horaires = []
         self._horaires = horaires
+
+        cle = "{}{}{}".format(compagnie.id_code_iata,
+                              aeroport_depart.id_code_iata,
+                              aeroport_arrivee.id_code_iata)
+        Route.cle_index[cle] = self
 
     @property
     def id(self):

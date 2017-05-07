@@ -1,4 +1,6 @@
 from datetime import (datetime, timedelta)
+from pytz import timezone
+
 from bdd.acces_bdd import (ouvrir_connexion,
                            fermer_connexion,
                            valider_modifs)
@@ -57,7 +59,7 @@ def charger_aeroports(cur):
     aeroports = []
     rows      = r.select_all(cur, 'Aeroport')
     for row in rows:
-        aeroport    = Aeroport(*row)
+        aeroport    = Aeroport(*row[:-1], timezone(row[-1]))
         # Pistes
         rows_pistes = r.select_pistes_par_aeroport(cur, aeroport.id_code_iata)
         pistes      = []
@@ -149,6 +151,7 @@ def charger_configs_de_compagnie(cur, types_avions, compagnie):
     configs = []
     rows    = r.select_all_par_compagnie(cur,'ConfigAvion', compagnie.id_code_iata)
     for row in rows:
+        print(row)
         type_avion = [x for x in types_avions if x.id_nom == row[3]][0]
         config     = ConfigAvion(*row[0:2], compagnie, type_avion, *row[4:])
         configs.append(config)
@@ -170,6 +173,7 @@ def charger_avions_de_compagnie(cur, aeroports, configs, compagnie):
     avions = []
     rows   = r.select_all_par_compagnie(cur,'Avion', compagnie.id_code_iata)
     for row in rows:
+        print(row)
         config        = [x for x in configs if x.id == row[2]][0]
         aeroport      = Aeroport.find_by_id(row[3])[0]
         date_construc = datetime.strptime(row[4],"%Y-%m-%d").date()
@@ -476,7 +480,7 @@ def update_avion(cur, avion):
                     'id_etat', 'position')
         values   = (avion.id, avion.compagnie.id_code_iata,
                     avion.config.id, avion.aeroport.id_code_iata,
-                    avion.date_construction, avion.date_derniere_revision,
+                    avion.date_livraison, avion.date_derniere_revision,
                     avion.etat, avion.position)
         r.insert_into(cur, 'Avion', colonnes, values)
         print("insert {}".format(avion))

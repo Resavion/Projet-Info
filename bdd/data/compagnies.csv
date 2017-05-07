@@ -194,7 +194,7 @@ G9;Air Arabia;ABY;United Arab Emirates;AS;AE
 GA;Garuda Indonesia;GIA;Indonesia;AS;ID
 GE;TransAsia Airways;TNA;Taiwan;AS;TW
 GF;Gulf Air Bahrain;GBA;Bahrain;AS;BH
-GK;Genesis;;Pakistan;AS;PK
+GK;JetStar Japan;JJP;Japan;AS;JP
 GL;Air Greenland;GRL;Denmark;EU;DK
 GR;Aurigny Air Services;AUR;United Kingdom;EU;GB
 GS;Air Foyle;UPA;United Kingdom;EU;GB
@@ -204,7 +204,7 @@ GZ;Air Rarotonga;RAR;Cook Islands;OC;CK
 H2;Sky Airline;SKU;Chile;SA;CL
 H7;Eagle Air;;Uganda;AF;UG
 HA;Hawaiian Airlines;HAL;United States;NA;US
-HD;Hokkaido International Airlines;ADO;Japan;AS;JP
+HD;Air Do;ADO;Japan;AS;JP
 HF;Hapagfly;HLF;Germany;EU;DE
 HG;Niki;NLY;Austria;EU;AT
 HI;Papillon Grand Canyon Helicopters;;United States;NA;US
@@ -240,7 +240,7 @@ J9;Jazeera Airways;JZR;Kuwait;AS;KW
 JA;Air Bosna;BON;Bosnia and Herzegovina;EU;BA
 JD;Beijing Capital Airlines;CBJ;China;AS;CN
 JE;Mango;MNO;South Africa;AF;ZA
-JH;Fuji Dream Airlines;;Japan;AS;JP
+JH;Fuji Dream Airlines;FDA;Japan;AS;JP
 JJ;TAM Brazilian Airlines;TAM;Brazil;SA;BR
 JL;Japan Airlines;JAL;Japan;AS;JP
 JN;Excel Airways;XLA;United Kingdom;EU;GB
@@ -250,7 +250,6 @@ JS;Air Koryo;KOR;Democratic People's Republic of Korea;AS;KP
 JT;Lion Mentari Airlines;LNI;Indonesia;AS;ID
 JU;Air Serbia;ASL;Serbia;EU;RS
 JV;Bearskin Lake Air Service;BLS;Canada;NA;CA
-JW;Arrow Air;APW;United States;NA;US
 JY;Aereonautica militare;AXZ;Italy;EU;IT
 K2;Eurolot;ELO;Poland;EU;PL
 K5;SeaPort Airlines;SQH;United States;NA;US
@@ -300,7 +299,7 @@ MH;Malaysia Airlines;MAS;Malaysia;AS;MY
 MI;SilkAir;SLK;Singapore;AS;SG
 MJ;L;LPR;Argentina;SA;AR
 MK;Air Mauritius;MAU;Mauritius;AF;MU
-MM;Peach Aviation;;Japan;AS;JP
+MM;Peach Aviation;APJ;Japan;AS;JP
 MN;Comair;CAW;South Africa;AF;ZA
 MO;Abu Dhabi Amiri Flight;AUH;United Arab Emirates;AS;AE
 MR;Homer Air;OME;Germany;EU;DE
@@ -322,7 +321,6 @@ NZ;Air New Zealand;ANZ;New Zealand;OC;NZ
 O6;Oceanair;ONE;Brazil;SA;BR
 OA;Olympic Airlines;OAL;Greece;EU;GR
 OB;Astrakhan Airlines;ASZ;Russia;EU;RU
-OC;Catovair;;Mauritius;AF;MU
 OD;Malindo Air;MXD;Malaysia;AS;MY
 OJ;Overland Airways;OLA;Nigeria;AF;NG
 OK;Czech Airlines;CSA;Czech Republic;EU;CZ
@@ -531,3 +529,9 @@ F2;Safarilink Aviation;XLK;Kenya;AF;KE
 M6;Amerijet International;AJT;United States;NA;US
 3J;Jubba Airways;JUB;Somalia;AF;SO
 E7;Estafeta Carga Aerea;ESF;Mexico;NA;MX
+EH;ANA Wings;AKX;Japan;AS;JP
+MZ;Amakusa Airlines;AHX;Japan;AS;JP
+3X;Japan Air Commuter;JAC;Japan;AS;JP
+OC;Oriental Air Bridge;NGK;Japan;AS;JP
+JW;Vanilla Air;VNL;Japan;AS;JP
+6J;Solaseed Air;SNJ;Japan;AS;JP

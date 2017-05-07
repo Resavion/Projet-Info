@@ -1,12 +1,11 @@
 class ConfigAvion(object):
-    def __init__(self, id_config, nom, compagnie, type_avion, nb_places_premiere, nb_places_business,
+    def __init__(self, compagnie, nom, type_avion, nb_places_premiere, nb_places_business,
                  nb_places_eco_plus, nb_places_eco, nb_total_places, disposition):
         """
         Constructeur de la classe ConfigAvion
         
-        :param id_config: identifiant de la configuration d'avion
-        :param nom: nom de la configuration d'avion
         :param compagnie: compagnie qui utilise cette configuration
+        :param nom: nom de la configuration d'avion
         :param type_avion: type de l'avion
         :param nb_places_premiere: nombre de place de premiere dans l'avion
         :param nb_places_business: nombre de place de business dans l'avion
@@ -15,9 +14,8 @@ class ConfigAvion(object):
         :param nb_total_places: nombre total de place dans l'avion
         :param disposition: schema des places dans l'avion
         """
-        self._id = id_config
-        self._nom = nom
         self._compagnie = compagnie
+        self._nom = nom
         self._type_avion = type_avion
         self._nb_places_premiere = nb_places_premiere
         self._nb_places_business = nb_places_business
@@ -25,10 +23,6 @@ class ConfigAvion(object):
         self._nb_places_eco = nb_places_eco
         self._nb_total_places = nb_total_places
         self._disposition = disposition
-
-    @property
-    def id(self):
-        return self._id
 
     @property
     def nom(self):

@@ -38,7 +38,7 @@ def charger_bd(db_name):
 
     # Compagnies
     compagnies, horaires_tout, vols_tout = \
-        charger_compagnies(cur, aeroports, types_avions)
+        charger_compagnies(cur, types_avions)
 
     # Clients
     clients = charger_clients(cur, horaires_tout, vols_tout)
@@ -90,12 +90,11 @@ def charger_types_avions(cur):
     return types_avions
 
 
-def charger_compagnies(cur, aeroports, types_avions):
+def charger_compagnies(cur, types_avions):
     """
     Methode qui permet de charger les differentes compagnies avec leurs différents horaires et vols
     
     :param cur: curseur
-    :param aeroports: la liste de tous les aeroports de la base de données
     :param types_avions: tous les types d'avion de la base de données
     :return: toutes les compagnies avec leurs horaires et leurs vols
     """
@@ -112,10 +111,10 @@ def charger_compagnies(cur, aeroports, types_avions):
         configs   = charger_configs_de_compagnie(cur, types_avions, compagnie)
         compagnie.configs.extend(configs)
         # Avions
-        avions    = charger_avions_de_compagnie(cur, aeroports, configs, compagnie)
+        avions    = charger_avions_de_compagnie(cur, configs, compagnie)
         compagnie.avions.extend(avions)
         # Routes
-        routes    = charger_routes_de_compagnie(cur, aeroports, compagnie)
+        routes    = charger_routes_de_compagnie(cur, compagnie)
         compagnie.routes.extend(routes)
         # Horaires propres
         for route in routes:
@@ -151,20 +150,18 @@ def charger_configs_de_compagnie(cur, types_avions, compagnie):
     configs = []
     rows    = r.select_all_par_compagnie(cur,'ConfigAvion', compagnie.id_code_iata)
     for row in rows:
-        print(row)
-        type_avion = [x for x in types_avions if x.id_nom == row[3]][0]
-        config     = ConfigAvion(*row[0:2], compagnie, type_avion, *row[4:])
+        type_avion = [x for x in types_avions if x.id_nom == row[2]][0]
+        config     = ConfigAvion(compagnie, row[1], type_avion, *row[3:])
         configs.append(config)
         # print(config)
     return configs
 
 
-def charger_avions_de_compagnie(cur, aeroports, configs, compagnie):
+def charger_avions_de_compagnie(cur, configs, compagnie):
     """
     Methode qui permet de chargr les avions de la compagnie 
     
     :param cur: curseur
-    :param aeroports: la liste des aeroports de la base de données
     :param configs: la liste des configurations des avions proposees par la compagnie
     :param compagnie: l'objet compagnie
     :return: la liste des avions de la compagnie
@@ -173,8 +170,7 @@ def charger_avions_de_compagnie(cur, aeroports, configs, compagnie):
     avions = []
     rows   = r.select_all_par_compagnie(cur,'Avion', compagnie.id_code_iata)
     for row in rows:
-        print(row)
-        config        = [x for x in configs if x.id == row[2]][0]
+        config        = [x for x in configs if x.nom == row[2]][0]
         aeroport      = Aeroport.find_by_id(row[3])[0]
         date_construc = datetime.strptime(row[4],"%Y-%m-%d").date()
         date_der_rev  = datetime.strptime(row[5],"%Y-%m-%d").date()
@@ -187,12 +183,11 @@ def charger_avions_de_compagnie(cur, aeroports, configs, compagnie):
     return avions
 
 
-def charger_routes_de_compagnie(cur, aeroports, compagnie):
+def charger_routes_de_compagnie(cur, compagnie):
     """
     Methode qui permet de charger toutes les routes que la compagnie effectue
     
     :param cur: curseur
-    :param aeroports: la liste des aeroports de la base de données
     :param compagnie: l'objet compagnie
     :return: la liste des routes qu'une compagnie effectue
     """
@@ -201,12 +196,11 @@ def charger_routes_de_compagnie(cur, aeroports, compagnie):
     routes = []
     rows   = r.select_all_par_compagnie(cur,'Route', compagnie.id_code_iata)
     for row in rows:
-        id_route = row[0]
-        dep      = Aeroport.find_by_id(row[2])[0]
-        arr      = Aeroport.find_by_id(row[3])[0]
+        dep      = Aeroport.find_by_id(row[1])[0]
+        arr      = Aeroport.find_by_id(row[2])[0]
         # row[4] = geom : linestring entre les deux aeroports en WKT
         # row[5] = codeshare : booleen qui permet de savoir si un avion est partage par plusieurs compagnies
-        route    = Route(id_route, compagnie, dep, arr, row[4], row[5])
+        route    = Route(compagnie, dep, arr, row[3], row[4])
         routes.append(route)
         dep.routes_sortantes.append(route)
         arr.routes_entrantes.append(route)
@@ -227,18 +221,17 @@ def charger_horaires_propres_de_route(cur, configs, route):
     """
 
     horaires = []
-    rows     = r.select_horaires_propres_par_route(cur, route.id)
+    rows     = r.select_horaires_propres_par_route(cur, route)
     for row in rows:
         # Config
-        config = [x for x in configs if x.id == row[9]][0]
+        config = [x for x in configs if x.nom == row[5]][0]
         # Heures et duree
-        dep     = datetime.strptime(row[4], "%H:%M").time()
-        arr     = datetime.strptime(row[5], "%H:%M").time()
-        t       = datetime.strptime(row[6], "%Hh%M")
+        dep     = datetime.strptime(row[6], "%H:%M").time()
+        arr     = datetime.strptime(row[7], "%H:%M").time()
+        t       = datetime.strptime(row[8], "%Hh%M")
         dur     = timedelta(hours=t.hour, minutes=t.minute)
         # Horaire
-        horaire = Horaire(row[0], route, row[3], dep, arr, dur,
-                          row[7], row[8], config)
+        horaire = Horaire(route, row[1], dep, arr, dur, row[9], None, config)
         horaires.append(horaire)
         # print(horaire)
     return horaires
@@ -256,10 +249,12 @@ def charger_horaires_codeshare_de_route(cur, horaires, route):
     """
 
     horaires_codeshare = []
-    rows               = r.select_horaires_codeshare_par_route(cur, route.id)
+    rows               = r.select_horaires_codeshare_par_route(cur, route)
     for row in rows:
-        horaire_operateur = [x for x in horaires if x.id == row[8]][0]
-        horaire_codeshare = Horaire(row[0], route, *row[3:8], horaire_operateur)
+        horaire_operateur = [x for x in horaires
+                             if x.compagnie.id_code_iata == row[10]
+                             and x.numero == row[11]][0]
+        horaire_codeshare = Horaire(route, row[1], *row[6:10], horaire_operateur)
         horaires_codeshare.append(horaire_codeshare)
         # print(horaire_codeshare)
     return horaires_codeshare
@@ -275,20 +270,20 @@ def charger_vols_de_horaire(cur, horaire):
     """
 
     vols = []
-    rows = r.select_vols_par_horaire(cur, horaire.id)
+    rows = r.select_vols_par_horaire(cur, horaire)
     avions = horaire.compagnie.avions
     for row in rows:
         # Avion
         avion = None
-        if row[5] is not None:
-            avion = [x for x in avions if x.id == row[5]][0]
+        if row[6] is not None:
+            avion = [x for x in avions if x.id == row[6]][0]
         # Jours, heures et durees
-        dep = datetime.strptime(row[2], "%Y-%m-%d %H:%M:%S")
-        arr = datetime.strptime(row[3], "%Y-%m-%d %H:%M:%S")
-        t   = datetime.strptime(row[4], "%H:%M:%S")
+        dep = datetime.strptime(row[3], "%Y-%m-%d %H:%M:%S")
+        arr = datetime.strptime(row[4], "%Y-%m-%d %H:%M:%S")
+        t   = datetime.strptime(row[5], "%H:%M:%S")
         dur = timedelta(hours=t.hour, minutes=t.minute)
         # Vol
-        vol = Vol(row[0], horaire, dep, arr, dur, avion, *row[6:])
+        vol = Vol(row[0], horaire, dep, arr, dur, avion, *row[7:])
         vols.append(vol)
         if avion is not None:
             avion.vols.append(vol)
@@ -382,11 +377,13 @@ def charger_segments_de_billet(cur, horaires, vols, billet):
     rows     = r.select_segments_par_billet(cur, billet.id)
     for row in rows:
         vol         = [x for x in vols if x.id == row[2]][0]
-        horaire     = [x for x in horaires if x.id == row[3]][0]
+        horaire     = [x for x in horaires
+                       if x.compagnie.id_code_iata == row[3]
+                       and x.numero == row[4]][0]
         options_ids = r.select_options_par_segment(cur, row[0])
         # on cree une liste d'option
         options     = [EnumOption(*x) for x in options_ids]
-        segment     = Segment(row[0], billet, vol, horaire, row[4], options)
+        segment     = Segment(row[0], billet, vol, horaire, row[5], options)
         segments.append(segment)
         vol.segments.append(segment)
         # print(segment)

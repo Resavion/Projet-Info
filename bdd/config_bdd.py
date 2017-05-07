@@ -75,7 +75,7 @@ def creer_bdd(db_name):
     executer_requete(cur, req)
     req = """create table Avion (id text primary key,
                                  id_compagnie text,
-                                 nom_config integer,
+                                 nom_config text,
                                  id_aeroport text,
                                  date_livraison date,
                                  date_derniere_revision date,

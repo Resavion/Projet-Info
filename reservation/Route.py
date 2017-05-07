@@ -11,12 +11,11 @@ from utilitaires.carte import (mercator, add_arrow, distance_haversine,
 class Route(object):
     cle_index = defaultdict()
 
-    def __init__(self, id_route, compagnie, aeroport_depart, aeroport_arrivee, geom, codeshare,
+    def __init__(self, compagnie, aeroport_depart, aeroport_arrivee, geom, codeshare,
                  horaires=None):
         """
         Constructeur de la classe route
         
-        :param id_route: id de la route
         :param compagnie: compagnie qui propose la route
         :param aeroport_depart: aeroport de depart de la route
         :param aeroport_arrivee: aeroport d'arrivee de la route
@@ -24,7 +23,6 @@ class Route(object):
         :param codeshare: booleen qui permet de savoir si un avion est partage par plusieurs compagnies
         :param horaires: liste des horaires sur cette route
         """
-        self._id = id_route
         self._compagnie = compagnie
         self._aeroport_depart = aeroport_depart
         self._aeroport_arrivee = aeroport_arrivee
@@ -42,10 +40,6 @@ class Route(object):
                               aeroport_depart.id_code_iata,
                               aeroport_arrivee.id_code_iata)
         Route.cle_index[cle] = self
-
-    @property
-    def id(self):
-        return self._id
 
     @property
     def compagnie(self):
@@ -76,10 +70,9 @@ class Route(object):
         return self._horaires
 
     def __str__(self):
-        return "{} - Id : {} - {} ({},{}) -> {} ({},{}) - {:.0f} km - " \
+        return "{} - {} ({},{}) -> {} ({},{}) - {:.0f} km - " \
                "Horaires : {}"\
             .format(self._compagnie.id_code_iata,
-                    self._id,
                     self._aeroport_depart.id_code_iata,
                     self._aeroport_depart.municipalite,
                     self._aeroport_depart.code_pays,

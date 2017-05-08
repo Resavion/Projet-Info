@@ -50,7 +50,7 @@ if __name__ == '__main__':
         return aeroport
 
 
-    choisir_par_code_aeroport(aeroports)
+    # choisir_par_code_aeroport(aeroports)
 
 
     def afficher_carte_aeroports(aeroports, show=True):
@@ -62,7 +62,7 @@ if __name__ == '__main__':
         # Ajout du fond de carte (si la carte ne fait pas partie d'une composition)
         if show:
             # Lecture du trait de cotes
-            coords_latlon = np.genfromtxt('utilitaires/coast.txt')
+            coords_latlon = np.genfromtxt('utilitaires/coast2.txt')
             # Transfo en Mercator
             x, y = mercator(coords_latlon, earth.E, 0, 0, 6378137.0)
             # Ajout a la carte
@@ -77,7 +77,7 @@ if __name__ == '__main__':
             plt.title('Carte de toutes les aéroports')
             plt.show()
 
-    afficher_carte_aeroports(aeroports)
+    # afficher_carte_aeroports(aeroports)
 
 
 

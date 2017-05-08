@@ -68,7 +68,9 @@ def ajouter_client(clients):
     :param clients: liste des clients existants
     :return: nouveau client
     """
-    new_id = clients[-1].id + 1
+    new_id = 1
+    if len(clients) != 0:
+        new_id = clients[-1].id + 1
     nom = ihm.demander("Saisissez votre nom :")
     prenom = ihm.demander("Saisissez votre prénom :")
     while True:

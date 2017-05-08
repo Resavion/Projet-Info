@@ -1,6 +1,7 @@
 from reservation.Segment import Segment
 from reservation.Billet import Billet
 
+
 class Reservation(object):
     def __init__(self, id_resa, client, prix_total, date_achat,
                  billets=None):

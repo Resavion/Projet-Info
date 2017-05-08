@@ -251,7 +251,6 @@ def charger_horaires_codeshare_de_route(cur, horaires, route):
     horaires_codeshare = []
     rows               = r.select_horaires_codeshare_par_route(cur, route)
     for row in rows:
-        print(row)
         horaire_operateur = [x for x in horaires
                              if x.compagnie.id_code_iata == row[10]
                              and x.numero == row[11]][0]

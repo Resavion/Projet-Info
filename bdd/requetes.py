@@ -48,7 +48,7 @@ def select_horaires_propres_par_route(cur, route):
     id_compagnie = route.compagnie.id_code_iata
     id_aeroport_depart = route.aeroport_depart.id_code_iata
     id_aeroport_arrivee = route.aeroport_arrivee.id_code_iata
-    req = "SELECT * FROM Horaire WHERE id_compagnie_operateur IS NULL"
+    req = "SELECT * FROM Horaire WHERE id_compagnie_operateur = ''"
     req += " AND id_compagnie = ? AND id_aeroport_depart = ? AND id_aeroport_arrivee = ?"
     executer_requete(cur, req, (id_compagnie,id_aeroport_depart,id_aeroport_arrivee))
     return cur.fetchall()
@@ -61,7 +61,6 @@ def select_horaires_codeshare_par_route(cur, route):
     req = "SELECT * FROM Horaire WHERE id_compagnie_operateur != ''"
     req += " AND id_compagnie = ? AND id_aeroport_depart = ? AND id_aeroport_arrivee = ?"
     executer_requete(cur, req, (id_compagnie,id_aeroport_depart,id_aeroport_arrivee))
-    print(id_compagnie,id_aeroport_depart,id_aeroport_arrivee)
     return cur.fetchall()
 
 

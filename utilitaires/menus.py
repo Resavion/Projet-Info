@@ -186,8 +186,6 @@ def choisir_par_code(compagnies):
                if x.id_code_iata == code or x.code_icao == code]
     if len(results) == 0:
         ihm.afficher("Désolé, nous n'avons pas trouvé votre compagnie !")
-    elif len(results) > 1:
-        compagnie = ihm.choisir(results, "Précisez votre choix :")
     else:
         compagnie = results[0]
     if compagnie is not None:

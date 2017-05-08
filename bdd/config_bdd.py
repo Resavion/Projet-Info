@@ -119,8 +119,7 @@ def creer_bdd(db_name):
                                  foreign key(id_compagnie_operateur,numero_vol_operateur) references Horaire(id_compagnie,numero_vol),
                                  primary key(id_compagnie,numero_vol))"""
     executer_requete(cur, req)
-    req = """create table Vol (id integer primary key,
-                                 id_compagnie text,
+    req = """create table Vol (id_compagnie text,
                                  numero_vol integer,
                                  datetime_depart text,
                                  datetime_arrivee text,
@@ -135,7 +134,8 @@ def creer_bdd(db_name):
                                  foreign key(id_compagnie) references Compagnie(id),
                                  foreign key(id_compagnie,numero_vol) references Horaire(id_compagnie,numero_vol),
                                  foreign key(id_avion) references Avion(id),
-                                 foreign key(statut) references EnumStatutVol(id))"""
+                                 foreign key(statut) references EnumStatutVol(id),
+                                 primary key(id_compagnie,numero_vol,datetime_depart))"""
     executer_requete(cur, req)
     req = """create table Client (id integer primary key,
                                   nom text,
@@ -159,14 +159,18 @@ def creer_bdd(db_name):
     executer_requete(cur, req)
     req = """create table Segment (id integer primary key AUTOINCREMENT NOT NULL,
                                    id_billet integer,
-                                   id_vol integer,
-                                   id_compagnie text,
+                                   id_compagnie_vol text,
                                    numero_vol integer,
+                                   datetime_vol text,
+                                   id_compagnie_codeshare text,
+                                   numero_vol_codeshare integer,
                                    place text,
                                    foreign key(id_billet) references Billet(id),
-                                   foreign key(id_vol) references Vol(id),
-                                   foreign key(id_compagnie) references Compagnie(id),
-                                   foreign key(id_compagnie,numero_vol) references Horaire(id_compagnie,numero_vol))"""
+                                   foreign key(id_compagnie_vol) references Compagnie(id),
+                                   foreign key(id_compagnie_vol,numero_vol) references Horaire(id_compagnie,numero_vol),
+                                   foreign key(id_compagnie_vol,numero_vol,datetime_vol) references Vol(id_compagnie,numero_vol,datetime_depart),
+                                   foreign key(id_compagnie_codeshare) references Compagnie(id),
+                                   foreign key(id_compagnie_codeshare,numero_vol_codeshare) references Horaire(id_compagnie,numero_vol))"""
     executer_requete(cur, req)
     req = """create table BilletOptions (id integer primary key AUTOINCREMENT NOT NULL,
                                    id_billet integer,
@@ -336,16 +340,16 @@ def inserer_jeu_test(db_name):
     valider_modifs(conn)
 
     # Vol
-    colonnes = ('id','id_compagnie','numero_vol',
+    colonnes = ('id_compagnie','numero_vol',
                 'datetime_depart','datetime_arrivee','duree','id_avion',
                 'places_restantes_premiere','places_restantes_business',
                 'places_restantes_eco_plus','places_restantes_eco','statut')
     vols = (
-        (1,"BR",107,"2017-04-27 12:50:00","2017-04-27 15:50:00","4:00:00","B-16213",0,3,0,76,5),
-        (2,"JL",811,"2017-04-27 18:00:00","2017-04-27 21:10:00","4:10:00","JA608J",0,10,0,100,5),
-        (3,"NH",807,"2017-04-27 16:55:00","2017-04-27 21:35:00","6:40:00","JA880A",0,10,0,100,5),
-        (4,"NH",808,"2017-04-28 00:30:00","2017-04-28 08:40:00","5:50:00","JA880A",0,10,0,100,5),
-        (5,"CI",840,"2017-04-28 18:35:00","2017-04-27 22:55:00","3:32:00","B-18666",0,10,0,100,5)
+        ("BR",107,"2017-04-27 12:50:00","2017-04-27 15:50:00","4:00:00","B-16213",0,3,0,76,5),
+        ("JL",811,"2017-04-27 18:00:00","2017-04-27 21:10:00","4:10:00","JA608J",0,10,0,100,5),
+        ("NH",807,"2017-04-27 16:55:00","2017-04-27 21:35:00","6:40:00","JA880A",0,10,0,100,5),
+        ("NH",808,"2017-04-28 00:30:00","2017-04-28 08:40:00","5:50:00","JA880A",0,10,0,100,5),
+        ("CI",840,"2017-04-28 18:35:00","2017-04-27 22:55:00","3:32:00","B-18666",0,10,0,100,5)
     )
     for t in vols:
         r.insert_into(cur, 'Vol', colonnes, t)
@@ -382,10 +386,11 @@ def inserer_jeu_test(db_name):
     valider_modifs(conn)
 
     # Segment
-    colonnes = ('id_billet','id_vol','id_compagnie','numero_vol','place')
+    colonnes = ('id_billet','id_compagnie_vol','numero_vol','datetime_vol',
+                'id_compagnie_codeshare','numero_vol_codeshare','place')
     segments = (
-        (10001,1,"NH",5831,"36A"),
-        (20002,2,"","","45H"),
+        (10001,"BR",107,"2017-04-27 12:50:00","NH",5831,"36A"),
+        (20002,"JL",811,"2017-04-27 18:00:00","","","45H"),
     )
     for t in segments:
         r.insert_into(cur, 'Segment', colonnes, t)

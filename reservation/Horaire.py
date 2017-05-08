@@ -1,7 +1,8 @@
-from datetime import (datetime, date)
+from datetime import (datetime, timedelta)
 
 import ihm.console as ihm
 from utilitaires.fonctions import (saisie_date)
+from reservation.Vol import Vol
 
 
 class Horaire(object):
@@ -109,7 +110,11 @@ class Horaire(object):
         fin = saisie_date("date de fin", debut)
         roundeddebut = debut.replace(hour=0, minute=0, second=0, microsecond=0)
         roundedfin = fin.replace(hour=0, minute=0, second=0, microsecond=0)
-        days = (roundeddebut - roundedfin).days
+        days = (roundedfin - roundeddebut).days
+        for day in range(days+1):
+            td = timedelta(days=day)
+            jour = debut + td
+            vol = Vol()
         return
 
     def afficher_stats(self):

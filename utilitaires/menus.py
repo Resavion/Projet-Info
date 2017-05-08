@@ -139,7 +139,7 @@ def actions_compagnie(compagnies):
     # Proposer les actions
     while True:
         actions = ('Gérer les avions',
-                   "Gérer les configurations d'avion",
+                   "Afficher les configurations d'avion",
                    'Gérer les routes',
                    'Afficher les statistiques',
                    'Revenir au début')
@@ -254,6 +254,7 @@ def actions_routes(compagnie):
                    'Gérer une route',
                    'Ajouter une route',
                    'Suspendre une route',
+                   'Ajouter des vols pour toutes les routes',
                    'Revenir au menu précédent')
         action = ihm.choisir(actions, "Choisissez une action :")
         if action == actions[0]:
@@ -266,6 +267,8 @@ def actions_routes(compagnie):
             compagnie.ajouter_route()
         elif action == actions[4]:
             compagnie.suspendre_route()
+        elif action == actions[5]:
+            compagnie.ajouter_vols_toutes_routes()
         else:
             break
     return

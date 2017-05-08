@@ -180,7 +180,7 @@ class Route(object):
             for X, Y, T in zip(xs0, ys0, [self._aeroport_depart.id_code_iata,
                                           self._aeroport_arrivee.id_code_iata]):
                 ax.annotate('{0:s}'.format(T), xy=(X, Y), xytext=(4, -4), \
-                            fontsize=10, textcoords='offset points')
+                            fontsize=6, textcoords='offset points')
 
         # Affichage
         if show:

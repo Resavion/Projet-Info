@@ -149,7 +149,7 @@ class Aeroport(object):
         # Parametrage de la carte
         parametrage_carte()
 
-        # Ajout de tags avec les codes des aeroports
+        # Ajout de tag avec le code de l'aeroport
         if annot:
             fig = plt.gcf()
             ax = fig.add_subplot(111)
@@ -172,7 +172,6 @@ class Aeroport(object):
     def afficher_horaires(self):
         """
         Methode qui permet d'afficher tous les vols d'arrivée et de départ de l'aéroport
-         
         :return: 
         """
         pass

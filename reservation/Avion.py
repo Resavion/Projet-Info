@@ -1,6 +1,11 @@
 from datetime import date
+import numpy as np
+import matplotlib.pyplot as plt
 
 import ihm.console as ihm
+import utilitaires.earth as earth
+from utilitaires.carte import (dessine_fondcarte, parametrage_carte,
+                               mercator)
 
 
 class Avion(object):
@@ -111,8 +116,40 @@ class Avion(object):
             txt += " - à {}".format(self.aeroport)
         return txt
 
-    def afficher_carte(self):
-        pass
+    def afficher_carte(self, show=True, annot=True):
+        """
+        Methode qui permet d'afficher la carte du monde avec l'avion
+        :return:
+        """
+
+        # Ajout du fond de carte (si la carte ne fait pas partie d'une composition)
+        if show:
+            dessine_fondcarte()
+
+        # Coordonnees de l'aeroport
+        list_coords = np.zeros((1, 2))
+        list_coords[0, 0] = self._latitude_deg
+        list_coords[0, 1] = self._longitude_deg
+        # Transfo en Mercator
+        xs0, ys0 = mercator(list_coords, earth.E, 0, 0, earth.A)
+        # Ajout points a la carte
+        plt.plot(xs0, ys0, 'b.')
+
+        # Parametrage de la carte
+        parametrage_carte()
+
+        # Ajout de tags avec les codes des aeroports
+        if annot:
+            fig = plt.gcf()
+            ax = fig.add_subplot(111)
+            ax.annotate('{0:s}'.format(self.id), xy=(xs0, ys0), xytext=(4, -4), \
+                        fontsize=6, textcoords='offset points')
+
+        # Affichage
+        if show:
+            plt.title("Carte de l'aeroport {0:s}".format(self._nom))
+            plt.show()
+        return
 
     def afficher_vols(self):
         """

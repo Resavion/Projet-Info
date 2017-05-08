@@ -1,7 +1,9 @@
 import matplotlib.pyplot as plt
+from datetime import datetime
 
 import ihm.console as ihm
 from utilitaires.carte import dessine_fondcarte
+from utilitaires.fonctions import saisie_date
 
 
 class Compagnie(object):
@@ -86,12 +88,23 @@ class Compagnie(object):
         ihm.afficher_paginer(self._avions, "Avions", pas=10)
         return
 
-    def afficher_carte_avions(self):
+    def afficher_carte_avions(self, show=True, annot=True):
         """
         Methode qui permet d'afficher l'emplacement des differents avions
         :return: 
         """
-        pass
+
+        # Ajout du fond de carte (si la carte ne fait pas partie d'une composition)
+        if show:
+            dessine_fondcarte()
+        # Ajout de la carte de chaque route
+        for avion in self._avions:
+            avion.afficher_carte(show=False, annot=annot)
+        # Affichage
+        if show:
+            plt.title('Carte des avions de {0:s}'.format(self._nom))
+            plt.show()
+        return
 
     def affecter_avion(self):
         """
@@ -127,11 +140,9 @@ class Compagnie(object):
         # Ajout du fond de carte (si la carte ne fait pas partie d'une composition)
         if show:
             dessine_fondcarte()
-
-        # Ajout de la carte de chaque station
+        # Ajout de la carte de chaque route
         for route in self._routes:
             route.afficher_carte(show=False, annot=annot)
-
         # Affichage
         if show:
             plt.title('Carte du reseau {0:s}'.format(self._nom))
@@ -151,6 +162,22 @@ class Compagnie(object):
         :return: 
         """
         pass
+
+    def ajouter_vols_toutes_routes(self):
+        """
+        Ajoute des vols entre deux dates donnees pour toutes les routes
+        qui ont des horaires
+        :return: 
+        """
+
+        debut = saisie_date("date de début", datetime.today())
+        nb_jours = int(ihm.demander("Saisissez un nombre de jours :"))
+        for route in self._routes:
+            ihm.afficher(route)
+            for horaire in route.horaires:
+                ihm.afficher(horaire)
+                horaire.creer_vols(debut=debut, nb_jours=nb_jours)
+        return
 
     def afficher_stats(self):
         """

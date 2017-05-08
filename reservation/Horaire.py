@@ -1,8 +1,10 @@
 from datetime import (datetime, timedelta)
+from pytz import timezone
 
 import ihm.console as ihm
 from utilitaires.fonctions import (saisie_date)
 from reservation.Vol import Vol
+from reservation.Enums import EnumStatutVol
 
 
 class Horaire(object):
@@ -100,21 +102,44 @@ class Horaire(object):
         ihm.afficher("Il y a {} vol(s)".format(len(vols_tri)))
         ihm.afficher_paginer(vols_tri, "Vols", pas=10)
 
-
-    def creer_vols(self):
+    def creer_vols(self,debut=None,nb_jours=None):
         """
         Cree des vols correspondants a l'horaire entre deux dates donnees
         :return: 
         """
-        debut = saisie_date("date de début", datetime.today())
-        fin = saisie_date("date de fin", debut)
-        roundeddebut = debut.replace(hour=0, minute=0, second=0, microsecond=0)
-        roundedfin = fin.replace(hour=0, minute=0, second=0, microsecond=0)
-        days = (roundedfin - roundeddebut).days
-        for day in range(days+1):
+
+        if debut is None:
+            debut = saisie_date("date de début", datetime.today())
+        if nb_jours is None:
+            nb_jours = int(ihm.demander("Saisissez un nombre de jours :"))
+        for day in range(nb_jours):
             td = timedelta(days=day)
             jour = debut + td
-            vol = Vol(self,)
+            vol_deb = jour.replace(hour=self.heure_depart.hour,minute=self.heure_depart.minute)
+            deb_tz = self.route.aeroport_depart.fuseau
+            # On ajoute la timezone de depart
+            vol_deb = deb_tz.localize(vol_deb)
+            # On calcule la datetime d'arrivee dans la timezone de depart
+            vol_fin = deb_tz.normalize(vol_deb + self.duree)
+            # On transforme dans la timezone d'arrivee
+            vol_fin = vol_fin.astimezone(self.route.aeroport_arrivee.fuseau)
+            # On renleve l'information de timezeone
+            vol_deb = vol_deb.replace(tzinfo=None)
+            vol_fin = vol_fin.replace(tzinfo=None)
+            # Creation de l'objet vol
+            cle = "{}{}{}".format(self.compagnie.id_code_iata,
+                                  self.numero,vol_deb)
+            if cle not in Vol.cle_index:
+                vol = Vol(self,vol_deb,vol_fin,self.duree,None,
+                          self.config_avion.nb_places_premiere,
+                          self.config_avion.nb_places_business,
+                          self.config_avion.nb_places_eco_plus,
+                          self.config_avion.nb_places_eco,
+                          EnumStatutVol(1))
+                self.vols.append(vol)
+                print(vol)
+            else:
+                print("Ce vol existe déjà")
         return
 
     def afficher_stats(self):

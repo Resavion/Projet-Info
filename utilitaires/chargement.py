@@ -150,8 +150,13 @@ def charger_configs_de_compagnie(cur, types_avions, compagnie):
     configs = []
     rows    = r.select_all_par_compagnie(cur,'ConfigAvion', compagnie.id_code_iata)
     for row in rows:
-        type_avion = [x for x in types_avions if x.id == row[2]][0]
-        config     = ConfigAvion(compagnie, row[1], type_avion, *row[3:])
+        type_avion  = [x for x in types_avions if x.id == row[2]][0]
+        disposition = row[8]
+        if not disposition:
+            with open('bdd/data/{}_{}.txt'.format(*row[0:2]), 'r') as myfile:
+                disposition = myfile.read()
+        config = ConfigAvion(compagnie, row[1], type_avion,
+                             *row[3:-1], disposition)
         configs.append(config)
         # print(config)
     return configs

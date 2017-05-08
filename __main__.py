@@ -28,18 +28,56 @@ if __name__ == '__main__':
     # reservation = client.reservations[0]
     # reservation.fournir_recapitulatif()
 
-    # aeroports[0].afficher_carte()
-    # for aero in aeroports:
-    #     aero.afficher_carte()
-
-    print(compagnies[2].routes)
-
 
     print('\n\n OHAYOOOOOOOOOOOOOOOOOOOO')
 
-    print (compagnies[2].routes[1])
 
-    a = compagnies[2].routes[1]
+
+    def choisir_par_code_aeroport(aeroports):
+        aeroport = None
+        code = ihm.demander(
+            "Tapez le code IATA (2 caractères) ou ICAO (3 caractères) :")
+        results = [x for x in aeroports
+                   if x.id_code_iata == code or x.code_icao == code]
+        if len(results) == 0:
+            ihm.afficher("Désolé, nous n'avons pas trouvé votre compagnie !")
+        elif len(results) > 1:
+            compagnie = ihm.choisir(results, "Précisez votre choix :")
+        else:
+            aeroport = results[0]
+        if aeroport is not None:
+            ihm.afficher("Vous allez gérer l'aéroport {}".format(aeroport))
+        return aeroport
+
+
+    choisir_par_code_aeroport(aeroports)
+
+
+    def afficher_carte_aeroports(aeroports, show=True):
+        """
+        Methode qui permet d'afficher la carte des routes de la compagnie
+        :return:
+        """
+
+        # Ajout du fond de carte (si la carte ne fait pas partie d'une composition)
+        if show:
+            # Lecture du trait de cotes
+            coords_latlon = np.genfromtxt('utilitaires/coast.txt')
+            # Transfo en Mercator
+            x, y = mercator(coords_latlon, earth.E, 0, 0, 6378137.0)
+            # Ajout a la carte
+            plt.fill(x, y, 'bisque', linewidth=0.1)
+
+        # Ajout de la carte de chaque station
+        for aeroport in aeroports:
+            aeroport.afficher_carte(show=False, annot=False)
+
+        # Affichage
+        if show:
+            plt.title('Carte de toutes les aéroports')
+            plt.show()
+
+    afficher_carte_aeroports(aeroports)
 
 
 

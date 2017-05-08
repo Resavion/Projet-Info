@@ -153,6 +153,7 @@ class Aeroport(object):
         frame1.axes.yaxis.set_ticklabels([])
         frame1.set_facecolor('lightcyan')
 
+
         # Ajout de tags avec les codes des aeroports
         if annot:
             fig = plt.gcf()

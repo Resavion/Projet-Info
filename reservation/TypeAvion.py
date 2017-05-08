@@ -1,10 +1,11 @@
 class TypeAvion(object):
-    def __init__(self, id_nom, code_iata, code_icao, fuel_cap_L, distance_franchissable_km,
+    def __init__(self, id, nom, code_iata, code_icao, fuel_cap_L, distance_franchissable_km,
                  vitesse_mach, altitude_vol_m, distance_decollage_m):
         """
         Constructeur de la classe typeAvion
         
-        :param id_nom: identifiant du type de l'avion
+        :param id: identifiant du type de l'avion
+        :param nom: nom complet du type de l'avion
         :param code_iata: code IATA du type de l'avion
         :param code_icao: code ICAO du type de l'avion
         :param fuel_cap_L: capacité total en fuel de l'avion en L
@@ -13,7 +14,8 @@ class TypeAvion(object):
         :param altitude_vol_m: l'altitude de croisière de l'avion
         :param distance_decollage_m: la distance necessaire a l'avion pour decoller
         """
-        self._id_nom = id_nom
+        self._id = id
+        self._nom = nom
         self._code_iata = code_iata
         self._code_icao = code_icao
         self._fuel_cap_L = fuel_cap_L
@@ -23,8 +25,12 @@ class TypeAvion(object):
         self._distance_decollage_m = distance_decollage_m
 
     @property
-    def id_nom(self):
-        return self._id_nom
+    def id(self):
+        return self._id
+
+    @property
+    def nom(self):
+        return self._nom
 
     @property
     def code_iata(self):
@@ -59,4 +65,4 @@ class TypeAvion(object):
         return self._distance_decollage_m
 
     def __str__(self):
-        return "{}".format(self._id_nom)
+        return "{}".format(self._nom)

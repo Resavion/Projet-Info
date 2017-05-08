@@ -150,7 +150,7 @@ def charger_configs_de_compagnie(cur, types_avions, compagnie):
     configs = []
     rows    = r.select_all_par_compagnie(cur,'ConfigAvion', compagnie.id_code_iata)
     for row in rows:
-        type_avion = [x for x in types_avions if x.id_nom == row[2]][0]
+        type_avion = [x for x in types_avions if x.id == row[2]][0]
         config     = ConfigAvion(compagnie, row[1], type_avion, *row[3:])
         configs.append(config)
         # print(config)
@@ -170,13 +170,13 @@ def charger_avions_de_compagnie(cur, configs, compagnie):
     avions = []
     rows   = r.select_all_par_compagnie(cur,'Avion', compagnie.id_code_iata)
     for row in rows:
-        config        = [x for x in configs if x.nom == row[2]][0]
-        aeroport      = Aeroport.find_by_id(row[3])[0]
-        date_construc = datetime.strptime(row[4],"%Y-%m-%d").date()
-        date_der_rev  = datetime.strptime(row[5],"%Y-%m-%d").date()
-        etat          = EnumAvion(row[6])
-        avion         = Avion(row[0], compagnie, config, aeroport,
-                              date_construc, date_der_rev, etat, row[7])
+        config         = [x for x in configs if x.nom == row[2]][0]
+        aeroport       = Aeroport.find_by_id(row[3])[0]
+        date_livraison = datetime.strptime(row[4],"%Y-%m-%d").date()
+        date_der_rev   = datetime.strptime(row[5],"%Y-%m-%d").date()
+        etat           = EnumAvion(row[6])
+        avion          = Avion(row[0], compagnie, config, aeroport,
+                               date_livraison, date_der_rev, etat, *row[7:])
         avions.append(avion)
         aeroport.avions.append(avion)
         # print(avion)
@@ -251,6 +251,7 @@ def charger_horaires_codeshare_de_route(cur, horaires, route):
     horaires_codeshare = []
     rows               = r.select_horaires_codeshare_par_route(cur, route)
     for row in rows:
+        print(row)
         horaire_operateur = [x for x in horaires
                              if x.compagnie.id_code_iata == row[10]
                              and x.numero == row[11]][0]

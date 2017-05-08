@@ -52,6 +52,7 @@ def creer_bdd(db_name):
                                      code_pays text)"""
     executer_requete(cur, req)
     req = """create table TypeAvion (id text primary key,
+                                    nom text,
                                     code_iata text,
                                     code_icao text,
                                     fuel_cap_L integer,
@@ -80,7 +81,8 @@ def creer_bdd(db_name):
                                  date_livraison date,
                                  date_derniere_revision date,
                                  id_etat integer,
-                                 position text,
+                                 latitude_deg real,
+                                 longitude_deg real,
                                  foreign key(id_compagnie) references Compagnie(id),
                                  foreign key(id_compagnie,nom_config) references ConfigAvion(id_compagnie,nom),
                                  foreign key(id_aeroport) references Aeroport(id),
@@ -261,12 +263,12 @@ def inserer_jeu_test(db_name):
     valider_modifs(conn)
 
     # TypeAvion
-    colonnes = ('id','code_iata','code_icao','fuel_cap_L','distance_franchissable_km','vitesse_mach',
+    colonnes = ('id','nom','code_iata','code_icao','fuel_cap_L','distance_franchissable_km','vitesse_mach',
                 'altitude_vol_m','distance_decollage_m')
     types = (
-        ("A321","321","A321",30000,5950,0.78,12000,1700),
-        ("B767-300ER","763","B763",90770,11070,0.8,12000,2400),
-        ("B787-9","789","B789",138898,15700,0.85,13000,2900)
+        ("A321","Airbus A321","321","A321",30000,5950,0.78,12000,1700),
+        ("B767-300ER","Boeing 767-300ER","763","B763",90770,11070,0.8,12000,2400),
+        ("B787-9","Boeing 787-9","789","B789",138898,15700,0.85,13000,2900)
     )
     for t in types:
         r.insert_into(cur, 'TypeAvion', colonnes, t)
@@ -287,12 +289,12 @@ def inserer_jeu_test(db_name):
 
     # Avion
     colonnes = ('id','id_compagnie','nom_config','id_aeroport','date_livraison','date_derniere_revision','id_etat',
-                'position')
+                'latitude_deg','longitude_deg')
     avions = (
-        ("B-16213","BR","321","KHH","2014-10-10","2014-10-27",3,"POINT(120.3499984741211 22.57710075378418)"),
-        ("JA608J","JL","A44","NRT","2004-02-23","2014-05-01",3,"POINT(140.386001587 35.7647018433)"),
-        ("JA880A","NH","789","NRT","2016-07-28","2016-07-28",3,"POINT(140.386001587 35.7647018433)"),
-        ("B-18666","CI","789","KHH","2016-07-28","2016-07-28",3,"POINT(120.3499984741211 22.57710075378418)")
+        ("B-16213","BR","321","KHH","2014-10-10","2014-10-27",3,22.57710075378418,120.3499984741211),
+        ("JA608J","JL","A44","NRT","2004-02-23","2014-05-01",3,35.7647018433,140.386001587),
+        ("JA880A","NH","789","NRT","2016-07-28","2016-07-28",3,35.7647018433,140.386001587),
+        ("B-18666","CI","789","KHH","2016-07-28","2016-07-28",3,22.57710075378418,120.3499984741211)
     )
     for t in avions:
         r.insert_into(cur, 'Avion', colonnes, t)
@@ -459,6 +461,7 @@ def inserer_jeu_fichiers(db_name):
     r.insert_from_file(cur, 'data/configs_avions.csv', 'ConfigAvion')
     r.insert_from_file(cur, 'data/avions.csv', 'Avion')
     r.insert_from_file(cur, 'data/routes.csv', 'Route')
+    r.insert_from_file(cur, 'data/horaires.csv', 'Horaire')
     valider_modifs(conn)
 
     fermer_connexion(cur, conn)
@@ -468,5 +471,5 @@ if __name__ == '__main__':
     import os
     os.remove("resavion.db")
     creer_bdd("resavion.db")
-    inserer_jeu_test("resavion.db")
-    # inserer_jeu_fichiers("resavion.db")
+    # inserer_jeu_test("resavion.db")
+    inserer_jeu_fichiers("resavion.db")

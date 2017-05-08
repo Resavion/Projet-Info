@@ -119,7 +119,7 @@ def choisir_par_continent(compagnies):
         ihm.afficher("Il n'y a pas de compagnie disponible !")
         return None
 
-    # On filtre les compagnies par nombre de routes
+    # On trie les compagnies par nombre de routes
     compagnies_filtre.sort(key=lambda s: len(s.routes), reverse=True)
 
     # Choix dans une liste paginee
@@ -221,7 +221,10 @@ def actions_routes(compagnie):
 
 
 def gerer_route(compagnie):
-    route = ihm.choisir_paginer(compagnie.routes, "Choisissez la route :")
+    routes_tri = compagnie.routes
+    # On trie les routes par nombre d'horaires
+    routes_tri.sort(key=lambda s: len(s.horaires), reverse=True)
+    route = ihm.choisir_paginer(routes_tri, "Choisissez la route :")
     ihm.afficher("Vous allez gérer la route {}".format(route))
     # Proposer les actions
     while True:

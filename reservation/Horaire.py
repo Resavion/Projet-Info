@@ -1,3 +1,8 @@
+from datetime import (datetime, date)
+
+from utilitaires.fonctions import (saisie_date)
+
+
 class Horaire(object):
     def __init__(self, route, numero, heure_depart, heure_arrivee, duree, periodicite,
                  horaire_operateur, config_avion=None, vols=None):
@@ -79,7 +84,7 @@ class Horaire(object):
         return self._vols
 
     def __str__(self):
-        return "{} {:4s} - {} {:%H:%M} -> {} {:%H:%M} ({}h{})"\
+        return "{} {:4s} - {} {:%H:%M} -> {} {:%H:%M} ({}h{:02d})"\
             .format(self.compagnie.id_code_iata, str(self._numero),
                     self._route.aeroport_depart.id_code_iata,
                     self.heure_depart,
@@ -89,10 +94,12 @@ class Horaire(object):
 
     def creer_vols(self):
         """
-        
+        Cree des vols correspondants a l'horaire entre deux dates donnees
         :return: 
         """
-        pass
+        debut = saisie_date("date de début", datetime.today())
+        fin = saisie_date("date de fin", debut)
+        return
 
     def afficher_stats(self):
         """

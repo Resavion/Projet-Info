@@ -129,15 +129,23 @@ class Client(object):
         return liste_choix.index(type_vol)
 
     def consulter_reservations(self):
-        ihm.afficher("Il y a {} réservation(s)".format(len(self._reservations)))
-        ihm.afficher_paginer(self._reservations, "Réservations", pas=10)
+        """
+        Permet d'afficher la liste de toutes les reservations effectuees
+        :return: None
+        """
+
+        resas_tri = self._reservations
+        resas_tri.sort(key=lambda s: s.date_achat, reverse=True)
+        ihm.afficher("Il y a {} réservation(s)".format(len(resas_tri)))
+        ihm.afficher_paginer(resas_tri, "Réservations", pas=10)
         return
 
     def consulter_reservation(self):
         """
-        Methode qui permet d'afficher la reservation au client avec les différentes informations pour le vol
-        :return: 
+        Permet d'afficher la reservation au client avec les différentes informations pour le vol
+        :return: None
         """
+
         resas_tri = self._reservations
         resas_tri.sort(key=lambda s: s.date_achat)
         resa = ihm.choisir_paginer(
@@ -147,14 +155,7 @@ class Client(object):
         ihm.demander("Appuyez sur une touche pour revenir au menu :")
         return
 
-    def modifier_reservation(self):
-        """
-        Methode qui permet de modifier la reservation (date, vol etc)
-        :return: 
-        """
-        pass
-
-    def annuler_reservation(self):
+    def annuler_reservation(self, resa):
         """
         Methode qui permet de supprimer la reservation
         :return: 

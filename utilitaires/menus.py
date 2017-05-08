@@ -44,8 +44,9 @@ def actions_client(clients, compagnies, aeroports):
 
     while True:
         # Demander action : Faire, Consulter, Modifier, Annuler
-        actions = ('Faire une réservation', 'Consulter ses réservations',
-                   'Modifier une réservation', 'Annuler une réservation',
+        actions = ('Faire une réservation',
+                   'Consulter ses réservations',
+                   'Gérer une réservation',
                    'Revenir au début')
         action = ihm.choisir(actions, "Choisissez une action :")
         if action == actions[0]:
@@ -53,9 +54,33 @@ def actions_client(clients, compagnies, aeroports):
         elif action == actions[1]:
             client.consulter_reservations()
         elif action == actions[2]:
-            client.modifier_reservation()
-        elif action == actions[3]:
-            client.annuler_reservation()
+            gerer_reservation(client)
+        else:
+            break
+    return
+
+
+def gerer_reservation(client):
+    # Choisir une reservation
+    resas_tri = client.reservations
+    resas_tri.sort(key=lambda s: s.date_achat, reverse=True)
+    resa = ihm.choisir_paginer(
+        resas_tri, "Choisir la réservation à afficher :")
+    ihm.afficher("Vous avez choisi la réservation {}".format(resa))
+
+    while True:
+        # Demander action : Faire, Consulter, Modifier, Annuler
+        actions = ('Afficher le récapitulatif',
+                   'Modifier la réservation',
+                   'Annuler la réservation',
+                   'Revenir au début')
+        action = ihm.choisir(actions, "Choisissez une action :")
+        if action == actions[0]:
+            resa.fournir_recapitulatif()
+        elif action == actions[1]:
+            pass
+        elif action == actions[2]:
+            resa.client.annuler_reservation(resa)
         else:
             break
     return
@@ -263,9 +288,35 @@ def gerer_route(compagnie):
         elif action == actions[1]:
             route.afficher_horaires()
         elif action == actions[2]:
-            pass
+            gerer_horaire(route)
         elif action == actions[3]:
             route.afficher_statistiques()
+        else:
+            break
+    return
+
+
+def gerer_horaire(route):
+    hor_tri = route.horaires
+    # On trie les routes par nombre d'horaires
+    hor_tri.sort(key=lambda s: s.numero)
+    hor = ihm.choisir_paginer(hor_tri, "Choisissez l'horaire :")
+    ihm.afficher("Vous allez gérer l'horaire {}".format(hor))
+    # Proposer les actions
+    while True:
+        actions = (
+            "Afficher les vols",
+            "Ajouter des vols",
+            "Gérer un vol",
+            'Revenir au menu précédent')
+        action = ihm.choisir(actions, "Choisissez une action :")
+        if action == actions[0]:
+            hor.afficher_vols()
+        elif action == actions[1]:
+            hor.creer_vols()
+        elif action == actions[2]:
+            # gerer_vol(horaire)
+            pass
         else:
             break
     return

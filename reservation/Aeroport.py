@@ -151,7 +151,7 @@ class Aeroport(object):
         frame1 = plt.gca()
         frame1.axes.xaxis.set_ticklabels([])
         frame1.axes.yaxis.set_ticklabels([])
-        frame1.set_axis_bgcolor('lightcyan')
+        frame1.set_facecolor('lightcyan')
 
         # Ajout de tags avec les codes des aeroports
         if annot:

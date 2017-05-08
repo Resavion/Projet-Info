@@ -32,6 +32,33 @@ if __name__ == '__main__':
     print('\n\n OHAYOOOOOOOOOOOOOOOOOOOO')
 
 
+    def actions_visualisation(compagnies,aeroports):
+        # Proposer les actions
+        while True:
+            actions = ('Gérer un aéroport',
+                       'Afficher la carte de tous les aéroports',
+                       'Afficher la carte de toutes les routes')
+
+            action = ihm.choisir(actions, "Choisissez une action :")
+            if action == actions[0]:
+                choisir_par_code_aeroport(aeroports)
+                # aeroports.choisir_par_code_aeroport()
+            elif action == actions[1]:
+                afficher_carte_aeroports(aeroports)
+                # aeroports.afficher_carte_aeroports()
+            elif action == action[2]:
+                afficher_carte_routes(compagnies)
+                # compagnies.afficher_carte_routes()
+            else:
+                break
+        return
+
+
+
+    # VERSION SELF ??
+
+
+
 
     def choisir_par_code_aeroport(aeroports):
         aeroport = None
@@ -40,9 +67,9 @@ if __name__ == '__main__':
         results = [x for x in aeroports
                    if x.id_code_iata == code or x.code_icao == code]
         if len(results) == 0:
-            ihm.afficher("Désolé, nous n'avons pas trouvé votre compagnie !")
+            ihm.afficher("Désolé, nous n'avons pas trouvé votre aéroport !")
         elif len(results) > 1:
-            compagnie = ihm.choisir(results, "Précisez votre choix :")
+            aeroport = ihm.choisir(results, "Précisez votre choix :")
         else:
             aeroport = results[0]
         if aeroport is not None:

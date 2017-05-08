@@ -4,8 +4,8 @@ from collections import defaultdict
 
 import ihm.console as ihm
 import utilitaires.earth as earth
-from utilitaires.carte import (mercator, add_arrow, distance_haversine,
-                               densif_geodesique, decoupe_ligne)
+from utilitaires.carte import (mercator, dessine_fondcarte, parametrage_carte,
+                               distance_haversine, densif_geodesique, decoupe_ligne)
 
 
 class Route(object):
@@ -141,12 +141,7 @@ class Route(object):
 
         # Ajout du fond de carte (si la carte ne fait pas partie d'une composition)
         if show:
-            # Lecture du trait de cotes
-            coords_latlon = np.genfromtxt('utilitaires/coast2.txt', delimiter=" ")
-            # Transfo en Mercator
-            x, y = mercator(coords_latlon, earth.E, 0, 0, earth.A)
-            # Ajout a la carte
-            plt.fill(x, y, 'bisque', linewidth=0.1)
+            dessine_fondcarte()
 
         # Coordonnees de la route
         list_coords = np.zeros((2, 2))
@@ -173,17 +168,10 @@ class Route(object):
             largeur = 0.1
             if show:
                 largeur = 0.5
-            ligne = plt.plot(xs, ys, style+'-', linewidth=largeur)[0]
-            # add_arrow(ligne)
+            plt.plot(xs, ys, style+'-', linewidth=largeur)[0]
 
         # Parametrage de la carte
-        plt.axis([-1200000000.0, 1250000000.0, -1100000000.0, 1800000000.0])
-        plt.tick_params(axis='both', which='both', bottom='off', top='off', \
-                        right='off', left='off')
-        frame1 = plt.gca()
-        frame1.axes.xaxis.set_ticklabels([])
-        frame1.axes.yaxis.set_ticklabels([])
-        frame1.set_facecolor('lightcyan')
+        parametrage_carte()
 
         # Ajout de tags avec les codes des aeroports
         if annot:

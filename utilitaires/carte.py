@@ -1,5 +1,8 @@
 import numpy as np
 import math as ma
+import matplotlib.pyplot as plt
+
+import utilitaires.earth as earth
 
 
 def phi_to_lat_iso(phi, e):
@@ -84,6 +87,27 @@ def mercator(coords, e, x0, y0, n):
     y = n * phi_to_lat_iso(lat, e) * 1e2 + y0
 
     return x, y
+
+
+def dessine_fondcarte():
+    # Lecture du trait de cotes
+    coords_latlon = np.genfromtxt('utilitaires/coast2.txt')
+    # Transfo en Mercator
+    x, y = mercator(coords_latlon, earth.E, 0, 0, earth.A)
+    # Ajout a la carte
+    plt.fill(x, y, 'bisque', edgecolor='sienna', linewidth=0.1)
+    return
+
+
+def parametrage_carte(x_min=-1200000000.0, x_max=1250000000.0,
+                      y_min=-1100000000.0, y_max=1800000000.0):
+    plt.axis([x_min, x_max, y_min, y_max])
+    plt.tick_params(axis='both', which='both', bottom='off', top='off', \
+                    right='off', left='off')
+    frame1 = plt.gca()
+    frame1.axes.xaxis.set_ticklabels([])
+    frame1.axes.yaxis.set_ticklabels([])
+    frame1.set_facecolor('lightcyan')
 
 
 def add_arrow(line, position=None, direction='right', size=15, color=None):
@@ -171,7 +195,11 @@ def distance_haversine(lat1_deg, lon1_deg, lat2_deg, lon2_deg, radius=6371000):
 
 
 def densif_geodesique(list_coords, dist):
-    # Pour 1 point tous les 100 kms environ : calculer le ratio et waypoint
+    """
+    Cree 1 point intermediaire tous les 100 kms environ sur la geodesique
+    
+    :return: liste des nouvelles coordonnees
+    """
     nb_points = int(ma.floor(dist/1e5))
     lat1_deg, lon1_deg = list_coords[0, :]
     lat2_deg, lon2_deg = list_coords[1, :]

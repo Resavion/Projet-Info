@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 import ihm.console as ihm
 import utilitaires.earth as earth
-from utilitaires.carte import mercator
+from utilitaires.carte import (mercator, dessine_fondcarte)
 from reservation.Client import Client
 
 
@@ -329,18 +329,16 @@ def actions_visualisation(compagnies,aeroports):
     while True:
         actions = ('Gérer un aéroport',
                    'Afficher la carte de tous les aéroports',
-                   'Afficher la carte de toutes les routes')
+                   'Afficher la carte de toutes les routes',
+                   'Revenir au menu précédent')
 
         action = ihm.choisir(actions, "Choisissez une action :")
         if action == actions[0]:
             choisir_par_code_aeroport(aeroports)
-            # aeroports.choisir_par_code_aeroport()
         elif action == actions[1]:
             afficher_carte_aeroports(aeroports)
-            # aeroports.afficher_carte_aeroports()
-        elif action == action[2]:
+        elif action == actions[2]:
             afficher_carte_routes(compagnies)
-            # compagnies.afficher_carte_routes()
         else:
             break
     return
@@ -371,12 +369,7 @@ def afficher_carte_aeroports(aeroports, show=True):
 
     # Ajout du fond de carte (si la carte ne fait pas partie d'une composition)
     if show:
-        # Lecture du trait de cotes
-        coords_latlon = np.genfromtxt('utilitaires/coast.txt')
-        # Transfo en Mercator
-        x, y = mercator(coords_latlon, earth.E, 0, 0, 6378137.0)
-        # Ajout a la carte
-        plt.fill(x, y, 'bisque', linewidth=0.1)
+        dessine_fondcarte()
 
     # Ajout de la carte de chaque station
     for aeroport in aeroports:
@@ -396,12 +389,7 @@ def afficher_carte_routes(compagnies, show=True):
 
     # Ajout du fond de carte (si la carte ne fait pas partie d'une composition)
     if show:
-        # Lecture du trait de cotes
-        coords_latlon = np.genfromtxt('utilitaires/coast.txt')
-        # Transfo en Mercator
-        x, y = mercator(coords_latlon, earth.E, 0, 0, 6378137.0)
-        # Ajout a la carte
-        plt.fill(x, y, 'bisque', linewidth=0.1)
+        dessine_fondcarte()
 
     # Ajout de la carte de chaque station
     for compagnie in compagnies:

@@ -1,9 +1,7 @@
-import numpy as np
 import matplotlib.pyplot as plt
 
 import ihm.console as ihm
-import utilitaires.earth as earth
-from utilitaires.carte import mercator
+from utilitaires.carte import dessine_fondcarte
 
 
 class Compagnie(object):
@@ -128,12 +126,7 @@ class Compagnie(object):
 
         # Ajout du fond de carte (si la carte ne fait pas partie d'une composition)
         if show:
-            # Lecture du trait de cotes
-            coords_latlon = np.genfromtxt('utilitaires/coast2.txt')
-            # Transfo en Mercator
-            x, y = mercator(coords_latlon, earth.E, 0, 0, earth.A)
-            # Ajout a la carte
-            plt.fill(x, y, 'bisque', linewidth=0.1)
+            dessine_fondcarte()
 
         # Ajout de la carte de chaque station
         for route in self._routes:
@@ -143,7 +136,6 @@ class Compagnie(object):
         if show:
             plt.title('Carte du reseau {0:s}'.format(self._nom))
             plt.show()
-
         return
 
     def ajouter_route(self):

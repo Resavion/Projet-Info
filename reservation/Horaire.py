@@ -114,7 +114,7 @@ class Horaire(object):
         for day in range(days+1):
             td = timedelta(days=day)
             jour = debut + td
-            vol = Vol()
+            vol = Vol(self,)
         return
 
     def afficher_stats(self):

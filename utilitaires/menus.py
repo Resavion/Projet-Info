@@ -4,6 +4,28 @@ import ihm.console as ihm
 from reservation.Client import Client
 
 
+def menu_racine(clients, compagnies, aeroports):
+    while True:
+        # Choisir un mode d'utilisation
+        modes = ('Client', 'Compagnie', 'Visualisation seule', 'Quitter')
+        choix = ihm.choisir(modes, "Choisissez un mode d'utilisation :")
+
+        # Si Client
+        if choix == modes[0]:
+            actions_client(clients, compagnies, aeroports)
+        # Si Compagnie
+        elif choix == modes[1]:
+            actions_compagnie(compagnies)
+        # Si Visualisation
+        elif choix == modes[2]:
+            pass
+        # Sinon on veut quitter le programme
+        else:
+            break
+    ihm.afficher("Vous quittez le programme.")
+    return
+
+
 def actions_client(clients, compagnies, aeroports):
     # Choisir un client existant ou nouveau
     comptes = [client for client in clients]
@@ -245,4 +267,3 @@ def gerer_route(compagnie):
         else:
             break
     return
-

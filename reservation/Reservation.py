@@ -77,31 +77,51 @@ class Reservation(object):
 
         resa = ""
         for billet in self._billets:
-            print("PASSAGER : {} {} (né le {:%d/%m/%Y}, passeport n°{}) \n"
+            print("VOTRE ITINERAIRE\n\n"
+                  "DATE D'ENVOI DE L'ITINERAIRE: {}\n"
+                  "PASSAGER : {} {} (DATE DE NAISSANCE {:%d/%m/%Y})\n"
+                  "PASSPORT : {} \n"
                   "REFERENCE DE DOSSIER: {} \n"
-                  "DATE D'ENVOI de L'ITINERAIRE: {}\n"\
-                  .format(billet.nom_passager.upper(),
+                  \
+                  .format(self._date_achat,
+                          billet.nom_passager.upper(),
                           billet.prenom_passager.upper(),
                           billet.date_naissance,
                           billet.passeport,
-                          self._id,
-                          self._date_achat) )
+                          self._id) )
             for segment in billet.segments:
-                print("{} {}{:4s} - {} -> {} \n"
-                      "DEPART: {:%d/%m/%Y %H:%M} - {} \n"
-                      "ARRIVEE: {:%d/%m/%Y %H:%M} - {}\n"
-                      "VOL: {} - {}"\
+                print("VOL:  {} {}{:4s} - {}     {} {} A {} {}      {:%d/%m/%Y}\n"
+                      "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\n"
+
+                      "DEPART:  {:%d/%m/%Y %H:%M} - {}, {} ({})\n"
+                      "ARRIVEE: {:%d/%m/%Y %H:%M} - {}, {} ({})\n"
+                      "_  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _\n"
+                      "CLASSE: ICI ca serait bien d'avoir la classe de la place ?\n"
+                      "NON FUMEUR\n"
+                      "DUREE: {}\n"
+                      "EQUIPEMENT: {} - {}\n"
+                      "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n"
+                      "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\n"\
                       .format(segment.horaire.compagnie.code_icao,
                               segment.horaire.compagnie.id_code_iata,
                               str(segment.horaire.numero),
-                              segment.horaire.route.aeroport_depart.id_code_iata,
-                              segment.horaire.route.aeroport_arrivee.id_code_iata,
+                              segment.vol.horaire.compagnie.nom,
+                              segment.horaire.route.aeroport_depart.municipalite.upper(),
+                              segment.horaire.route.aeroport_depart.code_pays.upper(),
+                              segment.horaire.route.aeroport_arrivee.municipalite.upper(),
+                              segment.horaire.route.aeroport_arrivee.code_pays.upper(),
                               segment.vol.datetime_depart,
+                              segment.vol.datetime_depart,
+                              segment.horaire.route.aeroport_depart.municipalite.upper(),
+                              segment.horaire.route.aeroport_depart.nom.upper(),
                               segment.horaire.route.aeroport_depart.id_code_iata,
                               segment.vol.datetime_arrivee,
+                              segment.horaire.route.aeroport_arrivee.municipalite.upper(),
+                              segment.horaire.route.aeroport_arrivee.nom.upper(),
                               segment.horaire.route.aeroport_arrivee.id_code_iata,
+                              segment.vol.duree,
                               segment.horaire.compagnie.id_code_iata,
-                              segment.vol.horaire.compagnie.nom) )
+                              segment.vol.horaire.config_avion.type_avion) )
 
 
 if __name__=='__main__':

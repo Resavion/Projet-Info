@@ -223,3 +223,15 @@ class Compagnie(object):
         if route_2escales:
             return [route1, route2, *route_2escales]
         return None
+
+
+    def afficher_aeroports(self):
+        """
+        Methode qui permet d'afficher les aeroports en fonction du nombre de route qui leur
+        sont rattachées
+        :return:
+        """
+        pass
+
+
+

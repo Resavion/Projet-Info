@@ -1,6 +1,10 @@
 from datetime import datetime
+import numpy as np
+import matplotlib.pyplot as plt
 
 import ihm.console as ihm
+import utilitaires.earth as earth
+from utilitaires.carte import mercator
 from reservation.Client import Client
 
 

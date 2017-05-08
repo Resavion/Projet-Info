@@ -43,7 +43,7 @@ if __name__ == '__main__':
 
 
 
-    def afficher_carte_routes(self, show=True, annot=True):
+    def afficher_carte_routes(compagnies, show=True):
         """
         Methode qui permet d'afficher la carte des routes de la compagnie
         :return:
@@ -64,11 +64,11 @@ if __name__ == '__main__':
 
         # Affichage
         if show:
-            plt.title('Carte du reseau {}'.format(self.id))
+            plt.title('Carte de toutes les routes')
             plt.show()
 
 
-    afficher_carte_routes(a)
+    afficher_carte_routes(compagnies)
 
     def nb_routes_sans_double(compagnie):
         """

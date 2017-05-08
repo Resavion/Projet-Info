@@ -377,9 +377,11 @@ def charger_segments_de_billet(cur, horaires, vols, billet):
     rows     = r.select_segments_par_billet(cur, billet.id)
     for row in rows:
         vol         = [x for x in vols if x.id == row[2]][0]
-        horaire     = [x for x in horaires
-                       if x.compagnie.id_code_iata == row[3]
-                       and x.numero == row[4]][0]
+        horaire = vol.horaire
+        if row[3]:
+            horaire     = [x for x in horaires
+                           if x.compagnie.id_code_iata == row[3]
+                           and x.numero == row[4]][0]
         options_ids = r.select_options_par_segment(cur, row[0])
         # on cree une liste d'option
         options     = [EnumOption(*x) for x in options_ids]

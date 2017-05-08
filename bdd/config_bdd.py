@@ -322,14 +322,14 @@ def inserer_jeu_test(db_name):
                 'heure_depart','heure_arrivee','duree','periodicite',
                 'id_compagnie_operateur','numero_vol_operateur')
     horaires = (
-        ("BR",107,"NRT","KHH","BR","321","12:45","15:40","3h55",None,None,None),
-        ("NH",5831,"NRT","KHH",None,None,None,None,None,None,"BR",107),
-        ("JL",811,"NRT","KHH","JL","A44","18:00","21:10","4h10",None,None,None),
-        ("CI",9911,"NRT","KHH",None,None,None,None,None,None,"JL",811),
-        ("NH",807,"NRT","BKK","NH","789","16:55","21:35","6h40",None,None,None),
-        ("NH",808,"BKK","NRT","NH","789","00:30","08:40","5h50",None,None,None),
-        ("CI",840,"BKK","KHH","NH","789","18:35","22:55","3h32",None,None,None),
-        ("NH",9940,"BKK","KHH",None,None,None,None,None,None,"CI",840),
+        ("BR",107,"NRT","KHH","BR","321","12:45","15:40","3h55","","",""),
+        ("NH",5831,"NRT","KHH","","","","","","","BR",107),
+        ("JL",811,"NRT","KHH","JL","A44","18:00","21:10","4h10","","",""),
+        ("CI",9911,"NRT","KHH","","","","","","","JL",811),
+        ("NH",807,"NRT","BKK","NH","789","16:55","21:35","6h40","","",""),
+        ("NH",808,"BKK","NRT","NH","789","00:30","08:40","5h50","","",""),
+        ("CI",840,"BKK","KHH","NH","789","18:35","22:55","3h32","","",""),
+        ("NH",9940,"BKK","KHH","","","","","","","CI",840),
     )
     for t in horaires:
         r.insert_into(cur, 'Horaire', colonnes, t)
@@ -385,7 +385,7 @@ def inserer_jeu_test(db_name):
     colonnes = ('id_billet','id_vol','id_compagnie','numero_vol','place')
     segments = (
         (10001,1,"NH",5831,"36A"),
-        (20002,2,None,None,"45H"),
+        (20002,2,"","","45H"),
     )
     for t in segments:
         r.insert_into(cur, 'Segment', colonnes, t)
@@ -471,5 +471,5 @@ if __name__ == '__main__':
     import os
     os.remove("resavion.db")
     creer_bdd("resavion.db")
-    # inserer_jeu_test("resavion.db")
-    inserer_jeu_fichiers("resavion.db")
+    inserer_jeu_test("resavion.db")
+    # inserer_jeu_fichiers("resavion.db")

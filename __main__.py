@@ -36,82 +36,9 @@ if __name__ == '__main__':
 
 
     # afficher_carte_routes(compagnies)
-
-    def nb_routes_sans_double(compagnie):
-        """
-        Methode qui permet de savoir combien de route sans doublon une compagnie a 
-        :param compagnie: 
-        :return: 
-        """
-        nb_routes_double = 0
-        for route in compagnie.routes:
-            for terou in compagnie.routes:
-                if route.aeroport_depart.id_code_iata == terou.aeroport_arrivee.id_code_iata:
-                    if route.aeroport_arrivee.id_code_iata == terou.aeroport_depart.id_code_iata:
-                        nb_routes_double += 1
-        nb_routes_double = nb_routes_double / 2
-        nb_routes_sans_double = len(compagnie.routes) - nb_routes_double
-        return(nb_routes_sans_double)
-
-    def ranger_liste_aeroport(compagnies):
-        liste_a_trier = []
-        for compagnie in compagnies:
-            nb_route = nb_routes_sans_double(compagnie)
-            liste_a_trier.append((compagnie, nb_route))
-        nb_aeroport = len(liste_a_trier)
-        if nb_aeroport <= 1:
-            print(liste_a_trier)
-        for i in range(nb_aeroport):
-            for j in range(nb_aeroport):
-                if liste_a_trier[i][1] >= liste_a_trier[j][1]:
-                    stock = liste_a_trier[i]
-                    liste_a_trier[i] = liste_a_trier[j]
-                    liste_a_trier[j] = stock
-
-        return(liste_a_trier)
-
     # liste_a_trier = ranger_liste_aeroport(compagnies)
-
     # ihm.afficher_paginer(liste_a_trier, 'BLABLABLA')
 
-
-
-    # a = nb_routes_sans_double(compagnies[0])
-    # print(a)
-    # b = nb_routes_sans_double(compagnies[1])
-    # print(b)
-    # c = nb_routes_sans_double(compagnies[2])
-    # print(c)
-    # d = nb_routes_sans_double(compagnies[3])
-    # print(d)
-    #
-    # l= [a,b,c,d]
-    # for i in range(len(l)):
-    #     for j in range(len(l)):
-    #         if l[i]>=l[j]:
-    #             z = l[i]
-    #             l[i] = l[j]
-    #             l[j] = z
-    # print(l)
-    # liste_routes_sans_double = NH.routes
-    # for route in NH.routes:
-    #     for new in liste_routes_sans_double:
-    #         if route.aeroport_depart.id_code_iata == new.aeroport_arrivee.id_code_iata and\
-    #             route.aeroport_arrivee.id_code_iata == new.aeroport_depart.id_code_iata:
-    #                 liste_routes_sans_double -= new
-    # print(liste_routes_sans_double)
-
-
-
-    # for compagnie in compagnies:
-    #     print(compagnie._id_code_iata)
-    #     for route in compagnie.routes:
-    #         # print(route.id)
-    #         print(route.aeroport_depart.id_code_iata)
-    #         print(route.aeroport_arrivee.id_code_iata)
-
-    def afficher_aeroports():
-        pass
 
     # while True:
     #     # Choisir un mode d'utilisation

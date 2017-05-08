@@ -326,3 +326,36 @@ def afficher_carte_routes(compagnies, show=True):
     if show:
         plt.title('Carte de toutes les routes')
         plt.show()
+
+ def nb_routes_sans_double(compagnie):
+    """
+    Methode qui permet de savoir combien de route sans doublon une compagnie a 
+    :param compagnie: 
+    :return: 
+    """
+    nb_routes_double = 0
+    for route in compagnie.routes:
+        for terou in compagnie.routes:
+            if route.aeroport_depart.id_code_iata == terou.aeroport_arrivee.id_code_iata:
+                if route.aeroport_arrivee.id_code_iata == terou.aeroport_depart.id_code_iata:
+                    nb_routes_double += 1
+    nb_routes_double = nb_routes_double / 2
+    nb_routes_sans_double = len(compagnie.routes) - nb_routes_double
+    return(nb_routes_sans_double)
+
+def ranger_liste_aeroport(compagnies):
+    liste_a_trier = []
+    for compagnie in compagnies:
+        nb_route = nb_routes_sans_double(compagnie)
+        liste_a_trier.append((compagnie, nb_route))
+    nb_aeroport = len(liste_a_trier)
+    if nb_aeroport <= 1:
+        print(liste_a_trier)
+    for i in range(nb_aeroport):
+        for j in range(nb_aeroport):
+            if liste_a_trier[i][1] >= liste_a_trier[j][1]:
+                stock = liste_a_trier[i]
+                liste_a_trier[i] = liste_a_trier[j]
+                liste_a_trier[j] = stock
+
+    return(liste_a_trier)

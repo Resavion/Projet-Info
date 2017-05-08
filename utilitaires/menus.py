@@ -4,6 +4,28 @@ import ihm.console as ihm
 from reservation.Client import Client
 
 
+def menu_racine(clients, compagnies, aeroports):
+    while True:
+        # Choisir un mode d'utilisation
+        modes = ('Client', 'Compagnie', 'Visualisation seule', 'Quitter')
+        choix = ihm.choisir(modes, "Choisissez un mode d'utilisation :")
+
+        # Si Client
+        if choix == modes[0]:
+            actions_client(clients, compagnies, aeroports)
+        # Si Compagnie
+        elif choix == modes[1]:
+            actions_compagnie(compagnies)
+        # Si Visualisation
+        elif choix == modes[2]:
+            pass
+        # Sinon on veut quitter le programme
+        else:
+            break
+    ihm.afficher("Vous quittez le programme.")
+    return
+
+
 def actions_client(clients, compagnies, aeroports):
     # Choisir un client existant ou nouveau
     comptes = [client for client in clients]
@@ -22,18 +44,43 @@ def actions_client(clients, compagnies, aeroports):
 
     while True:
         # Demander action : Faire, Consulter, Modifier, Annuler
-        actions = ('Faire une réservation', 'Consulter ses réservations',
-                   'Modifier une réservation', 'Annuler une réservation',
+        actions = ('Consulter ses réservations',
+                   'Gérer une réservation',
+                   'Faire une réservation',
                    'Revenir au début')
         action = ihm.choisir(actions, "Choisissez une action :")
         if action == actions[0]:
-            client.faire_reservation(compagnies, aeroports)
-        elif action == actions[1]:
             client.consulter_reservations()
+        elif action == actions[1]:
+            gerer_reservation(client)
         elif action == actions[2]:
-            client.modifier_reservation()
-        elif action == actions[3]:
-            client.annuler_reservation()
+            client.faire_reservation(compagnies, aeroports)
+        else:
+            break
+    return
+
+
+def gerer_reservation(client):
+    # Choisir une reservation
+    resas_tri = client.reservations
+    resas_tri.sort(key=lambda s: s.date_achat, reverse=True)
+    resa = ihm.choisir_paginer(
+        resas_tri, "Choisir la réservation à afficher :")
+    ihm.afficher("Vous avez choisi la réservation {}".format(resa))
+
+    while True:
+        # Demander action : Faire, Consulter, Modifier, Annuler
+        actions = ('Afficher le récapitulatif',
+                   'Modifier la réservation',
+                   'Annuler la réservation',
+                   'Revenir au début')
+        action = ihm.choisir(actions, "Choisissez une action :")
+        if action == actions[0]:
+            resa.fournir_recapitulatif()
+        elif action == actions[1]:
+            pass
+        elif action == actions[2]:
+            resa.client.annuler_reservation(resa)
         else:
             break
     return
@@ -46,7 +93,9 @@ def ajouter_client(clients):
     :param clients: liste des clients existants
     :return: nouveau client
     """
-    new_id = clients[-1].id + 1
+    new_id = 1
+    if len(clients) != 0:
+        new_id = clients[-1].id + 1
     nom = ihm.demander("Saisissez votre nom :")
     prenom = ihm.demander("Saisissez votre prénom :")
     while True:
@@ -119,11 +168,13 @@ def choisir_par_continent(compagnies):
         ihm.afficher("Il n'y a pas de compagnie disponible !")
         return None
 
-    # On filtre les compagnies par nombre de routes
+    # On trie les compagnies par nombre de routes
     compagnies_filtre.sort(key=lambda s: len(s.routes), reverse=True)
 
+    # Choix dans une liste paginee
     compagnie = ihm.choisir_paginer(
         compagnies_filtre, "Choisissez une compagnie :", pas=10)
+    ihm.afficher("Vous allez gérer la compagnie {}".format(compagnie))
     return compagnie
 
 
@@ -135,8 +186,6 @@ def choisir_par_code(compagnies):
                if x.id_code_iata == code or x.code_icao == code]
     if len(results) == 0:
         ihm.afficher("Désolé, nous n'avons pas trouvé votre compagnie !")
-    elif len(results) > 1:
-        compagnie = ihm.choisir(results, "Précisez votre choix :")
     else:
         compagnie = results[0]
     if compagnie is not None:
@@ -219,7 +268,10 @@ def actions_routes(compagnie):
 
 
 def gerer_route(compagnie):
-    route = ihm.choisir_paginer(compagnie.routes, "Choisissez la route :")
+    routes_tri = compagnie.routes
+    # On trie les routes par nombre d'horaires
+    routes_tri.sort(key=lambda s: len(s.horaires), reverse=True)
+    route = ihm.choisir_paginer(routes_tri, "Choisissez la route :")
     ihm.afficher("Vous allez gérer la route {}".format(route))
     # Proposer les actions
     while True:
@@ -234,12 +286,39 @@ def gerer_route(compagnie):
         elif action == actions[1]:
             route.afficher_horaires()
         elif action == actions[2]:
-            pass
+            gerer_horaire(route)
         elif action == actions[3]:
             route.afficher_statistiques()
         else:
             break
     return
+
+
+def gerer_horaire(route):
+    hor_tri = route.horaires
+    # On trie les routes par nombre d'horaires
+    hor_tri.sort(key=lambda s: s.numero)
+    hor = ihm.choisir_paginer(hor_tri, "Choisissez l'horaire :")
+    ihm.afficher("Vous allez gérer l'horaire {}".format(hor))
+    # Proposer les actions
+    while True:
+        actions = (
+            "Afficher les vols",
+            "Ajouter des vols",
+            "Gérer un vol",
+            'Revenir au menu précédent')
+        action = ihm.choisir(actions, "Choisissez une action :")
+        if action == actions[0]:
+            hor.afficher_vols()
+        elif action == actions[1]:
+            hor.creer_vols()
+        elif action == actions[2]:
+            # gerer_vol(horaire)
+            pass
+        else:
+            break
+    return
+
 
 def actions_visualisation(compagnies,aeroports):
     # Proposer les actions
@@ -262,6 +341,7 @@ def actions_visualisation(compagnies,aeroports):
             break
     return
 
+
 def choisir_par_code_aeroport(aeroports):
     aeroport = None
     code = ihm.demander(
@@ -277,6 +357,7 @@ def choisir_par_code_aeroport(aeroports):
     if aeroport is not None:
         ihm.afficher("Vous allez gérer l'aéroport {}".format(aeroport))
     return aeroport
+
 
 def afficher_carte_aeroports(aeroports, show=True):
     """
@@ -327,7 +408,8 @@ def afficher_carte_routes(compagnies, show=True):
         plt.title('Carte de toutes les routes')
         plt.show()
 
- def nb_routes_sans_double(compagnie):
+
+def nb_routes_sans_double(compagnie):
     """
     Methode qui permet de savoir combien de route sans doublon une compagnie a 
     :param compagnie: 
@@ -342,6 +424,7 @@ def afficher_carte_routes(compagnies, show=True):
     nb_routes_double = nb_routes_double / 2
     nb_routes_sans_double = len(compagnie.routes) - nb_routes_double
     return(nb_routes_sans_double)
+
 
 def ranger_liste_aeroport(compagnies):
     liste_a_trier = []

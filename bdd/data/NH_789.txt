@@ -32,7 +32,7 @@ Y|OOO OOO OOO|25
 Y|OOO OOO OOO|26
 Y|OOO OOO OOO|27
 Y|OOO OOO OOO|28
-Y|OOO --- OOO|29
+Y|OOO OOO OOO|29
 Y|OOO OOO OOO|30
 Y|OOO OOO OOO|31
  |>   ---   <|
@@ -55,6 +55,5 @@ Y|OOO OOO OOO|45
 Y|O-O OOO O-O|46
 Y|O-O OOO O-O|47
 Y|>   OOO   <|48
- |>         <|
  |>         <|
   -----------

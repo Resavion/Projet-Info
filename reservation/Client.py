@@ -1,6 +1,8 @@
 from datetime import (datetime, timedelta)
 
 import ihm.console as ihm
+from utilitaires.fonctions import (saisie_date,
+                                   saisie_aeroport)
 
 
 class Client(object):
@@ -53,7 +55,7 @@ class Client(object):
         (saisir_critere, afficher_vols, choisir_vols, saisir_passager, payer..)
         :return: 
         """
-        criteres = self.saisir_criteres(aeroports)
+        criteres = self.saisie_criteres(aeroports)
 
         routes_directes = []
         routes_1escale = []
@@ -80,13 +82,13 @@ class Client(object):
         return
 
     @staticmethod
-    def saisir_criteres(aeroports):
+    def saisie_criteres(aeroports):
         # Demander l'aéroport départ et l'aéroport arrivée
-        aer_dep = Client.saisie_aeroport("aéroport de départ", aeroports)
-        aer_arr = Client.saisie_aeroport("aéroport d'arrivée", aeroports)
+        aer_dep = saisie_aeroport("aéroport de départ", aeroports)
+        aer_arr = saisie_aeroport("aéroport d'arrivée", aeroports)
         # Demander les dates départ et retour
-        date_dep = Client.saisie_date("date de départ", datetime.today())
-        date_arr = Client.saisie_date("date de retour", date_dep)
+        date_dep = saisie_date("date de départ", datetime.today())
+        date_arr = saisie_date("date de retour", date_dep)
         # Demander le nombre de passagers (adultes/enfants)
         nb_adultes = Client.saisie_passagers("adultes (12 ans et +)")
         nb_enfants = Client.saisie_passagers("enfants (- de 12 ans)")
@@ -96,43 +98,6 @@ class Client(object):
         escales_max = Client.saisie_nb_escales()
         return [aer_dep, aer_arr, date_dep, date_arr,
                 nb_adultes, nb_enfants, classe, escales_max]
-
-    @staticmethod
-    def saisie_aeroport(message, aeroports):
-        aero = None
-        while aero is None:
-            code = ihm.demander(
-                "Saisissez l'{} (code IATA ou ICAO ou ville) :".format(message))
-            results = [x for x in aeroports
-                       if x.id_code_iata == code or x.code_icao == code or
-                       x.municipalite.startswith(code)]
-            if len(results) == 0:
-                ihm.afficher("Désolé, nous n'avons pas trouvé votre aéroport !")
-            elif len(results) > 1:
-                aero = ihm.choisir_paginer(results, "Précisez votre choix :")
-            else:
-                aero = results[0]
-        ihm.afficher("Vous avez choisi : {}".format(aero))
-        return aero
-
-    @staticmethod
-    def saisie_date(message, date_seuil):
-        date_saisie = None
-        dans1an = date_seuil.replace(year=date_seuil.year + 1)
-        while True:
-            try:
-                date_saisie = ihm.demander(
-                    "Saisissez votre {} (AAAA-MM-JJ) :".format(message))
-                date_saisie = datetime.strptime(date_saisie, '%Y-%m-%d')
-                if date_saisie <= date_seuil or date_saisie > dans1an:
-                    raise ValueError
-            except ValueError:
-                ihm.afficher("Ceci n'est pas une date valide.")
-                pass
-            else:
-                break
-        ihm.afficher("Vous avez choisi le {:%d/%m/%Y}".format(date_saisie))
-        return date_saisie
 
     @staticmethod
     def saisie_passagers(message):
@@ -164,25 +129,18 @@ class Client(object):
         return liste_choix.index(type_vol)
 
     def consulter_reservations(self):
-        ihm.afficher("Il y a {} réservation(s)".format(len(self._reservations)))
-        ihm.afficher_paginer(self._reservations, "Réservations", pas=10)
+        """
+        Permet d'afficher la liste de toutes les reservations effectuees
+        :return: None
+        """
+
+        resas_tri = self._reservations
+        resas_tri.sort(key=lambda s: s.date_achat, reverse=True)
+        ihm.afficher("Il y a {} réservation(s)".format(len(resas_tri)))
+        ihm.afficher_paginer(resas_tri, "Réservations", pas=10)
         return
 
-    def consulter_reservation(self):
-        """
-        Methode qui permet d'afficher la reservation au client avec les différentes informations pour le vol
-        :return: 
-        """
-        pass
-
-    def modifier_reservation(self):
-        """
-        Methode qui permet de modifier la reservation (date, vol etc)
-        :return: 
-        """
-        pass
-
-    def annuler_reservation(self):
+    def annuler_reservation(self, resa):
         """
         Methode qui permet de supprimer la reservation
         :return: 

@@ -52,7 +52,7 @@ def choisir(liste_choix, message=""):
         return choix
 
 
-def choisir_paginer(liste_choix, message="", pas=5):
+def choisir_paginer(liste_choix, message="", pas=10):
     borne_bas = 0
     elem = None
     while True:
@@ -75,15 +75,15 @@ def choisir_paginer(liste_choix, message="", pas=5):
     return elem
 
 
-def afficher_paginer(liste_elems, message, pas=5):
+def afficher_paginer(liste_elems, message, pas=10):
     borne_bas = 0
     elem = None
     while True:
         borne_haut = min(len(liste_elems), borne_bas + pas)
         # On affiche seulement quelques éléments à la fois
         elems = liste_elems[borne_bas:borne_haut]
-        print("{} {}/{} :".format(message, borne_haut - borne_bas,
-                                  len(liste_elems)))
+        print("{} {} à {}/{} :".format(message, borne_bas, borne_haut,
+                                       len(liste_elems)))
         for elem in elems:
             print(elem)
         liste_choix = []

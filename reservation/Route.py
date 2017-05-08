@@ -1,20 +1,21 @@
-import math as ma
 import numpy as np
 import matplotlib.pyplot as plt
+from collections import defaultdict
 
 import ihm.console as ihm
 import utilitaires.earth as earth
 from utilitaires.carte import (mercator, add_arrow, distance_haversine,
-                               densif_geodesique)
+                               densif_geodesique, decoupe_ligne)
 
 
 class Route(object):
-    def __init__(self, id_route, compagnie, aeroport_depart, aeroport_arrivee, geom, codeshare,
+    cle_index = defaultdict()
+
+    def __init__(self, compagnie, aeroport_depart, aeroport_arrivee, geom, codeshare,
                  horaires=None):
         """
         Constructeur de la classe route
         
-        :param id_route: id de la route
         :param compagnie: compagnie qui propose la route
         :param aeroport_depart: aeroport de depart de la route
         :param aeroport_arrivee: aeroport d'arrivee de la route
@@ -22,7 +23,6 @@ class Route(object):
         :param codeshare: booleen qui permet de savoir si un avion est partage par plusieurs compagnies
         :param horaires: liste des horaires sur cette route
         """
-        self._id = id_route
         self._compagnie = compagnie
         self._aeroport_depart = aeroport_depart
         self._aeroport_arrivee = aeroport_arrivee
@@ -36,9 +36,10 @@ class Route(object):
             horaires = []
         self._horaires = horaires
 
-    @property
-    def id(self):
-        return self._id
+        cle = "{}{}{}".format(compagnie.id_code_iata,
+                              aeroport_depart.id_code_iata,
+                              aeroport_arrivee.id_code_iata)
+        Route.cle_index[cle] = self
 
     @property
     def compagnie(self):
@@ -69,10 +70,9 @@ class Route(object):
         return self._horaires
 
     def __str__(self):
-        return "{} - Id : {} - {} ({},{}) -> {} ({},{}) - {:.0f} km - " \
+        return "{} - {} ({},{}) -> {} ({},{}) - {:.0f} km - " \
                "Horaires : {}"\
             .format(self._compagnie.id_code_iata,
-                    self._id,
                     self._aeroport_depart.id_code_iata,
                     self._aeroport_depart.municipalite,
                     self._aeroport_depart.code_pays,
@@ -142,7 +142,7 @@ class Route(object):
         # Ajout du fond de carte (si la carte ne fait pas partie d'une composition)
         if show:
             # Lecture du trait de cotes
-            coords_latlon = np.genfromtxt('utilitaires/coast.txt', delimiter=" ")
+            coords_latlon = np.genfromtxt('utilitaires/coast2.txt', delimiter=" ")
             # Transfo en Mercator
             x, y = mercator(coords_latlon, earth.E, 0, 0, earth.A)
             # Ajout a la carte
@@ -157,17 +157,24 @@ class Route(object):
         # Transfo en Mercator
         xs0, ys0 = mercator(list_coords, earth.E, 0, 0, earth.A)
         # Ajout points a la carte
-        plt.plot(xs0, ys0, 'b.')
+        plt.plot(xs0, ys0, 'b,')
+
         # Densification suivant la ligne geodesique
         new_coords = densif_geodesique(list_coords, self._distance)
-        # Transfo en Mercator
-        xs, ys = mercator(new_coords, earth.E, 0, 0, earth.A)
-        # Ajout a la carte
-        style = 'b'
-        if self._codeshare:
-            style = 'c'
-        ligne = plt.plot(xs, ys, style+'-')[0]
-        # add_arrow(ligne)
+        tab_listes = decoupe_ligne(new_coords)
+        # Pour chaque partie de la route, on ajoute a la carte
+        for coords in tab_listes:
+            # Transfo en Mercator
+            xs, ys = mercator(coords, earth.E, 0, 0, earth.A)
+            # Ajout a la carte
+            style = 'b'
+            if self._codeshare:
+                style = 'c'
+            largeur = 0.1
+            if show:
+                largeur = 0.5
+            ligne = plt.plot(xs, ys, style+'-', linewidth=largeur)[0]
+            # add_arrow(ligne)
 
         # Parametrage de la carte
         plt.axis([-1200000000.0, 1250000000.0, -1100000000.0, 1800000000.0])

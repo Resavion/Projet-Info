@@ -172,14 +172,43 @@ def distance_haversine(lat1_deg, lon1_deg, lat2_deg, lon2_deg, radius=6371000):
 
 def densif_geodesique(list_coords, dist):
     # Pour 1 point tous les 100 kms environ : calculer le ratio et waypoint
-    nb_points = ma.floor(dist/1e5)
+    nb_points = int(ma.floor(dist/1e5))
     lat1_deg, lon1_deg = list_coords[0, :]
     lat2_deg, lon2_deg = list_coords[1, :]
     new_coords = np.zeros((nb_points+1, 2))
     new_coords[0, :] = list_coords[0, :]
-    for i in range(1,nb_points):
+    for i in range(1, nb_points):
         frac = i/nb_points
         lat, lon = waypoint(lat1_deg, lon1_deg, lat2_deg, lon2_deg, frac, dist)
         new_coords[i, :] = lat, lon
     new_coords[nb_points, :] = list_coords[1, :]
     return new_coords
+
+
+def decoupe_ligne(list_coords):
+    liste1 = []
+    liste2 = []
+    liste = liste1
+    point_prec = list_coords[0]
+    for point in list_coords:
+        lon_prec = point_prec[1]
+        lon = point[1]
+        signe_prec = lon_prec/abs(lon_prec)
+        signe = lon/abs(lon)
+        saut = (signe_prec * signe < 0 and abs(lon) > 170)
+        if saut:
+            lat_prec = point_prec[0]
+            lat = point[0]
+            dlon_prec = 180 - signe_prec*lon_prec
+            dlon = 180 - signe*lon
+            dlat = lat - lat_prec
+            lat_mid = lat_prec + dlat*dlon_prec/(dlon + dlon_prec)
+            liste.append([lat_mid, signe_prec*180])
+            liste = liste2
+            liste.append([lat_mid, signe*180])
+        liste.append(point)
+        point_prec = point
+    liste_return = [np.array(liste1)]
+    if liste2:
+        liste_return.append(np.array(liste2))
+    return liste_return

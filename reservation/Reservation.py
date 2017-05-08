@@ -1,6 +1,7 @@
 from reservation.Segment import Segment
 from reservation.Billet import Billet
 
+
 class Reservation(object):
     def __init__(self, id_resa, client, prix_total, date_achat,
                  billets=None):
@@ -75,7 +76,6 @@ class Reservation(object):
         """
         # HYP on part du principe que chaque passager a les memes segments
 
-        resa = ""
         for billet in self._billets:
             print("VOTRE ITINERAIRE\n\n"
                   "DATE D'ENVOI DE L'ITINERAIRE: {}\n"
@@ -98,7 +98,7 @@ class Reservation(object):
                       "_  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _\n"
                       "CLASSE: ICI ca serait bien d'avoir la classe de la place ?\n"
                       "NON FUMEUR\n"
-                      "DUREE: {}\n"
+                      "DUREE: {}h{:02d}\n"
                       "EQUIPEMENT: {} - {}\n"
                       "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n"
                       "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\n"\
@@ -119,9 +119,11 @@ class Reservation(object):
                               segment.horaire.route.aeroport_arrivee.municipalite.upper(),
                               segment.horaire.route.aeroport_arrivee.nom.upper(),
                               segment.horaire.route.aeroport_arrivee.id_code_iata,
-                              segment.vol.duree,
-                              segment.horaire.compagnie.id_code_iata,
+                              segment.vol.duree.seconds // 3600,
+                              (segment.vol.duree.seconds // 60) % 60,
+                              segment.vol.horaire.compagnie.id_code_iata,
                               segment.vol.horaire.config_avion.type_avion) )
+        return
 
 
 if __name__=='__main__':

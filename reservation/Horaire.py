@@ -1,10 +1,16 @@
+from datetime import (datetime, timedelta)
+
+import ihm.console as ihm
+from utilitaires.fonctions import (saisie_date)
+from reservation.Vol import Vol
+
+
 class Horaire(object):
-    def __init__(self, id_horaire, route, numero, heure_depart, heure_arrivee, duree, periodicite, horaire_operateur,
-                 config_avion=None, vols=None):
+    def __init__(self, route, numero, heure_depart, heure_arrivee, duree, periodicite,
+                 horaire_operateur, config_avion=None, vols=None):
         """
         Constructeur de la classe horaire
         
-        :param id_horaire: identifiant de l'horaire
         :param route: route empruntee par le vol
         :param numero: numero de vol 
         :param heure_depart: heure de depart du vol
@@ -15,7 +21,6 @@ class Horaire(object):
         :param config_avion: la configuration d'avion utilisee a cet horaire
         :param vols: vols assurant cet horaire
         """
-        self._id = id_horaire
         self._route = route
         self._numero = numero
         self._heure_depart = heure_depart
@@ -27,10 +32,6 @@ class Horaire(object):
         if vols is None and horaire_operateur is None:
             vols = []
         self._vols = vols
-
-    @property
-    def id(self):
-        return self._id
 
     @property
     def route(self):
@@ -85,20 +86,36 @@ class Horaire(object):
         return self._vols
 
     def __str__(self):
-        return "{} Id : {:4s} - {} {:%H:%M} -> {} {:%H:%M} ({}h{})"\
-            .format(self._compagnie.id_code_iata, str(self._numero),
+        return "{} {:4s} - {} {:%H:%M} -> {} {:%H:%M} ({}h{:02d})"\
+            .format(self.compagnie.id_code_iata, str(self._numero),
                     self._route.aeroport_depart.id_code_iata,
                     self.heure_depart,
                     self._route.aeroport_arrivee.id_code_iata,
                     self.heure_arrivee,
                     self.duree.seconds // 3600, (self.duree.seconds//60) % 60)
 
+    def afficher_vols(self):
+        vols_tri = self._vols
+        vols_tri.sort(key=lambda s: s.datetime_depart, reverse=True)
+        ihm.afficher("Il y a {} vol(s)".format(len(vols_tri)))
+        ihm.afficher_paginer(vols_tri, "Vols", pas=10)
+
+
     def creer_vols(self):
         """
-        
+        Cree des vols correspondants a l'horaire entre deux dates donnees
         :return: 
         """
-        pass
+        debut = saisie_date("date de début", datetime.today())
+        fin = saisie_date("date de fin", debut)
+        roundeddebut = debut.replace(hour=0, minute=0, second=0, microsecond=0)
+        roundedfin = fin.replace(hour=0, minute=0, second=0, microsecond=0)
+        days = (roundedfin - roundeddebut).days
+        for day in range(days+1):
+            td = timedelta(days=day)
+            jour = debut + td
+            vol = Vol()
+        return
 
     def afficher_stats(self):
         """

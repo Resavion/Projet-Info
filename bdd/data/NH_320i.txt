@@ -11,7 +11,9 @@ Y|OOO OOO|7
 Y|OOO OOO|8
 Y|OOO OOO|9
 Y|OOO OOO|10
-Y|O-O O-O|11
+ |>     <|
+Y|OOO OOO|11
+ |>     <|
 Y|OOO OOO|12
 Y|OOO OOO|13
 Y|OOO OOO|14

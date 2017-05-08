@@ -1,11 +1,15 @@
+from collections import defaultdict
+
+
 class Vol(object):
-    def __init__(self, id_vol, horaire, datetime_depart, datetime_arrivee, duree, avion,
+    cle_index = defaultdict()
+
+    def __init__(self, horaire, datetime_depart, datetime_arrivee, duree, avion,
                  places_restantes_premiere, places_restantes_business, places_restantes_eco_plus,
                  places_restantes_eco, statut, cabine=None, segments=None):
         """
         Constructeur de la classe vol
 
-        :param id_vol: id du vol
         :param horaire: horaire du vol
         :param datetime_depart: date et heure de depart du vol
         :param datetime_arrivee: date et heure d'arrivee du vol
@@ -19,7 +23,6 @@ class Vol(object):
         :param cabine: schema des places du vol
         :param segments: segments de billets concernant ce vol
         """
-        self._id = id_vol
         self._horaire = horaire
         self._datetime_depart = datetime_depart
         self._datetime_arrivee = datetime_arrivee
@@ -36,10 +39,10 @@ class Vol(object):
         if segments is None:
             segments = []
         self._segments = segments
-
-    @property
-    def id(self):
-        return self._id
+        cle = "{}{}{}".format(horaire.compagnie.id_code_iata,
+                              horaire.numero,
+                              datetime_depart)
+        Vol.cle_index[cle] = self
 
     @property
     def horaire(self):
@@ -94,10 +97,9 @@ class Vol(object):
         return self._segments
 
     def __str__(self):
-        txt = "Vol {} {} {}{} - {} -> {} - {:%d/%m/%Y %H:%M} -> {:%d/%m/%Y %H:%M} - " \
+        txt = "Vol {} {}{} - {} -> {} - {:%d/%m/%Y %H:%M} -> {:%d/%m/%Y %H:%M} - " \
               "Places restantes : F:{}/{} C:{}/{} P:{}/{} Y:{}/{}"\
-            .format(self._id,
-                    self._horaire.compagnie.code_icao,
+            .format(self._horaire.compagnie.code_icao,
                     self._horaire.compagnie.id_code_iata,
                     self._horaire.numero,
                     self._horaire.route.aeroport_depart.id_code_iata,

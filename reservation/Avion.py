@@ -4,8 +4,8 @@ import ihm.console as ihm
 
 
 class Avion(object):
-    def __init__(self, id_avion, compagnie, config, aeroport, date_construction, date_derniere_revision,
-                 etat, position, vols=None):
+    def __init__(self, id_avion, compagnie, config, aeroport, date_livraison, date_derniere_revision,
+                 etat, latitude_deg=None, longitude_deg=None, vols=None):
         """
         Constructeur de la classe avion
         
@@ -13,20 +13,26 @@ class Avion(object):
         :param compagnie: compagnie qui possède l'avion
         :param config: configuration de l'avion
         :param aeroport: aeroport ou il se situe actuellement
-        :param date_construction: date de construction de l'avion
+        :param date_livraison: date de livraison de l'avion
         :param date_derniere_revision: derniere date de revision de l'avion
         :param etat: donne l'etat de l'avion, si il est en vol, au sol, non utilisable
-        :param position: la position de l'avion en fonction de ses coordonnées
+        :param latitude_deg: la latitude en degres de la position de l'avion
+        :param longitude_deg: la longitude en degres de la position de l'avion
         :param vols: vols assures par l'avion
         """
         self._id = id_avion
         self._compagnie = compagnie
         self._config = config
-        self._date_construction = date_construction
+        self._date_livraison = date_livraison
         self._date_derniere_revision = date_derniere_revision
         self._etat = etat
         self._aeroport = aeroport
-        self._position = position
+        if latitude_deg is None:
+            latitude_deg = aeroport.latitude_deg
+        self._latitude_deg = latitude_deg
+        if longitude_deg is None:
+            longitude_deg = aeroport.longitude_deg
+        self._longitude_deg = longitude_deg
         if vols is None:
             vols = []
         self._vols = vols
@@ -44,8 +50,8 @@ class Avion(object):
         return self._config
 
     @property
-    def date_construction(self):
-        return self._date_construction
+    def date_livraison(self):
+        return self._date_livraison
 
     @property
     def date_derniere_revision(self):
@@ -60,8 +66,12 @@ class Avion(object):
         return self._aeroport
 
     @property
-    def position(self):
-        return self._position
+    def latitude_deg(self):
+        return self._latitude_deg
+
+    @property
+    def longitude_deg(self):
+        return self._longitude_deg
 
     @property
     def vols(self):
@@ -69,7 +79,7 @@ class Avion(object):
 
     @property
     def age(self):
-        when = self._date_construction
+        when = self._date_livraison
         on = date.today()
         was_earlier = (on.month, on.day) < (when.month, when.day)
         nb_annees = on.year - when.year - was_earlier
@@ -94,7 +104,7 @@ class Avion(object):
                       self._config.nb_places_eco_plus,
                       self._config.nb_places_eco,
                       self._config.nb_total_places,
-                      self.age, self._date_construction,
+                      self.age, self._date_livraison,
                       self._date_derniere_revision,
                       self._etat)
         if self.aeroport is not None:

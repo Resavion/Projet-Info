@@ -19,7 +19,7 @@ Y|OO OOO OO|18
 Y|-- OOO OO|19
  |>  ---  <|
  |>       <|
-Y|OO     OO|22
+Y|OO --- OO|22
 Y|OO     OO|23
 Y|OO OOO OO|24
 Y|OO OOO OO|25

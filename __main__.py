@@ -42,6 +42,33 @@ if __name__ == '__main__':
     a = compagnies[2].routes[1]
 
 
+    def afficher_carte_aeroports(aeroports, show=True):
+        """
+        Methode qui permet d'afficher la carte des routes de la compagnie
+        :return:
+        """
+
+        # Ajout du fond de carte (si la carte ne fait pas partie d'une composition)
+        if show:
+            # Lecture du trait de cotes
+            coords_latlon = np.genfromtxt('utilitaires/coast.txt')
+            # Transfo en Mercator
+            x, y = mercator(coords_latlon, earth.E, 0, 0, 6378137.0)
+            # Ajout a la carte
+            plt.fill(x, y, 'bisque', linewidth=0.1)
+
+        # Ajout de la carte de chaque station
+        for aeroport in aeroports:
+            aeroport.afficher_carte(show=False, annot=False)
+
+        # Affichage
+        if show:
+            plt.title('Carte de toutes les aéroports')
+            plt.show()
+
+    afficher_carte_aeroports(aeroports)
+
+
 
     def afficher_carte_routes(compagnies, show=True):
         """
@@ -68,7 +95,7 @@ if __name__ == '__main__':
             plt.show()
 
 
-    afficher_carte_routes(compagnies)
+    # afficher_carte_routes(compagnies)
 
     def nb_routes_sans_double(compagnie):
         """

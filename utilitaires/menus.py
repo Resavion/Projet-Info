@@ -22,7 +22,7 @@ def menu_racine(clients, compagnies, aeroports):
             actions_compagnie(compagnies)
         # Si Visualisation
         elif choix == modes[2]:
-            pass
+            actions_visualisation(compagnies, aeroports)
         # Sinon on veut quitter le programme
         else:
             break

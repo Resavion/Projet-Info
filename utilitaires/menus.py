@@ -44,17 +44,17 @@ def actions_client(clients, compagnies, aeroports):
 
     while True:
         # Demander action : Faire, Consulter, Modifier, Annuler
-        actions = ('Faire une réservation',
-                   'Consulter ses réservations',
+        actions = ('Consulter ses réservations',
                    'Gérer une réservation',
+                   'Faire une réservation',
                    'Revenir au début')
         action = ihm.choisir(actions, "Choisissez une action :")
         if action == actions[0]:
-            client.faire_reservation(compagnies, aeroports)
-        elif action == actions[1]:
             client.consulter_reservations()
-        elif action == actions[2]:
+        elif action == actions[1]:
             gerer_reservation(client)
+        elif action == actions[2]:
+            client.faire_reservation(compagnies, aeroports)
         else:
             break
     return

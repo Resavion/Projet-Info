@@ -1,5 +1,6 @@
 from datetime import (datetime, date)
 
+import ihm.console as ihm
 from utilitaires.fonctions import (saisie_date)
 
 
@@ -92,6 +93,13 @@ class Horaire(object):
                     self.heure_arrivee,
                     self.duree.seconds // 3600, (self.duree.seconds//60) % 60)
 
+    def afficher_vols(self):
+        vols_tri = self._vols
+        vols_tri.sort(key=lambda s: s.datetime_depart, reverse=True)
+        ihm.afficher("Il y a {} vol(s)".format(len(vols_tri)))
+        ihm.afficher_paginer(vols_tri, "Vols", pas=10)
+
+
     def creer_vols(self):
         """
         Cree des vols correspondants a l'horaire entre deux dates donnees
@@ -99,6 +107,9 @@ class Horaire(object):
         """
         debut = saisie_date("date de début", datetime.today())
         fin = saisie_date("date de fin", debut)
+        roundeddebut = debut.replace(hour=0, minute=0, second=0, microsecond=0)
+        roundedfin = fin.replace(hour=0, minute=0, second=0, microsecond=0)
+        days = (roundeddebut - roundedfin).days
         return
 
     def afficher_stats(self):

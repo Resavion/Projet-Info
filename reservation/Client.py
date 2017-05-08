@@ -140,21 +140,6 @@ class Client(object):
         ihm.afficher_paginer(resas_tri, "Réservations", pas=10)
         return
 
-    def consulter_reservation(self):
-        """
-        Permet d'afficher la reservation au client avec les différentes informations pour le vol
-        :return: None
-        """
-
-        resas_tri = self._reservations
-        resas_tri.sort(key=lambda s: s.date_achat)
-        resa = ihm.choisir_paginer(
-            resas_tri, "Choisir la réservation à afficher :")
-        ihm.afficher("Vous avez choisi la réservation {}".format(resa))
-        resa.fournir_recapitulatif()
-        ihm.demander("Appuyez sur une touche pour revenir au menu :")
-        return
-
     def annuler_reservation(self, resa):
         """
         Methode qui permet de supprimer la reservation

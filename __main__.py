@@ -22,6 +22,8 @@ if __name__ == '__main__':
     # reservation = client.reservations[0]
     # reservation.fournir_recapitulatif()
 
+    aeroports[0].afficher_carte()
+
 
     print('\n\n OHAYOOOOOOOOOOOOOOOOOOOO')
 

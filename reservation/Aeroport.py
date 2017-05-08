@@ -1,4 +1,9 @@
 from collections import defaultdict
+import numpy as np
+import matplotlib.pyplot as plt
+
+import utilitaires.earth as earth
+from utilitaires.carte import mercator
 
 
 class Aeroport(object):
@@ -114,6 +119,51 @@ class Aeroport(object):
             .format(self._id_code_iata, self._nom,
                     self._municipalite, self._code_pays,
                     self._id_code_iata, self._code_icao)
+
+    def afficher_carte(self, show=True, annot=True):
+        """
+        Methode qui permet d'afficher la carte du monde avec l'aeroport
+        :return:
+        """
+
+        # Ajout du fond de carte (si la carte ne fait pas partie d'une composition)
+        if show:
+            # Lecture du trait de cotes
+            coords_latlon = np.genfromtxt('utilitaires/coast.txt')
+            # Transfo en Mercator
+            x, y = mercator(coords_latlon, earth.E, 0, 0, earth.A)
+            # Ajout a la carte
+            plt.fill(x, y, 'bisque', linewidth=0.1)
+
+        # Coordonnees de l'aeroport
+        list_coords = np.zeros((1, 2))
+        list_coords[0, 0] = self._latitude_deg
+        list_coords[0, 1] = self._longitude_deg
+        # Transfo en Mercator
+        xs0, ys0 = mercator(list_coords, earth.E, 0, 0, earth.A)
+        # Ajout points a la carte
+        plt.plot(xs0, ys0, 'b.')
+
+        # Parametrage de la carte
+        plt.axis([-1200000000.0, 1250000000.0, -1100000000.0, 1800000000.0])
+        plt.tick_params(axis='both', which='both', bottom='off', top='off', \
+                        right='off', left='off')
+        frame1 = plt.gca()
+        frame1.axes.xaxis.set_ticklabels([])
+        frame1.axes.yaxis.set_ticklabels([])
+        frame1.set_axis_bgcolor('lightcyan')
+
+        # Ajout de tags avec les codes des aeroports
+        if annot:
+            fig = plt.gcf()
+            ax = fig.add_subplot(111)
+            ax.annotate('{0:s}'.format(self.id_code_iata), xy=(xs0, ys0), xytext=(4, -4), \
+                        fontsize=10, textcoords='offset points')
+
+        # Affichage
+        if show:
+            plt.title("Carte de l'aeroport {0:s}".format(self._nom))
+            plt.show()
 
     def afficher_routes(self):
         """

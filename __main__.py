@@ -1,6 +1,12 @@
 import os
+import numpy as np
+
+import matplotlib.pyplot as plt
 
 import ihm.console as ihm
+import utilitaires.earth as earth
+from utilitaires.carte import mercator
+
 from bdd.config_bdd import (creer_bdd, inserer_jeu_test)
 from utilitaires.chargement import (charger_bd,
                                     update_bd)
@@ -22,10 +28,47 @@ if __name__ == '__main__':
     # reservation = client.reservations[0]
     # reservation.fournir_recapitulatif()
 
-    aeroports[0].afficher_carte()
+    # aeroports[0].afficher_carte()
+    # for aero in aeroports:
+    #     aero.afficher_carte()
+
+    print(compagnies[2].routes)
 
 
     print('\n\n OHAYOOOOOOOOOOOOOOOOOOOO')
+
+    print (compagnies[2].routes[1])
+
+    a = compagnies[2].routes[1]
+
+
+
+    def afficher_carte_routes(self, show=True, annot=True):
+        """
+        Methode qui permet d'afficher la carte des routes de la compagnie
+        :return:
+        """
+
+        # Ajout du fond de carte (si la carte ne fait pas partie d'une composition)
+        if show:
+            # Lecture du trait de cotes
+            coords_latlon = np.genfromtxt('utilitaires/coast.txt')
+            # Transfo en Mercator
+            x, y = mercator(coords_latlon, earth.E, 0, 0, 6378137.0)
+            # Ajout a la carte
+            plt.fill(x, y, 'bisque', linewidth=0.1)
+
+        # Ajout de la carte de chaque station
+        for compagnie in compagnies:
+            compagnie.afficher_carte_routes(show=False, annot=False)
+
+        # Affichage
+        if show:
+            plt.title('Carte du reseau {}'.format(self.id))
+            plt.show()
+
+
+    afficher_carte_routes(a)
 
     def nb_routes_sans_double(compagnie):
         """
@@ -60,9 +103,9 @@ if __name__ == '__main__':
 
         return(liste_a_trier)
 
-    liste_a_trier = ranger_liste_aeroport(compagnies)
+    # liste_a_trier = ranger_liste_aeroport(compagnies)
 
-    ihm.afficher_paginer(liste_a_trier, 'BLABLABLA')
+    # ihm.afficher_paginer(liste_a_trier, 'BLABLABLA')
 
 
 

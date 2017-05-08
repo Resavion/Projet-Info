@@ -157,11 +157,12 @@ class Route(object):
         # Transfo en Mercator
         xs0, ys0 = mercator(list_coords, earth.E, 0, 0, earth.A)
         # Ajout points a la carte
-        plt.plot(xs0, ys0, 'b.')
+        plt.plot(xs0, ys0, 'b,')
 
         # Densification suivant la ligne geodesique
         new_coords = densif_geodesique(list_coords, self._distance)
         tab_listes = decoupe_ligne(new_coords)
+        # Pour chaque partie de la route, on ajoute a la carte
         for coords in tab_listes:
             # Transfo en Mercator
             xs, ys = mercator(coords, earth.E, 0, 0, earth.A)

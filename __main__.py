@@ -21,7 +21,7 @@ if __name__ == '__main__':
 
     aeroports, compagnies, clients = charger_bd(db_name)
     print('\n')
-    client = clients[0]
+    # client = clients[0]
     #print(clients[0])
     # for reservation in client.reservations:
     #     print(reservation)
@@ -68,7 +68,7 @@ if __name__ == '__main__':
             plt.show()
 
 
-    afficher_carte_routes(compagnies)
+    # afficher_carte_routes(compagnies)
 
     def nb_routes_sans_double(compagnie):
         """
@@ -108,24 +108,6 @@ if __name__ == '__main__':
     # ihm.afficher_paginer(liste_a_trier, 'BLABLABLA')
 
 
-
-    # a = nb_routes_sans_double(compagnies[0])
-    # print(a)
-    # b = nb_routes_sans_double(compagnies[1])
-    # print(b)
-    # c = nb_routes_sans_double(compagnies[2])
-    # print(c)
-    # d = nb_routes_sans_double(compagnies[3])
-    # print(d)
-    #
-    # l= [a,b,c,d]
-    # for i in range(len(l)):
-    #     for j in range(len(l)):
-    #         if l[i]>=l[j]:
-    #             z = l[i]
-    #             l[i] = l[j]
-    #             l[j] = z
-    # print(l)
     # liste_routes_sans_double = NH.routes
     # for route in NH.routes:
     #     for new in liste_routes_sans_double:

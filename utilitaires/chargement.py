@@ -28,6 +28,7 @@ def charger_bd(db_name):
     :param db_name: chemin de la base
     :return: aeroports, compagnies, clients
     """
+
     conn, cur    = ouvrir_connexion(db_name)
 
     # Aeroports
@@ -481,21 +482,22 @@ def update_avion(cur, avion):
     row = r.select_par_id(cur, 'Avion', avion.id)
     if not row:
         # Insérer avion dans bd
-        colonnes = ('id', 'id_compagnie', 'id_config', 'id_aeroport',
-                    'date_construction', 'date_derniere_revision',
-                    'id_etat', 'position')
+        colonnes = ('id', 'id_compagnie', 'nom_config', 'id_aeroport',
+                    'date_livraison', 'date_derniere_revision',
+                    'id_etat', 'latitude_deg', 'longitude_deg')
         values   = (avion.id, avion.compagnie.id_code_iata,
-                    avion.config.id, avion.aeroport.id_code_iata,
+                    avion.config.nom, avion.aeroport.id_code_iata,
                     avion.date_livraison, avion.date_derniere_revision,
-                    avion.etat, avion.position)
+                    avion.etat.value, avion.latitude_deg, avion.longitude_deg)
         r.insert_into(cur, 'Avion', colonnes, values)
         print("insert {}".format(avion))
     else:
         # Update avion dans bd
-        colonnes = ('id_config', 'id_aeroport', 'date_derniere_revision',
-                    'id_etat', 'position')
-        values   = (avion.config.id, avion.aeroport.id_code_iata,
-                    avion.date_derniere_revision, avion.etat, avion.position)
+        colonnes = ('nom_config', 'id_aeroport', 'date_derniere_revision',
+                    'id_etat', 'latitude_deg', 'longitude_deg')
+        values   = (avion.config.nom, avion.aeroport.id_code_iata,
+                    avion.date_derniere_revision, avion.etat.value,
+                    avion.latitude_deg, avion.longitude_deg)
         r.update(cur, 'Avion', colonnes, values, avion.id)
         print("update {}".format(avion))
     return
@@ -510,20 +512,27 @@ def update_vol(cur, vol):
     :return: None
     """
 
-    row = r.select_par_id(cur, 'Vol', vol.id)
+    row = r.select_par_id_composite(
+        cur, 'Vol', ('id_compagnie', 'numero_vol', 'datetime_depart'),
+        (vol.horaire.compagnie.id_code_iata, vol.horaire.numero,
+         "{}".format(vol.datetime_depart)))
+    id_avion = ''
+    if vol.avion:
+        id_avion = vol.avion.id
     if not row:
         # Insérer vol dans bd
-        colonnes = ('id', 'id_horaire', 'datetime_depart',
-                    'datetime_arrivee', 'duree', 'id_avion',
+        colonnes = ('id_compagnie', 'numero_vol',
+                    'datetime_depart', 'datetime_arrivee',
+                    'duree', 'id_avion',
                     'places_restantes_premiere', 'places_restantes_business',
                     'places_restantes_eco_plus', 'places_restantes_eco',
                     'statut', 'cabine')
-        values   = (vol.id, vol.horaire.id,
+        values   = (vol.horaire.compagnie.id_code_iata, vol.horaire.numero,
                     vol.datetime_depart, vol.datetime_arrivee,
-                    "{}".format(vol.duree), vol.avion.id,
+                    "{}".format(vol.duree), id_avion,
                     vol.places_restantes_premiere, vol.places_restantes_business,
                     vol.places_restantes_eco_plus, vol.places_restantes_eco,
-                    vol.statut, vol.cabine)
+                    vol.statut.value, vol.cabine)
         r.insert_into(cur, 'Vol', colonnes, values)
         print("insert {}".format(vol))
     else:
@@ -533,11 +542,15 @@ def update_vol(cur, vol):
                     'places_restantes_business', 'places_restantes_eco_plus',
                     'places_restantes_eco', 'statut', 'cabine')
         values   = (vol.datetime_depart, vol.datetime_arrivee,
-                    "{}".format(vol.duree), vol.avion.id,
+                    "{}".format(vol.duree), id_avion,
                     vol.places_restantes_premiere, vol.places_restantes_business,
                     vol.places_restantes_eco_plus, vol.places_restantes_eco,
-                    vol.statut, vol.cabine)
-        r.update(cur, 'Vol', colonnes, values, vol.id)
+                    vol.statut.value, vol.cabine)
+        r.update_composite(
+            cur, 'Vol', colonnes, values,
+            ('id_compagnie', 'numero_vol', 'datetime_depart'),
+            (vol.horaire.compagnie.id_code_iata, vol.horaire.numero,
+             "{}".format(vol.datetime_depart)))
         print("update {}".format(vol))
     return
 
@@ -587,16 +600,27 @@ def update_segment(cur, segment):
     row = r.select_par_id(cur, 'Segment', segment.id)
     if not row:
         # Insérer segment dans bd
-        colonnes = ('id_billet','id_vol','id_horaire','place','option')
-        values   = (segment.billet.id, segment.vol.id, segment.horaire.id,
-                    segment.place, segment.options)
+        id_compagnie_codeshare = ""
+        numero_vol_codeshare = ""
+        if segment.vol.horaire != segment.horaire:
+            id_compagnie_codeshare = segment.horaire.compagnie.id_code_iata
+            numero_vol_codeshare = segment.horaire.numero
+        colonnes = ('id_billet', 'id_compagnie_vol', 'numero_vol',
+                    'datetime_vol', 'id_compagnie_codeshare',
+                    'numero_vol_codeshare', 'place')
+        values   = (segment.billet.id,
+                    segment.vol.horaire.compagnie.id_code_iata,
+                    segment.vol.horaire.numero,
+                    segment.vol.datetime_depart,
+                    id_compagnie_codeshare,
+                    numero_vol_codeshare,
+                    segment.place)
         r.insert_into(cur, 'Segment', colonnes, values)
         print("insert {}".format(segment))
     else:
         # Update segment dans bd
-        colonnes = ('id_vol','id_horaire','place','option')
-        values   = (segment.vol.id, segment.horaire.id,
-                    segment.place, segment.options)
+        colonnes = ('place',)
+        values   = (segment.place,)
         r.update(cur, 'Segment', colonnes, values, segment.id)
         print("update {}".format(segment))
     return

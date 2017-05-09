@@ -20,6 +20,18 @@ def update(cur, table, col, values, id_objet):
     executer_requete(cur, req, values)
 
 
+def update_composite(cur, table, col, values, col_id, val_id):
+    req  = "UPDATE {} SET ".format(table)
+    req += "=?, ".join(col)
+    req += "=? WHERE "
+    liste_couples = []
+    for col in col_id:
+        liste_couples.append("{}=?".format(col))
+    req += " AND ".join(liste_couples)
+    req += ";"
+    executer_requete(cur, req, values + val_id)
+
+
 def select_all(cur, table):
     req = "SELECT * FROM "+table
     executer_requete(cur, req)
@@ -35,6 +47,16 @@ def select_all_par_compagnie(cur, table, id_compagnie):
 def select_par_id(cur, table, id_objet):
     req = "SELECT * FROM "+table+" WHERE id = ?"
     executer_requete(cur, req, (id_objet,))
+    return cur.fetchall()
+
+
+def select_par_id_composite(cur, table, col_id, val_id):
+    req = "SELECT * FROM "+table+" WHERE "
+    liste_couples = []
+    for col in col_id:
+        liste_couples.append("{}=?".format(col))
+    req += " AND ".join(liste_couples)
+    executer_requete(cur, req, val_id)
     return cur.fetchall()
 
 

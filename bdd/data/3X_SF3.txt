@@ -1,0 +1,17 @@
+  A BC
+  ----
+ |>  <|
+Y|O OO|1
+Y|O OO|2
+Y|O OO|3
+Y|O OO|4
+Y|O OO|5
+ |>  <|
+Y|O OO|6
+Y|O OO|7
+Y|O OO|8
+Y|O OO|9
+Y|O OO|10
+Y|O OO|11
+Y|O OO|12
+  ----

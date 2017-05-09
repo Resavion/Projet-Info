@@ -1,0 +1,22 @@
+  AC HK
+  -----
+ |>   <|
+Y|OO OO|1
+Y|OO OO|2
+Y|OO OO|3
+Y|OO OO|5
+Y|OO OO|6
+Y|OO OO|7
+Y|OO OO|8
+Y|OO OO|9
+Y|OO OO|10
+Y|OO OO|11
+Y|OO OO|12
+Y|OO OO|14
+Y|OO OO|15
+Y|OO OO|16
+Y|OO OO|17
+Y|OO OO|18
+Y|OO OO|19
+ |>   <|
+  -----

@@ -476,5 +476,5 @@ if __name__ == '__main__':
     import os
     os.remove("resavion.db")
     creer_bdd("resavion.db")
-    inserer_jeu_test("resavion.db")
-    # inserer_jeu_fichiers("resavion.db")
+    # inserer_jeu_test("resavion.db")
+    inserer_jeu_fichiers("resavion.db")

@@ -15,11 +15,13 @@ if __name__ == '__main__':
 
     aeroports, compagnies, clients = charger_bd(db_name)
 
-
+    print(compagnies[309])
     print('\n\n OHAYOOOOOOOOOOOOOOOOOOOO')
 
+    compagnies[309].ajouter_vols_toutes_routes()
+
     # On lance l'interface
-    menus.menu_racine(clients, compagnies, aeroports)
+    # menus.menu_racine(clients, compagnies, aeroports)
 
     # liste_choix = ('Oui', 'Non')
     # choix = ihm.choisir(liste_choix,

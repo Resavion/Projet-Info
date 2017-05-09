@@ -69,6 +69,7 @@ class Segment(object):
         et de changer la place sur le billet
         :return: 
         """
+
         # on stocke l'ancien rang et l'ancienne colonne
         old_rangee = int(self._place[0:-1])
         old_colonne = int(self._place[-1])
@@ -79,11 +80,11 @@ class Segment(object):
         new_rangee = int(new_rang)
         new_colonne = ihm.demander(
             "Saisissez la colonne:")
-        self.vol.cabine.liberer_place(self, old_rangee, old_colonne)
-        self.vol.cabine.reserver_place(self, new_rangee, new_colonne)
+        self.vol.liberer_place(old_rangee, old_colonne)
+        self.vol.reserver_place(new_rangee, new_colonne)
 
         new_place = (new_rang,new_colonne)
-        self._billet = "".join(new_place)
+        self._place = "".join(new_place)
 
     def modifier_options(self):
         """

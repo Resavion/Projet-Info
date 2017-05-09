@@ -138,7 +138,7 @@ class Vol(object):
         """
 
         rangee       = rangee - 1
-        rangs        = avion
+        rangs        = self._cabine
         list_rang    = rangs.split("\n")
         # on recupere l'indice de la colonne
         colonne      = list_rang[0].index(colonne) - 2
@@ -155,6 +155,7 @@ class Vol(object):
             # on recupere la classe du rang
             classe_rg  = rang.split("|")[0]
             changement = False
+            rang_chang = None
             if num_rg == str(rangee + 1):
                 # on teste si le client a choisi une place libre ou non
                 if body_rg[colonne] == ".":
@@ -202,7 +203,7 @@ class Vol(object):
         """
 
         rangee       = rangee - 1
-        rangs        = avion
+        rangs        = self._cabine
         list_rang    = rangs.split("\n")
         # on recupere l'indice de la colonne
         colonne      = list_rang[0].index(colonne) - 2
@@ -218,6 +219,8 @@ class Vol(object):
             body_rg   = rang.split("|")[1]
             # on recupere la classe du rang
             classe_rg = rang.split("|")[0]
+            changement = False
+            rang_chang = None
             if num_rg == str(rangee + 1):
                 if body_rg[colonne] == ".":
                     # changement des places restantes

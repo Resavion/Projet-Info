@@ -223,14 +223,14 @@ def distance_haversine(lat1_deg, lon1_deg, lat2_deg, lon2_deg, radius=6371000):
 
 def densif_geodesique(list_coords, dist):
     """
-    Cree 1 point intermediaire tous les 100 kms environ sur la geodesique
+    Cree 1 point intermediaire tous les 400 kms environ sur la geodesique
     
     :param list_coords: liste de coordonnees en entree (les 2 extremites)
     :param dist: distance de la route selon la geodesique
     :return: nouvelle liste de coordonnees
     """
 
-    nb_points          = int(ma.floor(dist/2e5))
+    nb_points          = int(ma.floor(dist/4e5))
     lat1_deg, lon1_deg = list_coords[0, :]
     lat2_deg, lon2_deg = list_coords[1, :]
     new_coords         = np.zeros((nb_points+1, 2))

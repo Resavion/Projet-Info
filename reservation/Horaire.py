@@ -128,7 +128,10 @@ class Horaire(object):
     def creer_vols(self,debut=None,nb_jours=None):
         """
         Methode qui permet de creer des vols correspondants a l'horaire entre deux dates donnees
-        :return: 
+
+        :param debut: date de debut
+        :param nb_jours: nombres de jours pour lesquels on veut creer des vols apres la date de debut
+        :return:
         """
 
         if debut is None:

@@ -125,7 +125,10 @@ class Avion(object):
     def afficher_carte(self, show=True, annot=True):
         """
         Methode qui permet d'afficher la carte du monde avec l'avion
-        :return:
+
+        :param show: booleen qui permet de choisir s'il faut montrer la carte ou non
+        :param annot: booleen qui permet de choisir si on veut afficher les annotations ou non
+        :return: None
         """
 
         # Ajout du fond de carte (si la carte ne fait pas partie d'une composition)
@@ -160,7 +163,8 @@ class Avion(object):
     def afficher_vols(self):
         """
         Methode qui permet d'afficher les vols assures par l'avion
-        :return: 
+
+        :return: None
         """
 
         ihm.afficher("Il y a {} vol(s)".format(len(self._vols)))

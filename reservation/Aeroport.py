@@ -132,9 +132,11 @@ class Aeroport(object):
     def afficher_carte(self, show=True, annot=True, routes=False):
         """
         Methode qui permet d'afficher la carte du monde avec l'aeroport en question
-        
+
         :param show: booleen qui permet de choisir s'il faut montrer la carte ou non
         :param annot: booleen qui permet de choisir si on veut afficher les annotations ou non
+        :param routes: booleen qui permet de choisir si on affiche les routes aussi
+        :return: None
         """
 
         # Ajout du fond de carte (si la carte ne fait pas partie d'une composition)
@@ -176,7 +178,7 @@ class Aeroport(object):
         """
         Affiche toutes les routes possibles qui partent de l'aeroport
         
-        :return: 
+        :return: None
         """
         ihm.afficher("Il y a {} route(s) sortante(s)"
                      .format(len(self.routes_sortantes)))
@@ -187,7 +189,7 @@ class Aeroport(object):
         """
         Affiche toutes les routes possibles qui arrivent a l'aeroport
 
-        :return: 
+        :return: None
         """
         ihm.afficher("Il y a {} route(s) entrante(s)"
                      .format(len(self.routes_entrantes)))
@@ -198,7 +200,7 @@ class Aeroport(object):
         """
         Affiche tous les horaires d'arrivee a l'aeroport
         
-        :return: 
+        :return: None
         """
         hor_arr = []
         for route in self._routes_entrantes:
@@ -213,7 +215,7 @@ class Aeroport(object):
         """
         Affiche tous les horaires de depart l'aeroport
 
-        :return: 
+        :return: None
         """
         hor_arr = []
         for route in self._routes_sortantes:
@@ -230,7 +232,7 @@ class Aeroport(object):
         """
         Methode qui permet d'afficher tous les avions au sol
         
-        :return: 
+        :return: None
         """
         ihm.afficher("Il y a {} avion(s) au sol à l'aéroport"
                      .format(len(self._avions)))

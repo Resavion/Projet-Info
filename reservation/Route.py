@@ -115,7 +115,7 @@ class Route(object):
     def afficher_horaires(self):
         """
         Methode qui permet d'afficher les horaires ou cette route est empruntée
-        :return: 
+        :return: None
         """
 
         for horaire in self._horaires:
@@ -138,7 +138,6 @@ class Route(object):
         """
         Methode qui permet d'afficher la route reliant deux aeroports
         
-        :param start: 
         :param show: booleen qui permet de choisir s'il faut montrer la carte ou non
         :param annot: booleen qui permet de choisir si on veut afficher les annotations ou non
         :return: 

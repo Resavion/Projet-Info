@@ -84,6 +84,7 @@ class Compagnie(object):
         Methode qui permet d'afficher les infos des differents avions
         :return: 
         """
+
         ihm.afficher("Il y a {} avion(s)".format(len(self._avions)))
         ihm.afficher_paginer(self._avions, "Avions", pas=10)
         return
@@ -91,7 +92,7 @@ class Compagnie(object):
     def afficher_carte_avions(self, show=True, annot=True):
         """
         Methode qui permet d'afficher l'emplacement des differents avions
-        :return: 
+        :return: None
         """
 
         # Ajout du fond de carte (si la carte ne fait pas partie d'une composition)
@@ -127,6 +128,7 @@ class Compagnie(object):
         Methode qui permet d'afficher la liste des routes de la compagnie
         :return: 
         """
+
         ihm.afficher("Il y a {} route(s)".format(len(self._routes)))
         ihm.afficher_paginer(self._routes, "Routes", pas=10)
         return
@@ -234,8 +236,8 @@ class Compagnie(object):
         
         :param compagnie: la compagnie utilisée
         :param aeroports_visites: les aeroports visites
-        :param route1: route qui permet de dire quel est l'aeroport de l'escale ???????????????????????
-        :param aer_arr: aeroport d'arrivée
+        :param route1: 1er tronçon qui relie l'aeroport de depart et l'aeroport ou se fait l'escale
+        :param aer_arr: aeroport d'arrivee
         :return: la liste des routes qui permettent de relier l'escale a l'aeroport d'arrivee ??????
         """
 
@@ -260,6 +262,7 @@ class Compagnie(object):
         :param aer_arr: 
         :param aer_arr: aeroport d'arrivée
         """
+
         escale         = route2.aeroport_arrivee
         route_2escales = [
             x for x in compagnie.routes

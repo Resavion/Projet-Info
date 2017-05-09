@@ -94,10 +94,16 @@ def mercator(coords, e, x0, y0, n):
 
 
 def dessine_fondcarte():
+    """
+    Methode qui permet de dessiner le fond de carte
+
+    :return: None
+    """
+
     # Lecture du trait de cotes
     coords_latlon = np.genfromtxt('utilitaires/coast2.txt')
     # Transfo en Mercator
-    x, y = mercator(coords_latlon, earth.E, 0, 0, earth.A)
+    x, y          = mercator(coords_latlon, earth.E, 0, 0, earth.A)
     # Ajout a la carte
     plt.fill(x, y, 'bisque', edgecolor='sienna', linewidth=0.1)
     return
@@ -105,6 +111,16 @@ def dessine_fondcarte():
 
 def parametrage_carte(x_min=-1200000000.0, x_max=1250000000.0,
                       y_min=-1100000000.0, y_max=1800000000.0):
+    """
+    Methode qui permet de gerer le cadrage de la carte
+
+    :param x_min: x minimum
+    :param x_max: x maximum
+    :param y_min: y minimum
+    :param y_max: y maximum
+    :return: None
+    """
+
     plt.axis([x_min, x_max, y_min, y_max])
     plt.tick_params(axis='both', which='both', bottom='off', top='off', \
                     right='off', left='off')
@@ -184,11 +200,11 @@ def bearing(lat1_deg, lon1_deg, lat2_deg, lon2_deg):
     """
     Methode qui permet de calculer un azimut entre deux points
     
-    :param lat1_deg: 
-    :param lon1_deg: 
-    :param lat2_deg: 
-    :param lon2_deg: 
-    :return: 
+    :param lat1_deg: latitude du 1er point
+    :param lon1_deg: longitude du 1er point
+    :param lat2_deg: latitude du 2eme point
+    :param lon2_deg: longitude du 2eme point
+    :return: azimut en degres
     """
 
     dlon = ma.radians(lon2_deg - lon1_deg)

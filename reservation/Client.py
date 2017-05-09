@@ -56,7 +56,7 @@ class Client(object):
         
         :param compagnies: listes de compagnies
         :param aeroports: listes des aeroports
-        :return: 
+        :return: None
         """
 
         # Saisie des criteres
@@ -82,8 +82,6 @@ class Client(object):
         print("routes 2 escales")
         for routes in routes_2escales:
             print(*routes)
-
-
         return
 
     @staticmethod

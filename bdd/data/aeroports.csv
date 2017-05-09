@@ -184,7 +184,7 @@ AKF;medium_airport;Kufra Airport;24.178699493408203;23.31399917602539;1367;AF;LY
 AKG;small_airport;Anguganak Airport;-3.560504;142.217307;937;OC;PG;Anguganak;AYGU;Pacific/Port_Moresby
 AKH;medium_airport;Prince Sultan Air Base;24.062700271606445;47.580501556396484;1651;AS;SA;;OEPS;Asia/Riyadh
 AKI;small_airport;Akiak Airport;60.9029006958;-161.231002808;30;NA;US;Akiak;PFAK;America/Anchorage
-AKJ;medium_airport;Asahikawa Airport;43.670799255371094;142.44700622558594;721;AS;JP;Asahikawa / Hokkaidō;RJEC;Asia/Tokyo
+AKJ;medium_airport;Asahikawa Airport;43.670799255371094;142.44700622558594;721;AS;JP;Asahikawa / Hokkaido;RJEC;Asia/Tokyo
 AKK;small_airport;Akhiok Airport;56.9387016296;-154.182998657;44;NA;US;Akhiok;PAKH;America/Anchorage
 AKL;large_airport;Auckland International Airport;-37.008098602299995;174.792007446;23;OC;NZ;Auckland;NZAA;Pacific/Auckland
 AKN;medium_airport;King Salmon Airport;58.67679977;-156.6490021;73;NA;US;King Salmon;PAKN;America/Anchorage
@@ -3277,7 +3277,7 @@ KCR;small_airport;Colorado Creek Airport;63.5676994324;-155.988998413;860;NA;US;
 KCS;small_airport;Kings Creek Airport;-24.42329978942871;131.8350067138672;615;OC;AU;;YKCS;Australia/Darwin
 KCT;medium_airport;Koggala Airport;5.993680000305176;80.32029724121094;10;AS;LK;Galle;VCCK;Asia/Colombo
 KCU;small_airport;Masindi Airport;1.7580599784851074;31.7367000579834;3850;AF;UG;Masindi;HUMI;Africa/Kampala
-KCZ;medium_airport;Kōchi Ryōma Airport;33.5461006165;133.669006348;42;AS;JP;Nankoku;RJOK;Asia/Tokyo
+KCZ;medium_airport;Kochi Ryoma Airport;33.5461006165;133.669006348;42;AS;JP;Nankoku;RJOK;Asia/Tokyo
 KDA;small_airport;Kolda North Airport;12.898500442504883;-14.968099594116211;33;AF;SN;Kolda;GODK;Africa/Dakar
 KDB;small_airport;Kambalda Airport;-31.1907;121.5978;1073;OC;AU;Kambalda;YKBL;Australia/Perth
 KDC;small_airport;Kandi Airport;11.14479;2.940381;951;AF;BJ;Kandi;DBBK;Africa/Porto-Novo
@@ -3397,7 +3397,7 @@ KKE;medium_airport;Kerikeri Airport;-35.26279830932617;173.91200256347656;492;OC
 KKG;small_airport;Konawaruk Airport;5.2684;-58.995;230;SA;GY;Konawaruk;SYKZ;America/Guyana
 KKH;small_airport;Kongiganak Airport;59.960800170899994;-162.880996704;30;NA;US;Kongiganak;PADY;America/Nome
 KKI;small_airport;Akiachak Airport;60.904800415039;-161.42199707031;23;NA;US;Akiachak;Z13;America/Anchorage
-KKJ;medium_airport;Kitakyūshū Airport;33.8459014893;131.035003662;21;AS;JP;Kitakyūshū;RJFR;Asia/Tokyo
+KKJ;medium_airport;Kitakyushu Airport;33.8459014893;131.035003662;21;AS;JP;Kitakyushu;RJFR;Asia/Tokyo
 KKK;small_airport;Kalakaket Creek AS Airport;64.4166256967;-156.820392609;1598;NA;US;Kalakaket Creek;1KC;America/Anchorage
 KKM;small_airport;Sa Pran Nak Airport;14.9493999481;100.642997742;95;AS;TH;;VTBH;Asia/Bangkok
 KKN;medium_airport;Kirkenes Airport (Høybuktmoen);69.725799560547;29.891300201416;283;EU;NO;Kirkenes;ENKR;Europe/Oslo
@@ -3560,7 +3560,7 @@ KSX;small_airport;Yasuru Airport;-6.6015;146.1813;1520;OC;PG;Yasuru;AYYR;Pacific
 KSY;medium_airport;Kars Airport;40.562198638916016;43.1150016784668;5889;AS;TR;Kars;LTCF;Europe/Istanbul
 KSZ;medium_airport;Kotlas Airport;61.235801696777344;46.6974983215332;184;EU;RU;Kotlas;ULKK;Europe/Moscow
 KTA;medium_airport;Karratha Airport;-20.712200164799995;116.773002625;29;OC;AU;Karratha;YPKA;Australia/Perth
-KTD;medium_airport;Kitadaito Airport;25.9447002411;131.32699585;80;AS;JP;Kitadaitōjima;RORK;Asia/Tokyo
+KTD;medium_airport;Kitadaito Airport;25.9447002411;131.32699585;80;AS;JP;Kitadaitojima;RORK;Asia/Tokyo
 KTE;medium_airport;Kerteh Airport;4.537220001220703;103.427001953125;18;AS;MY;Kerteh;WMKE;Asia/Kuala_Lumpur
 KTF;small_airport;Takaka Airport;-40.81330108642578;172.77499389648438;102;OC;NZ;;NZTK;Pacific/Auckland
 KTG;medium_airport;Ketapang(Rahadi Usman) Airport;-1.816640019416809;109.96299743652344;46;AS;ID;Ketapang-Borneo Island;WIOK;Asia/Pontianak
@@ -4312,9 +4312,9 @@ MLW;medium_airport;Spriggs Payne Airport;6.289060115814209;-10.758700370788574;2
 MLX;medium_airport;Malatya Erhaç Airport;38.435298919699996;38.0909996033;2828;AS;TR;Malatya;LTAT;Europe/Istanbul
 MLY;small_airport;Manley Hot Springs Airport;64.99759674069999;-150.643997192;270;NA;US;Manley Hot Springs;PAML;America/Anchorage
 MLZ;small_airport;Cerro Largo International Airport;-32.33789825439453;-54.21670150756836;364;SA;UY;Melo;SUMO;America/Montevideo
-MMB;medium_airport;Memanbetsu Airport;43.8805999756;144.164001465;135;AS;JP;Ōzora;RJCM;Asia/Tokyo
+MMB;medium_airport;Memanbetsu Airport;43.8805999756;144.164001465;135;AS;JP;Ozora;RJCM;Asia/Tokyo
 MMC;small_airport;Ciudad Mante National Airport;22.74317741394043;-99.01737213134766;341;NA;MX;Ciudad Mante;MMDM;America/Monterrey
-MMD;medium_airport;Minami-Daito Airport;25.8465003967;131.263000488;167;AS;JP;Minamidaitō;ROMD;Asia/Tokyo
+MMD;medium_airport;Minami-Daito Airport;25.8465003967;131.263000488;167;AS;JP;Minamidaito;ROMD;Asia/Tokyo
 MME;medium_airport;Durham Tees Valley Airport;54.50920104980469;-1.4294099807739258;120;EU;GB;Durham;EGNV;Europe/London
 MMF;small_airport;Mamfe Airport;5.704170227050781;9.306389808654785;413;AF;CM;Mamfe;FKKF;Africa/Douala
 MMG;medium_airport;Mount Magnet Airport;-28.116100311279297;117.84200286865234;1354;OC;AU;;YMOG;Australia/Perth
@@ -7038,7 +7038,7 @@ URS;medium_airport;Kursk East Airport;51.7505989074707;36.29560089111328;686;EU;
 URT;medium_airport;Surat Thani Airport;9.13259983063;99.135597229;20;AS;TH;Surat Thani;VTSB;Asia/Bangkok
 URU;small_airport;Uroubi Airport;-9.5162;148.5591;481;OC;PG;Uroubi;AYUE;Pacific/Port_Moresby
 URY;medium_airport;Gurayat Domestic Airport;31.412413;37.278898;1672;AS;SA;Gurayat;OEGT;Asia/Riyadh
-URZ;small_airport;Orūzgān Airport;32.9029998779;66.630897522;6725;AS;AF;Orūzgān;OARG;Asia/Kabul
+URZ;small_airport;Oruzgān Airport;32.9029998779;66.630897522;6725;AS;AF;Oruzgān;OARG;Asia/Kabul
 USA;small_airport;Concord Regional Airport;35.387798;-80.709099;705;NA;US;Concord;KJQF;America/New_York
 USH;medium_airport;Malvinas Argentinas Airport;-54.8433;-68.2958;102;SA;AR;Ushuahia;SAWH;America/Argentina/Ushuaia
 USI;small_airport;Mabaruma Airport;8.199999809265137;-59.78329849243164;45;SA;GY;Mabaruma;SYMB;America/Guyana

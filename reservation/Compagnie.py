@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 from datetime import datetime
+from collections import defaultdict
 
 import ihm.console as ihm
 from utilitaires.carte import dessine_fondcarte
@@ -279,7 +280,17 @@ class Compagnie(object):
         sont rattachées
         :return:
         """
-        pass
+        liste = defaultdict(int)
+        for route in self._routes:
+            liste[route.aeroport_depart] += 1
+            liste[route.aeroport_arrivee] += 1
+        aeros = list(liste.keys())
+        aeros.sort(key=lambda s: liste[s], reverse=True)
+        aeros_nb_routes = []
+        for aero in aeros:
+            aeros_nb_routes.append("{} - {} routes".format(aero, liste[aero]))
+        ihm.afficher_paginer(aeros_nb_routes, "Liste des aéroports de {}".format(self._nom))
+        return
 
 
 

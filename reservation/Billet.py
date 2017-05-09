@@ -16,7 +16,7 @@ class Billet(object):
         """
         self._id              = id_billet
         self._reservation     = reservation
-        self._tarif           = tarif
+        # self._tarif           = tarif
         self._nom_passager    = nom_passager
         self._prenom_passager = prenom_passager
         self._passeport       = passeport
@@ -61,6 +61,13 @@ class Billet(object):
     @property
     def segments(self):
         return self._segments
+
+    @property
+    def tarif(self):
+        prix_total = 0
+        for seg in self._segments:
+            prix_total += seg.tarif_segment
+        return prix_total
 
     def __str__(self):
         return "Billet n°{:05d} - {} {} (né le {:%d/%m/%Y}, passeport n°{})" \

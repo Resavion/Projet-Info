@@ -96,12 +96,12 @@ class Reservation(object):
                       "DEPART:  {:%d/%m/%Y %H:%M} - {}, {} ({})\n"
                       "ARRIVEE: {:%d/%m/%Y %H:%M} - {}, {} ({})\n"
                       "_  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _\n"
-                      "CLASSE: ICI ca serait bien d'avoir la classe de la place ?\n"
+                      #"CLASSE: ICI ca serait bien d'avoir la classe de la place ?\n"
                       "NON FUMEUR\n"
                       "DUREE: {}h{:02d}\n"
                       "EQUIPEMENT: {} - {}\n"
                       "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n"
-                      "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\n"\
+                      "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n"\
                       .format(segment.horaire.compagnie.code_icao,
                               segment.horaire.compagnie.id_code_iata,
                               str(segment.horaire.numero),
@@ -123,6 +123,7 @@ class Reservation(object):
                               (segment.vol.duree.seconds // 60) % 60,
                               segment.vol.horaire.compagnie.id_code_iata,
                               segment.vol.horaire.config_avion.type_avion) )
+            print('PRIX DU BILLET: {:.2f} EUROS'.format(billet.tarif))
         return
 
 

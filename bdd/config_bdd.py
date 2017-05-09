@@ -479,5 +479,5 @@ if __name__ == '__main__':
     if os.path.exists(db_name):
         os.remove(db_name)
     creer_bdd(db_name)
-    # inserer_jeu_test(db_name)
-    inserer_jeu_fichiers(db_name)
+    inserer_jeu_test(db_name)
+    # inserer_jeu_fichiers(db_name)

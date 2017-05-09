@@ -3,7 +3,7 @@ import ihm.console as ihm
 
 class Segment(object):
     def __init__(self, id_segment, billet, vol, horaire_codeshare,
-                 place, options):
+                 place, options, classe='Y'):
         """
         Constructeur de la classe segment
         
@@ -22,6 +22,7 @@ class Segment(object):
             self._horaire = horaire_codeshare
         self._place   = place
         self._options = options
+        self._classe = classe
 
     @property
     def id(self):
@@ -46,6 +47,29 @@ class Segment(object):
     @property
     def options(self):
         return self._options
+
+    @property
+    def classe(self):
+        return self._classe
+
+    @property
+    def tarif_segment(self):
+        prix_segment = 0
+        coeff_Y = 1
+        coeff_P = 2
+        coeff_C = 5
+        coeff_F = 11
+        if self._classe == 'Y':
+            prix_segment = self._vol.horaire.route.calcul_prix_route() * coeff_Y
+        elif self._classe == 'P':
+            prix_segment = self._vol.horaire.route.calcul_prix_route() * coeff_P
+        elif self._classe == 'C':
+            prix_segment = self._vol.horaire.route.calcul_prix_route() * coeff_C
+        elif self._classe == 'F':
+            prix_segment = self._vol.horaire.route.calcul_prix_route() * coeff_F
+        else:
+            pass
+        return prix_segment
 
     def __str__(self):
         txt = "Segment {} {}{:4s} - {} -> {} - {:%d/%m/%Y %H:%M} -> {:%d/%m/%Y %H:%M} - Siège {} - {} {}"\

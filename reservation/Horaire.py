@@ -25,19 +25,19 @@ class Horaire(object):
         :param horaires_codeshare: horaires en partage de code sur cet horaire
         :param vols: vols assurant cet horaire
         """
-        self._route = route
-        self._numero = numero
-        self._heure_depart = heure_depart
-        self._heure_arrivee = heure_arrivee
-        self._duree = duree
-        self._periodicite = periodicite
+        self._route             = route
+        self._numero            = numero
+        self._heure_depart      = heure_depart
+        self._heure_arrivee     = heure_arrivee
+        self._duree             = duree
+        self._periodicite       = periodicite
         self._horaire_operateur = horaire_operateur
-        self._config_avion = config_avion
+        self._config_avion      = config_avion
         if horaires_codeshare is None:
             horaires_codeshare = []
         self._horaires_codeshare = horaires_codeshare
-        if vols is None:
-            vols = []
+        if vols is None and horaire_operateur is None:
+            vols   = []
         self._vols = vols
 
     @property
@@ -114,6 +114,12 @@ class Horaire(object):
         return txt
 
     def afficher_vols(self):
+        """
+        Methode qui permet d'afficher les vols disponibles
+        
+        :return: None
+        """
+
         vols_tri = self._vols
         vols_tri.sort(key=lambda s: s.datetime_depart, reverse=True)
         ihm.afficher("Il y a {} vol(s)".format(len(vols_tri)))
@@ -121,7 +127,7 @@ class Horaire(object):
 
     def creer_vols(self,debut=None,nb_jours=None):
         """
-        Cree des vols correspondants a l'horaire entre deux dates donnees
+        Methode qui permet de creer des vols correspondants a l'horaire entre deux dates donnees
         :return: 
         """
 

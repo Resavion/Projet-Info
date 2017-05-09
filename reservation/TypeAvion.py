@@ -14,15 +14,15 @@ class TypeAvion(object):
         :param altitude_vol_m: l'altitude de croisière de l'avion
         :param distance_decollage_m: la distance necessaire a l'avion pour decoller
         """
-        self._id = id
-        self._nom = nom
-        self._code_iata = code_iata
-        self._code_icao = code_icao
-        self._fuel_cap_L = fuel_cap_L
+        self._id                        = id
+        self._nom                       = nom
+        self._code_iata                 = code_iata
+        self._code_icao                 = code_icao
+        self._fuel_cap_L                = fuel_cap_L
         self._distance_franchissable_km = distance_franchissable_km
-        self._vitesse_mach = vitesse_mach
-        self._altitude_vol_m = altitude_vol_m
-        self._distance_decollage_m = distance_decollage_m
+        self._vitesse_mach              = vitesse_mach
+        self._altitude_vol_m            = altitude_vol_m
+        self._distance_decollage_m      = distance_decollage_m
 
     @property
     def id(self):

@@ -25,21 +25,21 @@ class Avion(object):
         :param longitude_deg: la longitude en degres de la position de l'avion
         :param vols: vols assures par l'avion
         """
-        self._id = id_avion
-        self._compagnie = compagnie
-        self._config = config
-        self._date_livraison = date_livraison
+        self._id                     = id_avion
+        self._compagnie              = compagnie
+        self._config                 = config
+        self._date_livraison         = date_livraison
         self._date_derniere_revision = date_derniere_revision
-        self._etat = etat
-        self._aeroport = aeroport
+        self._etat                   = etat
+        self._aeroport               = aeroport
         if latitude_deg is None:
-            latitude_deg = aeroport.latitude_deg
+            latitude_deg   = aeroport.latitude_deg
         self._latitude_deg = latitude_deg
         if longitude_deg is None:
-            longitude_deg = aeroport.longitude_deg
+            longitude_deg   = aeroport.longitude_deg
         self._longitude_deg = longitude_deg
         if vols is None:
-            vols = []
+            vols   = []
         self._vols = vols
 
     @property
@@ -84,15 +84,21 @@ class Avion(object):
 
     @property
     def age(self):
-        when = self._date_livraison
-        on = date.today()
-        was_earlier = (on.month, on.day) < (when.month, when.day)
-        nb_annees = on.year - when.year - was_earlier
-        dernier_anniv = date(when.year + nb_annees, when.month, when.day)
+        """
+        Méthode permettant de determiner l'age de l'avion
+        
+        :return: l'age de l'avion
+        """
+
+        when           = self._date_livraison
+        on             = date.today()
+        was_earlier    = (on.month, on.day) < (when.month, when.day)
+        nb_annees      = on.year - when.year - was_earlier
+        dernier_anniv  = date(when.year + nb_annees, when.month, when.day)
         prochain_anniv = date(when.year + nb_annees + 1, when.month, when.day)
-        jours_ecoules = (on - dernier_anniv).days
-        duree_annee = (prochain_anniv - dernier_anniv).days
-        ratio = jours_ecoules/duree_annee
+        jours_ecoules  = (on - dernier_anniv).days
+        duree_annee    = (prochain_anniv - dernier_anniv).days
+        ratio          = jours_ecoules/duree_annee
         return "{:.1f}".format(nb_annees + ratio)
 
     @date_derniere_revision.setter
@@ -156,6 +162,7 @@ class Avion(object):
         Methode qui permet d'afficher les vols assures par l'avion
         :return: 
         """
+
         ihm.afficher("Il y a {} vol(s)".format(len(self._vols)))
         ihm.afficher_paginer(self._vols, "Vols", pas=10)
         return

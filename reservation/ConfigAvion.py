@@ -14,15 +14,15 @@ class ConfigAvion(object):
         :param nb_total_places: nombre total de place dans l'avion
         :param disposition: schema des places dans l'avion
         """
-        self._compagnie = compagnie
-        self._nom = nom
+        self._compagnie          = compagnie
+        self._nom                = nom
         self._type_avion = type_avion
         self._nb_places_premiere = nb_places_premiere
         self._nb_places_business = nb_places_business
         self._nb_places_eco_plus = nb_places_eco_plus
-        self._nb_places_eco = nb_places_eco
-        self._nb_total_places = nb_total_places
-        self._disposition = disposition
+        self._nb_places_eco      = nb_places_eco
+        self._nb_total_places    = nb_total_places
+        self._disposition        = disposition
 
     @property
     def nom(self):

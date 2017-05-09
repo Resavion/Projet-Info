@@ -12,18 +12,18 @@ class EnumMere(Enum):
 
 class EnumAvion(EnumMere):
     EN_REVISION = 1
-    EN_VOL = 2
-    AU_SOL = 3
+    EN_VOL      = 2
+    AU_SOL      = 3
 
 
 class EnumOption(EnumMere):
-    VEGETARIEN = 1
+    VEGETARIEN           = 1
     ASSURANCE_ANNULATION = 2
 
 
 class EnumStatutVol(EnumMere):
-    A_L1HEURE = 1
-    RETARDE = 2
+    A_L_HEURE    = 1
+    RETARDE      = 2
     EMBARQUEMENT = 3
-    ANNULE = 4
-    ARRIVE = 5
+    ANNULE       = 4
+    ARRIVE       = 5

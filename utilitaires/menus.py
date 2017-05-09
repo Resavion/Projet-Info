@@ -9,6 +9,15 @@ from reservation.Client import Client
 
 
 def menu_racine(clients, compagnies, aeroports):
+    """
+    Methode qui permet de choisir la façon dont on veut interagir avec l'interface
+    
+    :param clients: liste des clients
+    :param compagnies: liste des compagnies
+    :param aeroports: liste des aeroports
+    :return: None
+    """
+
     while True:
         # Choisir un mode d'utilisation
         modes = ('Client', 'Compagnie', 'Visualisation seule', 'Quitter')
@@ -31,6 +40,15 @@ def menu_racine(clients, compagnies, aeroports):
 
 
 def actions_client(clients, compagnies, aeroports):
+    """
+    Methode qui permet de laisser le client choisir les actions qu'ils souhaitent réaliser
+    
+    :param clients: liste des clients
+    :param compagnies: liste des compagnies
+    :param aeroports: liste des aeroports
+    :return: None
+    """
+
     # Choisir un client existant ou nouveau
     comptes = [client for client in clients]
     comptes.append('Nouveau client')
@@ -65,6 +83,13 @@ def actions_client(clients, compagnies, aeroports):
 
 
 def gerer_reservation(client):
+    """
+    Methode qui permet au client de gerer sa reservation
+    
+    :param client: objet client
+    :return: 
+    """
+
     # Choisir une reservation
     resas_tri = client.reservations
     resas_tri.sort(key=lambda s: s.date_achat, reverse=True)
@@ -92,11 +117,12 @@ def gerer_reservation(client):
 
 def ajouter_client(clients):
     """
-    Crée un nouveau client
+    Methode qui permet de creer un nouveau client
     
     :param clients: liste des clients existants
     :return: nouveau client
     """
+
     new_id = 1
     if len(clients) != 0:
         new_id = clients[-1].id + 1
@@ -118,6 +144,13 @@ def ajouter_client(clients):
 
 
 def actions_compagnie(compagnies):
+    """
+     Methode qui permet a la compagnie de choisir les actions qu'elle souhaite réaliser
+     
+    :param compagnies: liste des compagnies
+    :return: ??
+    """
+
     compagnie = None
     while compagnie is None:
         # On demande comment choisir une compagnie
@@ -158,6 +191,13 @@ def actions_compagnie(compagnies):
 
 
 def choisir_par_continent(compagnies):
+    """
+    Methode qui permet de choisir une compagnie en fonction du continent
+    
+    :param compagnies: liste des compagnies
+    :return: 
+    """
+
     # On choisit un continent
     continents = {'Amérique du Nord': 'NA', 'Amérique du Sud': 'SA',
                   'Europe': 'EU', 'Afrique': 'AF', 'Asie': 'AS',
@@ -183,6 +223,13 @@ def choisir_par_continent(compagnies):
 
 
 def choisir_par_code(compagnies):
+    """
+    Methode qui permet de choisir une compagnie par ses différents codes
+    
+    :param compagnies: liste des compagnies
+    :return: la comapgnie choisie
+    """
+
     compagnie = None
     code = ihm.demander(
         "Tapez le code IATA (2 caractères) ou ICAO (3 caractères) :")
@@ -223,6 +270,12 @@ def actions_avions(compagnie):
 
 
 def gerer_avion(compagnie):
+    """
+    Methode qui permet a la compagnie de gerer un avion
+    
+    :param compagnie: l'objet compagnie en question
+    :return: None
+    """
     avion = None
     avions = compagnie.avions
     avions.sort(key=lambda s: s.id, reverse=True)
@@ -247,6 +300,12 @@ def gerer_avion(compagnie):
 
 
 def actions_routes(compagnie):
+    """
+     Methode qui permet a la compagnie de choisir les actions qu'ils souhaitent réaliser sur une route
+    :param compagnie: objet compagnie
+    :return: None
+    """
+
     # Proposer les actions
     while True:
         actions = ('Afficher la liste des routes',
@@ -275,6 +334,13 @@ def actions_routes(compagnie):
 
 
 def gerer_route(compagnie):
+    """
+    Methode qui permet a la compagnie de gerer une route
+    
+    :param compagnie: objet compagnie
+    :return: None
+    """
+
     routes_tri = compagnie.routes
     # On trie les routes par nombre d'horaires
     routes_tri.sort(key=lambda s: len(s.horaires), reverse=True)
@@ -302,6 +368,13 @@ def gerer_route(compagnie):
 
 
 def gerer_horaire(route):
+    """
+    Methode qui permet a la compagnie de gerer un horaire sur une route en question
+    
+    :param route: objet route
+    :return: None
+    """
+
     hor_tri = route.horaires
     # On trie les routes par nombre d'horaires
     hor_tri.sort(key=lambda s: s.numero)
@@ -328,6 +401,14 @@ def gerer_horaire(route):
 
 
 def actions_visualisation(compagnies,aeroports):
+    """
+     Methode qui permet a la compagnie de choisir les actions qu'elle souhaite réaliser pour la visualisation
+     
+    :param compagnies: liste des comapgnies
+    :param aeroports: liste des aeroports
+    :return: None
+    """
+
     # Proposer les actions
     while True:
         actions = ('Gérer un aéroport',
@@ -378,6 +459,13 @@ def gerer_aeroport(aeroports):
 
 
 def choisir_par_code_aeroport(aeroports):
+    """
+    Methode qui permet de choisir un aeroport en fonction de ses codes 
+    
+    :param aeroports: liste aeroports
+    :return: l'aeroport choisi
+    """
+
     aeroport = None
     code = ihm.demander(
         "Tapez le code IATA (2 caractères) ou ICAO (3 caractères) :")
@@ -397,7 +485,10 @@ def choisir_par_code_aeroport(aeroports):
 def afficher_carte_aeroports(aeroports, show=True):
     """
     Methode qui permet d'afficher la carte des routes de la compagnie
-    :return:
+    
+    :param aeroports: liste des aeroports
+    :param show: booleen qui permet de dire si l'on veut montrer la carte ou non
+    :return: None
     """
 
     # Ajout du fond de carte (si la carte ne fait pas partie d'une composition)
@@ -416,7 +507,10 @@ def afficher_carte_aeroports(aeroports, show=True):
 def afficher_carte_routes(compagnies, show=True):
     """
     Methode qui permet d'afficher la carte des routes de la compagnie
-    :return:
+    
+    :param compagnies: liste compagnies
+    :param show: booleen qui permet de dire si l'on veut montrer la carte ou non
+    :return: None
     """
 
     # Ajout du fond de carte (si la carte ne fait pas partie d'une composition)
@@ -435,21 +529,29 @@ def afficher_carte_routes(compagnies, show=True):
 def nb_routes_sans_double(compagnie):
     """
     Methode qui permet de savoir combien de route sans doublon une compagnie a 
-    :param compagnie: 
-    :return: 
+    
+    :param compagnie: objet compagnie
+    :return: nombre de route sans doublon
     """
+
     nb_routes_double = 0
     for route in compagnie.routes:
         for terou in compagnie.routes:
             if route.aeroport_depart.id_code_iata == terou.aeroport_arrivee.id_code_iata:
                 if route.aeroport_arrivee.id_code_iata == terou.aeroport_depart.id_code_iata:
                     nb_routes_double += 1
-    nb_routes_double = nb_routes_double / 2
+    nb_routes_double      = nb_routes_double / 2
     nb_routes_sans_double = len(compagnie.routes) - nb_routes_double
     return(nb_routes_sans_double)
 
 
 def ranger_liste_aeroport(compagnies):
+    """
+    Methode qui permet de ranger les aeroports selon le nombre de routes qui desservent une compagnie pour une compagnie donnée
+    :param compagnies: liste des compagnies
+    :return: liste triée
+    """
+
     liste_a_trier = []
     for compagnie in compagnies:
         nb_route = nb_routes_sans_double(compagnie)

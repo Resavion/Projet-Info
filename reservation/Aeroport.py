@@ -8,6 +8,7 @@ from utilitaires.carte import (mercator, dessine_fondcarte, parametrage_carte)
 
 
 class Aeroport(object):
+    """ ca sert a quoi ???????"""
     id_index = defaultdict(list)
 
     def __init__(self, id_code_iata, type_aero, nom, latitude_deg, longitude_deg,
@@ -33,28 +34,28 @@ class Aeroport(object):
         :param routes_entrantes: routes arrivant a l'aeroport
         :param routes_sortantes: routes parant de l'aeroport
         """
-        self._id_code_iata = id_code_iata
-        self._type_aero = type_aero
-        self._nom = nom
-        self._latitude_deg = latitude_deg
-        self._longitude_deg = longitude_deg
-        self._elevation_ft = elevation_ft
+        self._id_code_iata   = id_code_iata
+        self._type_aero      = type_aero
+        self._nom            = nom
+        self._latitude_deg   = latitude_deg
+        self._longitude_deg  = longitude_deg
+        self._elevation_ft   = elevation_ft
         self._code_continent = code_continent
-        self._code_pays = code_pays
-        self._municipalite = municipalite
-        self._code_icao = code_icao
-        self._fuseau = fuseau
+        self._code_pays      = code_pays
+        self._municipalite   = municipalite
+        self._code_icao      = code_icao
+        self._fuseau         = fuseau
         if pistes is None:
-            pistes = []
+            pistes   = []
         self._pistes = pistes
         if avions is None:
-            avions = []
+            avions   = []
         self._avions = avions
         if routes_entrantes is None:
-            routes_entrantes = []
+            routes_entrantes   = []
         self._routes_entrantes = routes_entrantes
         if routes_sortantes is None:
-            routes_sortantes = []
+            routes_sortantes   = []
         self._routes_sortantes = routes_sortantes
         Aeroport.id_index[id_code_iata].append(self)
 
@@ -130,8 +131,10 @@ class Aeroport(object):
 
     def afficher_carte(self, show=True, annot=True, routes=False):
         """
-        Methode qui permet d'afficher la carte du monde avec l'aeroport
-        :return:
+        Methode qui permet d'afficher la carte du monde avec l'aeroport en question
+        
+        :param show: booleen qui permet de choisir s'il faut montrer la carte ou non
+        :param annot: booleen qui permet de choisir si on veut afficher les annotations ou non
         """
 
         # Ajout du fond de carte (si la carte ne fait pas partie d'une composition)
@@ -159,7 +162,7 @@ class Aeroport(object):
         # Ajout de tag avec le code de l'aeroport
         if annot:
             fig = plt.gcf()
-            ax = fig.add_subplot(111)
+            ax  = fig.add_subplot(111)
             ax.annotate('{0:s}'.format(self.id_code_iata), xy=(xs0, ys0), xytext=(4, -4), \
                         fontsize=6, textcoords='offset points')
         # Affichage

@@ -6,7 +6,7 @@ def ouvrir_connexion(db_name):
     Connexion à une base de données
     """
     conn = sqlite3.connect(db_name)
-    cur = conn.cursor()
+    cur  = conn.cursor()
     return conn, cur
 
 

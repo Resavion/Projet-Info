@@ -4,6 +4,15 @@ import ihm.console as ihm
 
 
 def saisie_date(message, date_seuil, duree_limite=1):
+    """
+    Methode qui permet de saisir la date du vol
+    
+    :param message: 
+    :param date_seuil: 
+    :param duree_limite: 
+    :return: la date saisie
+    """
+
     date_saisie = None
     dans1an = date_seuil.replace(year=date_seuil.year + duree_limite)
     while True:
@@ -23,6 +32,14 @@ def saisie_date(message, date_seuil, duree_limite=1):
 
 
 def saisie_aeroport(message, aeroports):
+    """
+    Methode qui permet de saisir un aeroport
+    
+    :param message: 
+    :param aeroports: 
+    :return: 
+    """
+
     aero = None
     while aero is None:
         code = ihm.demander(

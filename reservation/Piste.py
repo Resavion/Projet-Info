@@ -12,12 +12,12 @@ class Piste(object):
         :param he_identificateur: identifiant de la piste sur l'extremite 2
         :param he_seuil_decale_ft: le seuil decale de la piste 2
         """
-        self._id = id_piste
-        self._aeroport = aeroport
-        self._length_ft = length_ft
-        self._le_identificateur = le_identificateur
+        self._id                 = id_piste
+        self._aeroport           = aeroport
+        self._length_ft          = length_ft
+        self._le_identificateur  = le_identificateur
         self._le_seuil_decale_ft = le_seuil_decale_ft
-        self._he_identificateur = he_identificateur
+        self._he_identificateur  = he_identificateur
         self._he_seuil_decale_ft = he_seuil_decale_ft
 
     @property

@@ -22,20 +22,20 @@ class Compagnie(object):
         :param avions: liste des avions possedes par la compagnie
         :param routes: liste des routes assurees par la compagnie
         """
-        self._id_code_iata = id_code_iata
-        self._nom = nom
-        self._code_icao = code_icao
-        self._pays = pays
+        self._id_code_iata   = id_code_iata
+        self._nom            = nom
+        self._code_icao      = code_icao
+        self._pays           = pays
         self._code_continent = code_continent
-        self._code_pays = code_pays
+        self._code_pays      = code_pays
         if configs is None:
-            configs = []
+            configs   = []
         self._configs = configs
         if avions is None:
-            avions = []
+            avions   = []
         self._avions = avions
         if routes is None:
-            routes = []
+            routes   = []
         self._routes = routes
 
     @property
@@ -187,14 +187,22 @@ class Compagnie(object):
         pass
 
     def chercher_routes(self, aer_dep, aer_arr, escales_max):
+        """
+        Methode qui permet de chercher une route qui relie 2 aeroports en fonction du nombre d'escales
+        
+        :param aer_dep: aeroport de depart
+        :param aer_arr: aeroport d'arrivee
+        :param escales_max: nombre d'escales max
+        :return: les routes directes, les routes avec une escale et les routes avec deux escales
+        """
         routes_directes = []
-        routes_1escale = []
+        routes_1escale  = []
         routes_2escales = []
 
         routes = [x for x in self.routes if x.aeroport_depart == aer_dep]
         aeroports_visites = [aer_dep]
 
-        route_directe = [x for x in routes if x.aeroport_arrivee == aer_arr]
+        route_directe     = [x for x in routes if x.aeroport_arrivee == aer_arr]
         if route_directe:
             routes_directes.extend(route_directe)
 
@@ -221,7 +229,17 @@ class Compagnie(object):
 
     @staticmethod
     def routes_avec_1escale(compagnie, aeroports_visites, route1, aer_arr):
-        escale = route1.aeroport_arrivee
+        """
+        Methode qui permet de trouver les routes avec une escale
+        
+        :param compagnie: la compagnie utilisée
+        :param aeroports_visites: les aeroports visites
+        :param route1: route qui permet de dire quel est l'aeroport de l'escale ???????????????????????
+        :param aer_arr: aeroport d'arrivée
+        :return: la liste des routes qui permettent de relier l'escale a l'aeroport d'arrivee ??????
+        """
+
+        escale  = route1.aeroport_arrivee
         routes2 = [
             x for x in compagnie.routes
             if x.aeroport_depart == escale
@@ -234,7 +252,15 @@ class Compagnie(object):
 
     @staticmethod
     def route_avec_2escales(compagnie, route1, route2, aer_arr):
-        escale = route2.aeroport_arrivee
+        """
+        Methode qui permet de trouver les routes avec deux escales
+        :param compagnie: la compagnie utilisée
+        :param route1: route qui permet de dire quel est l'aeroport de l'escale ???????????????????????
+        :param route2: 
+        :param aer_arr: 
+        :param aer_arr: aeroport d'arrivée
+        """
+        escale         = route2.aeroport_arrivee
         route_2escales = [
             x for x in compagnie.routes
             if x.aeroport_depart == escale and x.aeroport_arrivee == aer_arr

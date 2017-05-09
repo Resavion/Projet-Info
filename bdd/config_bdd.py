@@ -198,7 +198,7 @@ def inserer_jeu_test(db_name):
     conn, cur = ouvrir_connexion(db_name)
 
     # EnumAvion
-    colonnes = ('etat',)
+    colonnes  = ('etat',)
     enumavion = (
         ("en_revision",),
         ("en_vol",),
@@ -209,7 +209,7 @@ def inserer_jeu_test(db_name):
     valider_modifs(conn)
 
     # EnumOption
-    colonnes = ('option',)
+    colonnes   = ('option',)
     enumoption = (
         ("vegetarien",),
         ("assurance_annulation",)
@@ -219,7 +219,7 @@ def inserer_jeu_test(db_name):
     valider_modifs(conn)
 
     # EnumStatutVol
-    colonnes = ('statut',)
+    colonnes      = ('statut',)
     enumstatutvol = (
         ("a_l_heure",),
         ("retarde",),
@@ -245,7 +245,7 @@ def inserer_jeu_test(db_name):
 
     # Piste
     colonnes = ('id_aeroport','length_ft','le_identificateur','le_seuil_decale_ft','he_identificateur','he_seuil_decale_ft')
-    pistes = (
+    pistes   = (
         ("NRT",13123,"16R",'',"34L",2460),
         ("KHH",10335,9,525,27,1477),
         ("BKK",12139,"01L",'',"19R",'')
@@ -255,7 +255,7 @@ def inserer_jeu_test(db_name):
     valider_modifs(conn)
 
     # Compagnie
-    colonnes = ('id','nom','code_icao','pays','code_continent','code_pays')
+    colonnes   = ('id','nom','code_icao','pays','code_continent','code_pays')
     compagnies = (
         ("BR","EVA Air","EVA","Taiwan","AS","TW"),
         ("CI","China Airlines","CAL","Taiwan","AS","TW"),
@@ -269,7 +269,7 @@ def inserer_jeu_test(db_name):
     # TypeAvion
     colonnes = ('id','nom','code_iata','code_icao','fuel_cap_L','distance_franchissable_km','vitesse_mach',
                 'altitude_vol_m','distance_decollage_m')
-    types = (
+    types    = (
         ("A321","Airbus A321","321","A321",30000,5950,0.78,12000,1700),
         ("B767-300ER","Boeing 767-300ER","763","B763",90770,11070,0.8,12000,2400),
         ("B787-9","Boeing 787-9","789","B789",138898,15700,0.85,13000,2900)
@@ -281,7 +281,7 @@ def inserer_jeu_test(db_name):
     # ConfigAvion
     colonnes = ('id_compagnie','nom','id_type_avion','nb_places_premiere','nb_places_business','nb_places_eco_plus',
                 'nb_places_eco','nb_total_places','disposition')
-    configs = (
+    configs  = (
         ("BR","321","A321",0,8,0,176,184,""),
         ("JL","A44","B767-300ER",0,24,0,175,199,""),
         ("NH","789","B787-9",0,40,14,192,246,""),
@@ -294,7 +294,7 @@ def inserer_jeu_test(db_name):
     # Avion
     colonnes = ('id','id_compagnie','nom_config','id_aeroport','date_livraison','date_derniere_revision','id_etat',
                 'latitude_deg','longitude_deg')
-    avions = (
+    avions   = (
         ("B-16213","BR","321","KHH","2014-10-10","2014-10-27",3,22.57710075378418,120.3499984741211),
         ("JA608J","JL","A44","NRT","2004-02-23","2014-05-01",3,35.7647018433,140.386001587),
         ("JA880A","NH","789","NRT","2016-07-28","2016-07-28",3,35.7647018433,140.386001587),
@@ -306,7 +306,7 @@ def inserer_jeu_test(db_name):
 
     # Route
     colonnes = ('id_compagnie','id_aeroport_depart','id_aeroport_arrivee','geom','codeshare')
-    routes = (
+    routes   = (
         ("BR","NRT","KHH","LINESTRING(140.386001587 35.7647018433,120.3499984741 22.5771007538)",0),
         ("NH","NRT","KHH","LINESTRING(140.386001587 35.7647018433,120.3499984741 22.5771007538)",0),
         ("JL","NRT","KHH","LINESTRING(140.386001587 35.7647018433,120.3499984741 22.5771007538)",0),
@@ -344,7 +344,7 @@ def inserer_jeu_test(db_name):
                 'datetime_depart','datetime_arrivee','duree','id_avion',
                 'places_restantes_premiere','places_restantes_business',
                 'places_restantes_eco_plus','places_restantes_eco','statut')
-    vols = (
+    vols     = (
         ("BR",107,"2017-04-27 12:50:00","2017-04-27 15:50:00","4:00:00","B-16213",0,3,0,76,5),
         ("JL",811,"2017-04-27 18:00:00","2017-04-27 21:10:00","4:10:00","JA608J",0,10,0,100,5),
         ("NH",807,"2017-04-27 16:55:00","2017-04-27 21:35:00","6:40:00","JA880A",0,10,0,100,5),
@@ -367,7 +367,7 @@ def inserer_jeu_test(db_name):
 
     # Reservation
     colonnes = ('id','id_client','prix_total','date_achat')
-    resas = (
+    resas    = (
         (1,1,1300,"2017-04-20 23:59:59"),
         (2,1,500,"2017-04-19 13:40:01"),
     )
@@ -377,7 +377,7 @@ def inserer_jeu_test(db_name):
 
     # Billet
     colonnes = ('id','id_reservation','tarif','nom_passager','prenom_passager','passeport','date_naissance')
-    billets = (
+    billets  = (
         (10001,1,1200,"Chaffouin","Antoine","123456D","1980-05-15"),
         (20002,2,400,"Tartempion","Lucien","123789E","1960-03-20"),
     )
@@ -397,7 +397,7 @@ def inserer_jeu_test(db_name):
     valider_modifs(conn)
 
     # BilletOptions
-    colonnes = ('id_billet','id_option')
+    colonnes      = ('id_billet','id_option')
     billetoptions = (
         (10001,2),
     )
@@ -406,7 +406,7 @@ def inserer_jeu_test(db_name):
     valider_modifs(conn)
 
     # SegmentOptions
-    colonnes = ('id_segment','id_option')
+    colonnes       = ('id_segment','id_option')
     segmentoptions = (
         (1,1),
     )
@@ -423,10 +423,11 @@ def inserer_jeu_fichiers(db_name):
 
     La connexion à la base est refermée à la fin de la fonction.
     """
+
     conn, cur = ouvrir_connexion(db_name)
 
     # EnumAvion
-    colonnes = ('etat',)
+    colonnes  = ('etat',)
     enumavion = (
         ("en_revision",),
         ("en_vol",),
@@ -437,7 +438,7 @@ def inserer_jeu_fichiers(db_name):
     valider_modifs(conn)
 
     # EnumOption
-    colonnes = ('option',)
+    colonnes   = ('option',)
     enumoption = (
         ("vegetarien",),
         ("assurance_annulation",)

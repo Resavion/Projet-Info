@@ -37,6 +37,7 @@ def choisir(liste_choix, message=""):
     :param message: question à afficher
     :return: élément de liste_choix retenu par l'utilisateur
     """
+
     if message:
         print(message)
 
@@ -53,12 +54,21 @@ def choisir(liste_choix, message=""):
 
 
 def choisir_paginer(liste_choix, message="", pas=10):
+    """
+    Methode qui permet de mettre une pagination 
+    
+    :param liste_choix: liste des choix a paginer
+    :param message: message a dire
+    :param pas: 
+    :return: 
+    """
+
     borne_bas = 0
     elem = None
     while True:
         borne_haut = min(len(liste_choix), borne_bas + pas)
         # On affiche seulement quelques éléments à la fois
-        liste = liste_choix[borne_bas:borne_haut]
+        liste      = liste_choix[borne_bas:borne_haut]
         if borne_bas > 0:
             liste.append("Voir les éléments précédents")
         if borne_haut < len(liste_choix):
@@ -76,12 +86,20 @@ def choisir_paginer(liste_choix, message="", pas=10):
 
 
 def afficher_paginer(liste_elems, message, pas=10):
+    """
+    Methode qui permet d'afficher la pagination
+    
+   :param liste_choix: liste des choix a paginer
+    :param message: message a dire
+    :param pas: 
+    :return: 
+    """
     borne_bas = 0
     elem = None
     while True:
         borne_haut = min(len(liste_elems), borne_bas + pas)
         # On affiche seulement quelques éléments à la fois
-        elems = liste_elems[borne_bas:borne_haut]
+        elems      = liste_elems[borne_bas:borne_haut]
         print("{} {} à {}/{} :".format(message, borne_bas, borne_haut,
                                        len(liste_elems)))
         for elem in elems:

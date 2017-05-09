@@ -23,21 +23,21 @@ class Vol(object):
         :param cabine: schema des places du vol
         :param segments: segments de billets concernant ce vol
         """
-        self._horaire = horaire
-        self._datetime_depart = datetime_depart
-        self._datetime_arrivee = datetime_arrivee
-        self._duree = duree
-        self._avion = avion
+        self._horaire                   = horaire
+        self._datetime_depart           = datetime_depart
+        self._datetime_arrivee          = datetime_arrivee
+        self._duree                     = duree
+        self._avion                     = avion
         self._places_restantes_premiere = places_restantes_premiere
         self._places_restantes_business = places_restantes_business
         self._places_restantes_eco_plus = places_restantes_eco_plus
-        self._places_restantes_eco = places_restantes_eco
-        self._statut = statut
+        self._places_restantes_eco      = places_restantes_eco
+        self._statut                    = statut
         if cabine is None:
-            cabine = horaire.config_avion.disposition
+            cabine   = horaire.config_avion.disposition
         self._cabine = cabine
         if segments is None:
-            segments = []
+            segments   = []
         self._segments = segments
         cle = "{}{}{}".format(horaire.compagnie.id_code_iata,
                               horaire.numero,
@@ -132,14 +132,16 @@ class Vol(object):
         la place "O" en "." pour l'affichage.
         Elle met à jour le nombre de place selon la classe
         
-        :return: 
+        :param rangee: rangee dans l'avion (souvent des nombres)
+        :param colonne: colonne dans l'avion (souvent des lettresà
+        :return: None
         """
 
-        rangee = rangee - 1
-        rangs = avion
-        list_rang = rangs.split("\n")
+        rangee       = rangee - 1
+        rangs        = avion
+        list_rang    = rangs.split("\n")
         # on recupere l'indice de la colonne
-        colonne = list_rang[0].index(colonne) - 2
+        colonne      = list_rang[0].index(colonne) - 2
         # on cree une chaine de caractere vide pour reformer l'avion une fois la place changee
         avion_change = ""
         # on cree le debut de l'avion
@@ -147,11 +149,11 @@ class Vol(object):
             avion_change += rang + "\n"
         for rang in list_rang[2:-1]:
             # on recupere le numero du rang
-            num_rg = rang.split("|")[2]
+            num_rg     = rang.split("|")[2]
             # on recupere le corps de l'avion
-            body_rg = rang.split("|")[1]
+            body_rg    = rang.split("|")[1]
             # on recupere la classe du rang
-            classe_rg = rang.split("|")[0]
+            classe_rg  = rang.split("|")[0]
             changement = False
             if num_rg == str(rangee + 1):
                 # on teste si le client a choisi une place libre ou non
@@ -194,14 +196,16 @@ class Vol(object):
         la place "." en "O" pour l'affichage.
         Elle met à jour le nombre de place selon la classe
         
+        :param rangee: ancienne rangee
+        :param colonne: ancienne colonne
         :return: 
         """
 
-        rangee = rangee - 1
-        rangs = avion
-        list_rang = rangs.split("\n")
+        rangee       = rangee - 1
+        rangs        = avion
+        list_rang    = rangs.split("\n")
         # on recupere l'indice de la colonne
-        colonne = list_rang[0].index(colonne) - 2
+        colonne      = list_rang[0].index(colonne) - 2
         # on cree une chaine de caractere vide pour reformer l'avion une fois la place changee
         avion_change = ""
         # on cree le debut de l'avion
@@ -209,9 +213,9 @@ class Vol(object):
             avion_change += rang + "\n"
         for rang in list_rang[2:-1]:
             # on recupere le numero du rang
-            num_rg = rang.split("|")[2]
+            num_rg    = rang.split("|")[2]
             # on recupere le corps de l'avion
-            body_rg = rang.split("|")[1]
+            body_rg   = rang.split("|")[1]
             # on recupere la classe du rang
             classe_rg = rang.split("|")[0]
             if num_rg == str(rangee + 1):

@@ -14,12 +14,12 @@ class Reservation(object):
         :param date_achat: date de paiement de la reservation
         :param billets: billets concernes par cette reservation
         """
-        self._id = id_resa
-        self._client = client
+        self._id         = id_resa
+        self._client     = client
         self._prix_total = prix_total
         self._date_achat = date_achat
         if billets is None:
-            billets = []
+            billets   = []
         self._billets = billets
 
     @property
@@ -125,90 +125,4 @@ class Reservation(object):
                               segment.vol.horaire.config_avion.type_avion) )
         return
 
-
-if __name__=='__main__':
-    """
-    PASSAGER(S): MRS RAUNA TONG CHIN NI HUIBAN
-
-REFERENCE DE DOSSIER: 5ZQGH2
-DATE D'ENVOI DE L'ITINERAIRE: 15 MAI 2015
-
-
-COORDONNEES AGENCE
------------------------------------------------------------------------------
-AGENCE:  M.T. VOYAGES
-         149 AVENUE DE CHOISY
-         75013 PARIS
-         FRANCE
-TELEPHONE: 01.45.82.00.40
-FAX: 01.45.86.75.30
-
-SAM 27 JUIN 2015 VOL - PARIS FR A SHANGHAI CN
------------------------------------------------------------------------------
-    DEPART: 27 JUI 13:25 - CHARLES DE GAULLE, TERMINAL: 2E
-    ARRIVEE: 28 JUI 07:00 - PUDONG INTL, TERMINAL: 1
-    VOL: MU 554 - CHINA EASTERN AIRLINES
-    - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    ETAT DE LA RESERVATION: CONFIRME
-    CLASSE: ECONOMIQUE (N)
-    NON FUMEUR
-    DUREE: 11:35
-    REPAS: DEJEUNER
-    - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    PROPRIETAIRE DE L'APPAREIL: MU CHINA EASTERN AIRLINES
-    EQUIPEMENT: AIRBUS INDUSTRIE A330-200
-    OPERE PAR CHINA EASTERN AIRLINES, MU
-
-DIM 28 JUIN 2015 VOL - SHANGHAI CN A TAIPEI TW
------------------------------------------------------------------------------
-    DEPART: 28 JUI 12:20 - PUDONG INTL, TERMINAL: 1
-    ARRIVEE: 28 JUI 14:00 - TAIWAN TAOYUAN INTL, TERMINAL: 2
-    VOL: MU 5007 - CHINA EASTERN AIRLINES
-    - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    ETAT DE LA RESERVATION: CONFIRME
-    CLASSE: ECONOMIQUE (N)
-    NON FUMEUR
-    DUREE: 01:40
-    REPAS: DEJEUNER
-    - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    PROPRIETAIRE DE L'APPAREIL: MU CHINA EASTERN AIRLINES
-    EQUIPEMENT: AIRBUS INDUSTRIE A330-300
-    OPERE PAR CHINA EASTERN AIRLINES, MU
-
-DIM 23 AOUT 2015 VOL - TAIPEI TW A SHANGHAI CN
------------------------------------------------------------------------------
-    DEPART: 23 AOU 18:40 - TAIWAN TAOYUAN INTL, TERMINAL: 2
-    ARRIVEE: 23 AOU 20:40 - PUDONG INTL, TERMINAL: 1
-    VOL: MU 5006 - CHINA EASTERN AIRLINES
-    - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    ETAT DE LA RESERVATION: CONFIRME
-    CLASSE: ECONOMIQUE (R)
-    NON FUMEUR
-    DUREE: 02:00
-    REPAS: DINER
-    - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    PROPRIETAIRE DE L'APPAREIL: MU CHINA EASTERN AIRLINES
-    EQUIPEMENT: AIRBUS INDUSTRIE A330-200
-    OPERE PAR CHINA EASTERN AIRLINES, MU
-
-LUN 24 AOUT 2015 VOL - SHANGHAI CN A PARIS FR
------------------------------------------------------------------------------
-    DEPART: 24 AOU 00:05 - PUDONG INTL, TERMINAL: 1
-    ARRIVEE: 24 AOU 06:30 - CHARLES DE GAULLE, TERMINAL: 2E
-    VOL: MU 553 - CHINA EASTERN AIRLINES
-    - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    ETAT DE LA RESERVATION: CONFIRME
-    CLASSE: ECONOMIQUE (R)
-    NON FUMEUR
-    DUREE: 12:25
-    REPAS: DEJEUNER
-    - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    PROPRIETAIRE DE L'APPAREIL: MU CHINA EASTERN AIRLINES
-    EQUIPEMENT: AIRBUS INDUSTRIE A330-200
-    OPERE PAR CHINA EASTERN AIRLINES, MU
-
-INFORMATION GENERALE
-
-    
-    """
 

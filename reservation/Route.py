@@ -23,17 +23,17 @@ class Route(object):
         :param codeshare: booleen qui permet de savoir si un avion est partage par plusieurs compagnies
         :param horaires: liste des horaires sur cette route
         """
-        self._compagnie = compagnie
-        self._aeroport_depart = aeroport_depart
+        self._compagnie        = compagnie
+        self._aeroport_depart  = aeroport_depart
         self._aeroport_arrivee = aeroport_arrivee
-        self._geom = geom
-        self._distance = distance_haversine(aeroport_depart.latitude_deg,
-                                            aeroport_depart.longitude_deg,
-                                            aeroport_arrivee.latitude_deg,
-                                            aeroport_arrivee.longitude_deg)
+        self._geom             = geom
+        self._distance         = distance_haversine(aeroport_depart.latitude_deg,
+                                                    aeroport_depart.longitude_deg,
+                                                    aeroport_arrivee.latitude_deg,
+                                                    aeroport_arrivee.longitude_deg)
         self._codeshare = codeshare
         if horaires is None:
-            horaires = []
+            horaires   = []
         self._horaires = horaires
 
         cle = "{}{}{}".format(compagnie.id_code_iata,
@@ -117,6 +117,7 @@ class Route(object):
         Methode qui permet d'afficher les horaires ou cette route est empruntée
         :return: 
         """
+
         for horaire in self._horaires:
             print(horaire)
         ihm.demander("Tapez sur une touche pour revenir au menu")
@@ -136,6 +137,10 @@ class Route(object):
     def afficher_carte(self, start=None, show=True, annot=True):
         """
         Methode qui permet d'afficher la route reliant deux aeroports
+        
+        :param start: 
+        :param show: booleen qui permet de choisir s'il faut montrer la carte ou non
+        :param annot: booleen qui permet de choisir si on veut afficher les annotations ou non
         :return: 
         """
 
@@ -162,7 +167,7 @@ class Route(object):
             # Transfo en Mercator
             xs, ys = mercator(coords, earth.E, 0, 0, earth.A)
             # Ajout a la carte
-            style = 'b'
+            style  = 'b'
             if self._codeshare:
                 style = 'c'
             largeur = 0.1

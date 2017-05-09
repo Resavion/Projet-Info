@@ -229,7 +229,7 @@ def charger_horaires_propres_de_route(cur, configs, route):
     rows     = r.select_horaires_propres_par_route(cur, route)
     for row in rows:
         # Config
-        config = [x for x in configs if x.nom == row[5]][0]
+        config  = [x for x in configs if x.nom == row[5]][0]
         # Heures et duree
         dep     = datetime.strptime(row[6], "%H:%M").time()
         arr     = datetime.strptime(row[7], "%H:%M").time()

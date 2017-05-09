@@ -14,16 +14,16 @@ class Billet(object):
         :param options: options que le passager à pris pour son vol
         :param segments: segments qui composent le billet
         """
-        self._id = id_billet
-        self._reservation = reservation
-        self._tarif = tarif
-        self._nom_passager = nom_passager
+        self._id              = id_billet
+        self._reservation     = reservation
+        self._tarif           = tarif
+        self._nom_passager    = nom_passager
         self._prenom_passager = prenom_passager
-        self._passeport = passeport
-        self._date_naissance = date_naissance
-        self._options = options
+        self._passeport       = passeport
+        self._date_naissance  = date_naissance
+        self._options         = options
         if segments is None:
-            segments = []
+            segments   = []
         self._segments = segments
 
     @property

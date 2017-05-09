@@ -118,9 +118,9 @@ class Route(object):
         :return: None
         """
 
-        for horaire in self._horaires:
-            print(horaire)
-        ihm.demander("Tapez sur une touche pour revenir au menu")
+        liste_horaires = self._horaires
+        liste_horaires.sort(key=lambda s: s.heure_depart)
+        ihm.afficher_paginer(liste_horaires, "Liste des horaires")
         return
 
     def chercher_horaire(self, date):

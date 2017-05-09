@@ -282,7 +282,7 @@ def charger_vols_de_horaire(cur, horaire):
     for row in rows:
         # Avion
         avion = None
-        if row[5] is not None:
+        if row[5]:
             avion = [x for x in avions if x.id == row[5]][0]
         # Jours, heures et durees
         dep = datetime.strptime(row[2], "%Y-%m-%d %H:%M:%S")

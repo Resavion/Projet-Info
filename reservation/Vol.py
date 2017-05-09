@@ -121,6 +121,7 @@ class Vol(object):
     def afficher_places(self):
         """
         Methode qui permet d'afficher les places disponibles et non disponibles dans un avion
+        
         :return: 
         """
         print(self._cabine)
@@ -130,6 +131,7 @@ class Vol(object):
         Methode qui permet de reserver une place dans un vol en changeant le signe de 
         la place "O" en "." pour l'affichage.
         Elle met à jour le nombre de place selon la classe
+        
         :return: 
         """
 
@@ -184,15 +186,14 @@ class Vol(object):
             avion_change += rang
         # on sauvegarde le nouvel avion
         self._cabine = avion_change
-
-
-
+        return
 
     def liberer_place(self, rangee, colonne):
         """
         Methode qui permet de liberer une place dans un vol en changeant le signe de 
         la place "." en "O" pour l'affichage.
         Elle met à jour le nombre de place selon la classe
+        
         :return: 
         """
 
@@ -220,10 +221,8 @@ class Vol(object):
                         self._places_restantes_premiere += 1
                     elif classe_rg == "C":
                         self._places_restantes_business += 1
-
                     elif classe_rg == "P":
                         self._places_restantes_eco_plus += 1
-
                     elif classe_rg == "Y":
                         self._places_restantes_eco += 1
                     # on change le "." en "O" pour la place donnée
@@ -242,12 +241,12 @@ class Vol(object):
             avion_change += rang
         # on sauvegarde le nouvel avion
         self._cabine = avion_change
-
-
+        return
 
     def retarder_vol(self):
         """
         Methode qui permet de retarder l'heure de depart du vol
+        
         :return: 
         """
         pass

@@ -261,6 +261,7 @@ def charger_horaires_codeshare_de_route(cur, horaires, route):
                              and x.numero == row[11]][0]
         horaire_codeshare = Horaire(route, row[1], *row[6:10], horaire_operateur)
         horaires_codeshare.append(horaire_codeshare)
+        horaire_operateur.horaires_codeshare.append(horaire_codeshare)
         # print(horaire_codeshare)
     return horaires_codeshare
 

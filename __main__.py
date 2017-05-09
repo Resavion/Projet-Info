@@ -24,6 +24,8 @@ if __name__ == '__main__':
 
     print('\n\n OHAYOOOOOOOOOOOOOOOOOOOO')
 
+    # print(compagnies[2].routes[2].horaires[0])
+    # print(compagnies[2].routes[2].horaires[0].creer_vols())
 
     # On lance l'interface
     menus.menu_racine(clients, compagnies, aeroports)

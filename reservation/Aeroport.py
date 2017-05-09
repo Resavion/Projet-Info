@@ -2,6 +2,7 @@ from collections import defaultdict
 import numpy as np
 import matplotlib.pyplot as plt
 
+import ihm.console as ihm
 import utilitaires.earth as earth
 from utilitaires.carte import (mercator, dessine_fondcarte, parametrage_carte)
 
@@ -127,7 +128,7 @@ class Aeroport(object):
                     self._municipalite, self._code_pays,
                     self._id_code_iata, self._code_icao)
 
-    def afficher_carte(self, show=True, annot=True):
+    def afficher_carte(self, show=True, annot=True, routes=False):
         """
         Methode qui permet d'afficher la carte du monde avec l'aeroport
         :return:
@@ -146,39 +147,96 @@ class Aeroport(object):
         # Ajout points a la carte
         plt.plot(xs0, ys0, 'b.')
 
+        # Ajout des routes a la carte si demande
+        if routes:
+            for route in self._routes_sortantes:
+                route.afficher_carte(show=False, annot=annot)
+            for route in self._routes_entrantes:
+                route.afficher_carte(show=False, annot=annot)
+
         # Parametrage de la carte
         parametrage_carte()
-
         # Ajout de tag avec le code de l'aeroport
         if annot:
             fig = plt.gcf()
             ax = fig.add_subplot(111)
             ax.annotate('{0:s}'.format(self.id_code_iata), xy=(xs0, ys0), xytext=(4, -4), \
-                        fontsize=10, textcoords='offset points')
-
+                        fontsize=6, textcoords='offset points')
         # Affichage
         if show:
             plt.title("Carte de l'aeroport {0:s}".format(self._nom))
             plt.show()
         return
 
-    def afficher_routes(self):
+    def afficher_routes_sortantes(self):
         """
-        Methode qui permet d'afficher toutes les routes possibles qui partent d'un aeroport donné
+        Affiche toutes les routes possibles qui partent de l'aeroport
+        
         :return: 
         """
-        pass
+        ihm.afficher("Il y a {} route(s) sortante(s)"
+                     .format(len(self.routes_sortantes)))
+        ihm.afficher_paginer(self.routes_sortantes, "Routes sortantes", pas=10)
+        return
 
-    def afficher_horaires(self):
+    def afficher_routes_entrantes(self):
         """
-        Methode qui permet d'afficher tous les vols d'arrivée et de départ de l'aéroport
+        Affiche toutes les routes possibles qui arrivent a l'aeroport
+
         :return: 
         """
-        pass
+        ihm.afficher("Il y a {} route(s) entrante(s)"
+                     .format(len(self.routes_entrantes)))
+        ihm.afficher_paginer(self.routes_entrantes, "Routes entrantes", pas=10)
+        return
+
+    def afficher_horaires_arrivees(self):
+        """
+        Affiche tous les horaires d'arrivee a l'aeroport
+        
+        :return: 
+        """
+        hor_arr = []
+        for route in self._routes_entrantes:
+            hor_arr.extend(route.horaires)
+        hor_arr.sort(key=lambda s: s.heure_arrivee)
+        ihm.afficher("Il y a {} horaire(s) d'arrivée(s)"
+                     .format(len(hor_arr)))
+        ihm.afficher_paginer(hor_arr, "Horaires d'arrivées", pas=10)
+        return
+
+    def afficher_horaires_departs(self):
+        """
+        Affiche tous les horaires de depart l'aeroport
+
+        :return: 
+        """
+        hor_arr = []
+        for route in self._routes_sortantes:
+            horaires = [x for x in route.horaires
+                        if x.horaire_operateur is None]
+            hor_arr.extend(horaires)
+        hor_arr.sort(key=lambda s: s.heure_depart)
+        ihm.afficher("Il y a {} horaire(s) de départ(s)"
+                     .format(len(hor_arr)))
+        ihm.afficher_paginer(hor_arr, "Horaires de départs", pas=10)
+        return
+
+    def afficher_avions(self):
+        """
+        Methode qui permet d'afficher tous les avions au sol
+        
+        :return: 
+        """
+        ihm.afficher("Il y a {} avion(s) au sol à l'aéroport"
+                     .format(len(self._avions)))
+        ihm.afficher_paginer(self._avions, "Avions au sol", pas=10)
+        return
 
     def afficher_vols(self):
         """
         Methode qui permet d'afficher tous les vols d'arrivee et de depart de l'aéroport un jour donné
+        
         :return: 
         """
         pass

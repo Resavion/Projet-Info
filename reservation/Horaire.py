@@ -9,7 +9,8 @@ from reservation.Enums import EnumStatutVol
 
 class Horaire(object):
     def __init__(self, route, numero, heure_depart, heure_arrivee, duree, periodicite,
-                 horaire_operateur, config_avion=None, vols=None):
+                 horaire_operateur, config_avion=None, horaires_codeshare=None,
+                 vols=None):
         """
         Constructeur de la classe horaire
         
@@ -21,6 +22,7 @@ class Horaire(object):
         :param periodicite: nombre de fois ou ce vol est effectue (par semaine, mois, annee, saison...)
         :param horaire_operateur: horaire de la compagnie qui va operer le vol
         :param config_avion: la configuration d'avion utilisee a cet horaire
+        :param horaires_codeshare: horaires en partage de code sur cet horaire
         :param vols: vols assurant cet horaire
         """
         self._route = route
@@ -31,7 +33,10 @@ class Horaire(object):
         self._periodicite = periodicite
         self._horaire_operateur = horaire_operateur
         self._config_avion = config_avion
-        if vols is None and horaire_operateur is None:
+        if horaires_codeshare is None:
+            horaires_codeshare = []
+        self._horaires_codeshare = horaires_codeshare
+        if vols is None:
             vols = []
         self._vols = vols
 
@@ -82,19 +87,31 @@ class Horaire(object):
         return self._config_avion
 
     @property
+    def horaires_codeshare(self):
+        return self._horaires_codeshare
+
+    @property
     def vols(self):
         if self._horaire_operateur is not None:
             return self._horaire_operateur.vols
         return self._vols
 
     def __str__(self):
-        return "{} {:4s} - {} {:%H:%M} -> {} {:%H:%M} ({}h{:02d})"\
+        txt = "{} {:4s} - {} {:%H:%M} -> {} {:%H:%M} ({}h{:02d})"\
             .format(self.compagnie.id_code_iata, str(self._numero),
                     self._route.aeroport_depart.id_code_iata,
                     self.heure_depart,
                     self._route.aeroport_arrivee.id_code_iata,
                     self.heure_arrivee,
                     self.duree.seconds // 3600, (self.duree.seconds//60) % 60)
+        if self._horaires_codeshare:
+            txt += " - En partage de codes : "
+            liste_num = []
+            for hor in self._horaires_codeshare:
+                liste_num.append("{} {}".format(hor.compagnie.id_code_iata,
+                                                hor.numero))
+            txt += ", ".join(liste_num)
+        return txt
 
     def afficher_vols(self):
         vols_tri = self._vols

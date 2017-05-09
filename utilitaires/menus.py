@@ -337,11 +337,41 @@ def actions_visualisation(compagnies,aeroports):
 
         action = ihm.choisir(actions, "Choisissez une action :")
         if action == actions[0]:
-            choisir_par_code_aeroport(aeroports)
+            gerer_aeroport(aeroports)
         elif action == actions[1]:
             afficher_carte_aeroports(aeroports)
         elif action == actions[2]:
             afficher_carte_routes(compagnies)
+        else:
+            break
+    return
+
+
+def gerer_aeroport(aeroports):
+    aero = choisir_par_code_aeroport(aeroports)
+    # Proposer les actions
+    while True:
+        actions = (
+            "Afficher la liste des routes entrantes",
+            "Afficher la liste des routes sortantes",
+            "Afficher la carte des routes",
+            "Afficher les horaires arrivant",
+            "Afficher les horaires partant",
+            "Afficher la liste des avions au sol",
+            'Revenir au menu précédent')
+        action = ihm.choisir(actions, "Choisissez une action :")
+        if action == actions[0]:
+            aero.afficher_routes_entrantes()
+        elif action == actions[1]:
+            aero.afficher_routes_sortantes()
+        elif action == actions[2]:
+            aero.afficher_carte(routes=True)
+        elif action == actions[3]:
+            aero.afficher_horaires_arrivees()
+        elif action == actions[4]:
+            aero.afficher_horaires_departs()
+        elif action == actions[5]:
+            aero.afficher_avions()
         else:
             break
     return
@@ -373,15 +403,14 @@ def afficher_carte_aeroports(aeroports, show=True):
     # Ajout du fond de carte (si la carte ne fait pas partie d'une composition)
     if show:
         dessine_fondcarte()
-
-    # Ajout de la carte de chaque station
+    # Ajout de la carte de chaque aeroport
     for aeroport in aeroports:
         aeroport.afficher_carte(show=False, annot=False)
-
     # Affichage
     if show:
         plt.title('Carte de toutes les aéroports')
         plt.show()
+    return
 
 
 def afficher_carte_routes(compagnies, show=True):
@@ -393,15 +422,14 @@ def afficher_carte_routes(compagnies, show=True):
     # Ajout du fond de carte (si la carte ne fait pas partie d'une composition)
     if show:
         dessine_fondcarte()
-
-    # Ajout de la carte de chaque station
+    # Ajout de la carte de chaque route
     for compagnie in compagnies:
         compagnie.afficher_carte_routes(show=False, annot=False)
-
     # Affichage
     if show:
         plt.title('Carte de toutes les routes')
         plt.show()
+    return
 
 
 def nb_routes_sans_double(compagnie):

@@ -134,7 +134,7 @@ class Route(object):
         """
         pass
 
-    def afficher_carte(self, start=None, show=True, annot=True):
+    def afficher_carte(self, show=True, annot=True):
         """
         Methode qui permet d'afficher la route reliant deux aeroports
         
@@ -170,7 +170,7 @@ class Route(object):
             style  = 'b'
             if self._codeshare:
                 style = 'c'
-            largeur = 0.1
+            largeur = 0.2
             if show:
                 largeur = 0.5
             plt.plot(xs, ys, style+'-', linewidth=largeur)[0]

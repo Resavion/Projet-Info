@@ -128,6 +128,7 @@ def ajouter_client(clients):
         new_id = clients[-1].id + 1
     nom = ihm.demander("Saisissez votre nom :")
     prenom = ihm.demander("Saisissez votre prénom :")
+    date_naiss = None
     while True:
         try:
             date_naiss = ihm.demander(
@@ -276,7 +277,7 @@ def gerer_avion(compagnie):
     :param compagnie: l'objet compagnie en question
     :return: None
     """
-    avion = None
+
     avions = compagnie.avions
     avions.sort(key=lambda s: s.id, reverse=True)
     avion = ihm.choisir_paginer(avions, "Choisissez un avion :")
@@ -302,6 +303,7 @@ def gerer_avion(compagnie):
 def actions_routes(compagnie):
     """
      Methode qui permet a la compagnie de choisir les actions qu'ils souhaitent réaliser sur une route
+
     :param compagnie: objet compagnie
     :return: None
     """

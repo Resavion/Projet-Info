@@ -182,7 +182,7 @@ def waypoint(lat1_deg, lon1_deg, lat2_deg, lon2_deg, frac, dist, radius=6371000)
 
 def bearing(lat1_deg, lon1_deg, lat2_deg, lon2_deg):
     """
-    Methode qui permet de ....
+    Methode qui permet de calculer un azimut entre deux points
     
     :param lat1_deg: 
     :param lon1_deg: 
@@ -201,16 +201,17 @@ def bearing(lat1_deg, lon1_deg, lat2_deg, lon2_deg):
 
 def distance_haversine(lat1_deg, lon1_deg, lat2_deg, lon2_deg, radius=6371000):
     """
-    Methode qui permet de .....
+    Methode qui permet de calculer la distance la plus courte (selon la ligne geodesique)
+    entre deux points
     
     :param lat1_deg: latitude en degres
     :param lon1_deg: longitude en degres
     :param lat2_deg: latitude en degres
     :param lon2_deg: longitude en degres
-    :param radius: 
-    :return: 
+    :param radius: rayon moyen de la Terre en metres
+    :return: distance selon la geodesique en metres
     """
-    """ note that the default distance is in meters """
+
     dlat = ma.radians(lat2_deg - lat1_deg)
     dlon = ma.radians(lon2_deg - lon1_deg)
     lat1 = ma.radians(lat1_deg)
@@ -224,12 +225,12 @@ def densif_geodesique(list_coords, dist):
     """
     Cree 1 point intermediaire tous les 100 kms environ sur la geodesique
     
-    :param list_coords: 
-    :param dist: 
-    :return: 
+    :param list_coords: liste de coordonnees en entree (les 2 extremites)
+    :param dist: distance de la route selon la geodesique
+    :return: nouvelle liste de coordonnees
     """
-    # Pour 1 point tous les 100 kms environ : calculer le ratio et waypoint
-    nb_points          = int(ma.floor(dist/1e5))
+
+    nb_points          = int(ma.floor(dist/2e5))
     lat1_deg, lon1_deg = list_coords[0, :]
     lat2_deg, lon2_deg = list_coords[1, :]
     new_coords         = np.zeros((nb_points+1, 2))
@@ -244,10 +245,10 @@ def densif_geodesique(list_coords, dist):
 
 def decoupe_ligne(list_coords):
     """
-    Methode qui permet ..........
+    Methode qui permet de decouper une route en deux parties au niveau du meridien 180
     
-    :param list_coords: 
-    :return: 
+    :param list_coords: liste des coordonnees en entree
+    :return: liste de listes de coordonnees (1 seul element si pas decoupe)
     """
 
     liste1     = []

@@ -475,7 +475,9 @@ def inserer_jeu_fichiers(db_name):
 
 if __name__ == '__main__':
     import os
-    os.remove("resavion.db")
-    creer_bdd("resavion.db")
-    # inserer_jeu_test("resavion.db")
-    inserer_jeu_fichiers("resavion.db")
+    db_name = "resavion.db"
+    if os.path.exists(db_name):
+        os.remove(db_name)
+    creer_bdd(db_name)
+    # inserer_jeu_test(db_name)
+    inserer_jeu_fichiers(db_name)

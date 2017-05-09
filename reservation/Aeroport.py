@@ -159,6 +159,7 @@ class Aeroport(object):
 
         # Parametrage de la carte
         parametrage_carte()
+
         # Ajout de tag avec le code de l'aeroport
         if annot:
             fig = plt.gcf()

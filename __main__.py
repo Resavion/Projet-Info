@@ -1,12 +1,6 @@
 import os
-import numpy as np
-
-import matplotlib.pyplot as plt
 
 import ihm.console as ihm
-import utilitaires.earth as earth
-from utilitaires.carte import mercator
-
 from bdd.config_bdd import (creer_bdd, inserer_jeu_test)
 from utilitaires.chargement import (charger_bd,
                                     update_bd)
@@ -23,9 +17,6 @@ if __name__ == '__main__':
 
 
     print('\n\n OHAYOOOOOOOOOOOOOOOOOOOO')
-
-    # print(compagnies[2].routes[2].horaires[0])
-    # print(compagnies[2].routes[2].horaires[0].creer_vols())
 
     # On lance l'interface
     menus.menu_racine(clients, compagnies, aeroports)

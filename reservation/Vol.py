@@ -70,19 +70,27 @@ class Vol(object):
 
     @property
     def places_restantes_premiere(self):
-        return self._places_restantes_premiere
+        if self._places_restantes_premiere:
+            return int(self._places_restantes_premiere)
+        return 0
 
     @property
     def places_restantes_business(self):
-        return self._places_restantes_business
+        if self._places_restantes_business:
+            return self._places_restantes_business
+        return 0
 
     @property
     def places_restantes_eco_plus(self):
-        return self._places_restantes_eco_plus
+        if self._places_restantes_eco_plus:
+            return self._places_restantes_eco_plus
+        return 0
 
     @property
     def places_restantes_eco(self):
-        return self._places_restantes_eco
+        if self._places_restantes_eco:
+            return self._places_restantes_eco
+        return 0
 
     @property
     def statut(self):
@@ -118,12 +126,34 @@ class Vol(object):
             txt += " - {}".format(self._avion.config.type_avion)
         return txt
 
+    def places_restantes_classe(self, classe):
+        """
+        Affiche les places restantes pour une classe donnée
+        via son code (Y, P, C ou F)
+        
+        :param classe: code de la classe
+        :return: nombre de places restantes de la classe
+        """
+
+        if classe == 'Y':
+            return self.places_restantes_eco
+        elif classe == 'P':
+            return self.places_restantes_eco_plus
+        elif classe == 'C':
+            return self.places_restantes_business
+        elif classe == 'F':
+            return self.places_restantes_premiere
+        else:
+            pass
+        return 0
+
     def afficher_places(self):
         """
         Methode qui permet d'afficher les places disponibles et non disponibles dans un avion
         
         :return: 
         """
+
         print(self._cabine)
 
     def reserver_place(self, rangee, colonne):

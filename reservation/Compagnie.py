@@ -262,7 +262,8 @@ class Compagnie(object):
                 routes_suiv2 = []
             # Si encore escale, on cherche les routes passant par 1 autre aeroport
             routes_suiv2 = [x for x in routes_suiv2
-                            if x.aeroport_arrivee.code_pays != route.aeroport_depart.code_pays]
+                            if not (x.aeroport_arrivee.code_pays == route.aeroport_depart.code_pays
+                                    and x.aeroport_depart.code_pays != x.aeroport_arrivee.code_pays)]
             for route2 in routes_suiv2:
                 route_directe, routes_suiv3 = self.chercher_route_directe(
                     route2.aeroport_arrivee, aer_arr, aeros_visites)

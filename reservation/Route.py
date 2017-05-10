@@ -201,10 +201,12 @@ class Route(object):
             plt.show()
         return
 
-    def calcul_prix_route(self):
+    def calcul_prix_route(self, classe='Y'):
         """
         Methode qui permet de calculer le prix d'un billet d'avion en
         fonction de la distance parcourue
+        
+        :param classe: classe du billet
         :return: prix du billet
         """
 
@@ -214,7 +216,7 @@ class Route(object):
         coeff_1000_2000  = 0.17
         coeff_2000_5000  = 0.06
         coeff_5000_12000 = 0.07
-        # Calcul le prix en fonction des km parcourus
+        # Calcule le prix en fonction des km parcourus
         if self.distance < 500:
             prix_sans_classe = 60 + coeff_0_500*self._distance/1000
         elif self.distance < 1000:
@@ -225,4 +227,20 @@ class Route(object):
             prix_sans_classe = 420 + coeff_2000_5000*(self._distance/1000-2000)
         elif self.distance >= 5000:
             prix_sans_classe = 600 + coeff_5000_12000*(self._distance/1000-5000)
-        return prix_sans_classe
+        # Augmente le prix en fonction de la classe
+        prix_avec_classe = 0
+        coeff_Y = 1
+        coeff_P = 2
+        coeff_C = 5
+        coeff_F = 11
+        if classe == 'Y':
+            prix_avec_classe = prix_sans_classe * coeff_Y
+        elif classe == 'P':
+            prix_avec_classe = prix_sans_classe * coeff_P
+        elif classe == 'C':
+            prix_avec_classe = prix_sans_classe * coeff_C
+        elif classe == 'F':
+            prix_avec_classe = prix_sans_classe * coeff_F
+        else:
+            pass
+        return prix_avec_classe

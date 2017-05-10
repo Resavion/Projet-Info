@@ -17,23 +17,21 @@ if __name__ == '__main__':
 
     print('\n\n OHAYOOOOOOOOOOOOOOOOOOOO')
 
+    from reservation.Aeroport import Aeroport
+    aer_dep = Aeroport.find_by_id("HND")
+    aer_arr = Aeroport.find_by_id("BKK")
+    escales_max = 2
+    classe = 'Y'
     combinaisons_total = []
     for compagnie in compagnies:
-        from reservation.Aeroport import Aeroport
-        aer_dep = Aeroport.find_by_id("NRT")
-        aer_arr = Aeroport.find_by_id("BKK")
-        escales_max = 2
-        combinaisons = compagnie.chercher_routes_escales(
+        combinaisons, combi_prix, combi_dist = compagnie.chercher_routes_escales(
             aer_dep, aer_arr, escales_max)
         if combinaisons:
-            combinaisons_total.extend(combinaisons)
-            print(compagnie)
-            for combi in combinaisons:
-                print(*combi)
+            combinaisons_total.extend(zip(combinaisons, combi_prix, combi_dist))
 
-    # On lance l'interface
+    # # On lance l'interface
     # menus.menu_racine(clients, compagnies, aeroports)
-
+    #
     # liste_choix = ('Oui', 'Non')
     # choix = ihm.choisir(liste_choix,
     #                     "Voulez-vous sauvegarder vos modifications ?")

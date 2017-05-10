@@ -490,7 +490,7 @@ def update_avion(cur, avion):
                     avion.date_livraison, avion.date_derniere_revision,
                     avion.etat.value, avion.latitude_deg, avion.longitude_deg)
         r.insert_into(cur, 'Avion', colonnes, values)
-        print("insert {}".format(avion))
+        # print("insert {}".format(avion))
     else:
         # Update avion dans bd
         colonnes = ('nom_config', 'id_aeroport', 'date_derniere_revision',
@@ -499,7 +499,7 @@ def update_avion(cur, avion):
                     avion.date_derniere_revision, avion.etat.value,
                     avion.latitude_deg, avion.longitude_deg)
         r.update(cur, 'Avion', colonnes, values, avion.id)
-        print("update {}".format(avion))
+        # print("update {}".format(avion))
     return
 
 
@@ -534,7 +534,7 @@ def update_vol(cur, vol):
                     vol.places_restantes_eco_plus, vol.places_restantes_eco,
                     vol.statut.value, vol.cabine)
         r.insert_into(cur, 'Vol', colonnes, values)
-        print("insert {}".format(vol))
+        # print("insert {}".format(vol))
     else:
         # Update vol dans bd
         colonnes = ('datetime_depart', 'datetime_arrivee',
@@ -551,7 +551,7 @@ def update_vol(cur, vol):
             ('id_compagnie', 'numero_vol', 'datetime_depart'),
             (vol.horaire.compagnie.id_code_iata, vol.horaire.numero,
              "{}".format(vol.datetime_depart)))
-        print("update {}".format(vol))
+        # print("update {}".format(vol))
     return
 
 
@@ -575,7 +575,7 @@ def update_billet(cur, billet):
                     billet.passeport, billet.date_naissance,
                     billet.options)
         r.insert_into(cur, 'Billet', colonnes, values)
-        print("insert {}".format(billet))
+        # print("insert {}".format(billet))
     else:
         # Update billet dans bd
         colonnes = ('tarif', 'nom_passager', 'prenom_passager',
@@ -584,7 +584,7 @@ def update_billet(cur, billet):
                     billet.prenom_passager, billet.passeport,
                     billet.date_naissance, billet.options)
         r.update(cur, 'Billet', colonnes, values, billet.id)
-        print("update {}".format(billet))
+        # print("update {}".format(billet))
     return
 
 
@@ -616,11 +616,11 @@ def update_segment(cur, segment):
                     numero_vol_codeshare,
                     segment.place)
         r.insert_into(cur, 'Segment', colonnes, values)
-        print("insert {}".format(segment))
+        # print("insert {}".format(segment))
     else:
         # Update segment dans bd
         colonnes = ('place',)
         values   = (segment.place,)
         r.update(cur, 'Segment', colonnes, values, segment.id)
-        print("update {}".format(segment))
+        # print("update {}".format(segment))
     return

@@ -60,28 +60,37 @@ class Client(object):
         """
 
         # Saisie des criteres
-        criteres         = self.saisie_criteres(aeroports)
+        criteres = self.saisie_criteres(aeroports)
+        aer_dep, aer_arr, date_dep, date_arr, \
+            nb_adultes, nb_enfants, classe, escales_max = criteres
 
-        routes_directes  = []
-        routes_1escale   = []
-        routes_2escales  = []
-        aer_dep, aer_arr = criteres[:2]
-        escales_max      = criteres[-1]
+        # Recherche des routes
+        combinaisons_total = []
         for compagnie in compagnies:
-            routes_0, routes_1, routes_2 = compagnie.chercher_routes(aer_dep, aer_arr, escales_max)
-            routes_directes.extend(routes_0)
-            routes_1escale.extend(routes_1)
-            routes_2escales.extend(routes_2)
+            combinaisons, combi_prix, combi_dist = compagnie.chercher_routes_escales(
+                aer_dep, aer_arr, escales_max)
+            if combinaisons:
+                combinaisons_total.extend(zip(combinaisons, combi_prix, combi_dist))
 
-        print("routes directes")
-        for route in routes_directes:
-            print(route)
-        print("routes 1 escale")
-        for routes in routes_1escale:
-            print(*routes)
-        print("routes 2 escales")
-        for routes in routes_2escales:
-            print(*routes)
+        combi_print = []
+        combinaisons_total.sort(key=lambda s: s[1])
+        for combi in combinaisons_total:
+            ligne = "{:.2f}€".format(combi[1])
+            ligne += " {:.0f}km".format(combi[2])
+            route0 = combi[0][0]
+            ligne += " - {} - {} ({},{})".format(
+                route0.compagnie.code_icao,
+                route0.aeroport_depart.id_code_iata,
+                route0.aeroport_depart.municipalite,
+                route0.aeroport_depart.code_pays)
+            for route in combi[0]:
+                ligne += " -> {} ({},{})".format(
+                    route.aeroport_arrivee.id_code_iata,
+                    route.aeroport_arrivee.municipalite,
+                    route.aeroport_arrivee.code_pays)
+            combi_print.append(ligne)
+        ihm.afficher_paginer(combi_print, "Liste des routes trouvées")
+
         return
 
     @staticmethod
@@ -99,7 +108,10 @@ class Client(object):
         aer_arr     = saisie_aeroport("aéroport d'arrivée", aeroports)
         # Demander les dates départ et retour
         date_dep    = saisie_date("date de départ", datetime.today())
-        date_arr    = saisie_date("date de retour", date_dep)
+        date_arr = None
+        aller_retour = ihm.choisir(['Oui','Non'], "Voulez-vous un retour ?")
+        if aller_retour == 'Oui':
+            date_arr    = saisie_date("date de retour", date_dep)
         # Demander le nombre de passagers (adultes/enfants)
         nb_adultes  = Client.saisie_passagers("adultes (12 ans et +)")
         nb_enfants  = Client.saisie_passagers("enfants (- de 12 ans)")

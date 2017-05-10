@@ -230,13 +230,14 @@ class Compagnie(object):
                        if x.aeroport_arrivee != arr]
         return route_directe, routes_suiv
 
-    def chercher_routes_escales(self, aer_dep, aer_arr, escales_max):
+    def chercher_routes_escales(self, aer_dep, aer_arr, escales_max, classe='Y'):
         """
         Methode qui permet de chercher une route qui relie 2 aeroports en fonction du nombre d'escales
         
         :param aer_dep: aeroport de depart
         :param aer_arr: aeroport d'arrivee
         :param escales_max: nombre d'escales max
+        :param classe: classe du billet cherché
         :return: les routes directes, les routes avec une escale et les routes avec deux escales
         """
         aeros_visites = []
@@ -249,8 +250,7 @@ class Compagnie(object):
             combinaisons.append(route_directe)
 
         if escales_max == 0:
-            return combinaisons
-
+            routes_suiv = []
         # Si escale, on cherche les routes passant par 1 autre aeroport
         for route in routes_suiv:
             route_directe, routes_suiv2 = self.chercher_route_directe(
@@ -259,8 +259,7 @@ class Compagnie(object):
                 combinaisons.append([route, *route_directe])
 
             if escales_max == 1:
-                return combinaisons
-
+                routes_suiv2 = []
             # Si encore escale, on cherche les routes passant par 1 autre aeroport
             routes_suiv2 = [x for x in routes_suiv2
                             if x.aeroport_arrivee.code_pays != route.aeroport_depart.code_pays]
@@ -269,7 +268,19 @@ class Compagnie(object):
                     route2.aeroport_arrivee, aer_arr, aeros_visites)
                 if route_directe:
                     combinaisons.append([route, route2, *route_directe])
-        return combinaisons
+
+        combi_prix = []
+        combi_dist = []
+        for combi in combinaisons:
+            prix_combi = 0
+            dist_totale = 0
+            for route in combi:
+                prix_combi += route.calcul_prix_route(classe)
+                dist_totale += route.distance/1000
+            combi_prix.append(prix_combi)
+            combi_dist.append(dist_totale)
+
+        return combinaisons, combi_prix, combi_dist
 
     def afficher_aeroports(self):
         """

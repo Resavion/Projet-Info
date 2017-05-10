@@ -151,11 +151,11 @@ class Client(object):
                 if Segment.liste_ids:
                     id_segment = Segment.liste_ids[-1]
                 id_segment += 1
-                seg = Segment(id_segment, billet, vol, '', '', place, '', classe)
+                seg = Segment(id_segment, billet, vol, '', place, '', classe)
                 billet.segments.append(seg)
 
             new_resa.billets.append(billet)
-            
+
         self.reservations.append(new_resa)
         return
 

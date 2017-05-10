@@ -62,35 +62,39 @@ class Client(object):
         # Saisie des criteres
         criteres = self.saisie_criteres(aeroports)
         aer_dep, aer_arr, date_dep, date_arr, \
-            nb_adultes, nb_enfants, classe, escales_max = criteres
+            nb_passagers, classe, escales_max = criteres
 
         # Recherche des routes
         combinaisons_total = []
         for compagnie in compagnies:
-            combinaisons, combi_prix, combi_dist = compagnie.chercher_routes_escales(
+            combinaisons = compagnie.chercher_routes_escales(
                 aer_dep, aer_arr, escales_max)
             if combinaisons:
-                combinaisons_total.extend(zip(combinaisons, combi_prix, combi_dist))
+                combinaisons_total.extend(combinaisons)
 
-        combi_print = []
-        combinaisons_total.sort(key=lambda s: s[1])
+        # Affiche les prix, distances
+        self.affiche_prix_distance(combinaisons_total, classe)
+
+        # On garde seulement les combinaisons avec horaires en base
+        combinaisons_avec_horaires = []
         for combi in combinaisons_total:
-            ligne = "{:.2f}€".format(combi[1])
-            ligne += " {:.0f}km".format(combi[2])
-            route0 = combi[0][0]
-            ligne += " - {} - {} ({},{})".format(
-                route0.compagnie.code_icao,
-                route0.aeroport_depart.id_code_iata,
-                route0.aeroport_depart.municipalite,
-                route0.aeroport_depart.code_pays)
-            for route in combi[0]:
-                ligne += " -> {} ({},{})".format(
-                    route.aeroport_arrivee.id_code_iata,
-                    route.aeroport_arrivee.municipalite,
-                    route.aeroport_arrivee.code_pays)
-            combi_print.append(ligne)
-        ihm.afficher_paginer(combi_print, "Liste des routes trouvées")
+            combi_ok = True
+            for route in combi:
+                if len(route.horaires) == 0:
+                    combi_ok = False
+            if combi_ok:
+                combinaisons_avec_horaires.append(combi)
 
+        # On recupere les vols pour chaque combinaison
+        combi_vols = self.recupere_vols(
+            combinaisons_avec_horaires, date_dep, nb_passagers, classe)
+
+        # On filtre les vols pour qu'ils s'enchainent bien
+        vols_ok = self.arrange_vols(combi_vols, date_dep)
+
+        for combi in vols_ok:
+            for route, vols in combi:
+                print(route, *vols)
         return
 
     @staticmethod
@@ -112,30 +116,29 @@ class Client(object):
         aller_retour = ihm.choisir(['Oui','Non'], "Voulez-vous un retour ?")
         if aller_retour == 'Oui':
             date_arr    = saisie_date("date de retour", date_dep)
-        # Demander le nombre de passagers (adultes/enfants)
-        nb_adultes  = Client.saisie_passagers("adultes (12 ans et +)")
-        nb_enfants  = Client.saisie_passagers("enfants (- de 12 ans)")
+        # Demander le nombre de passagers
+        nb_passagers  = Client.saisie_passagers()
         # Demander quelle classe
         classe      = Client.saisie_classe()
         # Demander le nombre d'escales
         escales_max = Client.saisie_nb_escales()
+
         return [aer_dep, aer_arr, date_dep, date_arr,
-                nb_adultes, nb_enfants, classe, escales_max]
+                nb_passagers, classe, escales_max]
 
     @staticmethod
-    def saisie_passagers(message):
+    def saisie_passagers():
         """
         Methode qui permet de saisir les informations concernant un passager 
         
-        :param message: message que l'on veut transmettre au passager
         :return: le nombre de passager
         """
 
         liste_choix = ["0 passager",]
         liste_choix.extend(["{} passagers".format(x) for x in range(1,6)])
         nb_passagers = ihm.choisir(
-            liste_choix, "Saisissez le nombre de voyageurs {} :".format(message))
-        ihm.afficher("Vous avez choisi {} {}".format(nb_passagers, message))
+            liste_choix, "Saisissez le nombre de voyageurs :")
+        ihm.afficher("Vous avez choisi {} voyageurs".format(nb_passagers))
         nb_passagers = int(nb_passagers[0])
         return nb_passagers
 
@@ -169,6 +172,136 @@ class Client(object):
         ihm.afficher("Vous avez choisi : {}".format(type_vol))
         return liste_choix.index(type_vol)
 
+    @staticmethod
+    def affiche_prix_distance(combinaisons, classe):
+        combi_prix = []
+        combi_dist = []
+        combi_tout = []
+        for combi in combinaisons:
+            prix_combi = 0
+            dist_totale = 0
+            for route in combi:
+                prix_combi += route.calcul_prix_route(classe)
+                dist_totale += route.distance/1000
+            combi_prix.append(prix_combi)
+            combi_dist.append(dist_totale)
+        combi_tout.extend(zip(combinaisons, combi_prix, combi_dist))
+
+        combi_print = []
+        combi_tout.sort(key=lambda s: s[1])
+        for combi in combi_tout:
+            ligne = "{:.2f}€".format(combi[1])
+            ligne += " {:.0f}km".format(combi[2])
+            route0 = combi[0][0]
+            ligne += " - {} - {} ({},{})".format(
+                route0.compagnie.code_icao,
+                route0.aeroport_depart.id_code_iata,
+                route0.aeroport_depart.municipalite,
+                route0.aeroport_depart.code_pays)
+            for route in combi[0]:
+                ligne += " -> {} ({},{})".format(
+                    route.aeroport_arrivee.id_code_iata,
+                    route.aeroport_arrivee.municipalite,
+                    route.aeroport_arrivee.code_pays)
+            combi_print.append(ligne)
+        ihm.afficher_paginer(combi_print, "Liste des routes trouvées")
+        return
+
+    @staticmethod
+    def recupere_vols(combinaisons, jour_depart, nb_passagers, classe):
+        """
+        Recupere les vols avec places d'une date donnnee (et jour suivant)
+        
+        :param combinaisons: 
+        :param jour_depart: 
+        :param nb_passagers:
+        :param classe: 
+        :return: 
+        """
+        combi_vols = []
+        for combi in combinaisons:
+            routes_vols = []
+            combi_ok = True
+            # Pour chaque route de la combinaison
+            for route in combi:
+                vols_tout = route.chercher_vols(jour_depart, nb_passagers, classe)
+                # Si on a trouve des vols pour la route, on enregistre
+                if vols_tout:
+                    routes_vols.append([route, vols_tout])
+                # Sinon la route n'est pas disponible
+                else:
+                    combi_ok = False
+                    break
+            if combi_ok:
+                combi_vols.append(routes_vols)
+
+        return combi_vols
+
+    @staticmethod
+    def arrange_vols(combi_vols, jour_depart):
+        """
+        Filtre les vols d'une suite de route pour qu'ils puissent s'enchainer
+        
+        :param combi_vols: 
+        :param jour_depart: 
+        :return: 
+        """
+
+        vols_ok = []
+        for combi in combi_vols:
+            route, vols = combi[0]
+            # Si le trajet n'a pas d'escale, on enregistre tous les vols du jour
+            if len(combi) == 1:
+                vols = [x for x in vols if x.datetime_depart.date() == jour_depart]
+                vols_ok.append([[route, vols]])
+            # Sinon
+            else:
+                # On regarde la premiere arrivee + 20 minutes
+                premiere_arrivee = vols[0].datetime_arrivee
+                premiere_arrivee += timedelta(minutes=20)
+                route2, vols2 = combi[1]
+                # Parmi les vols en correspondance, on enleve ceux avant la premiere arrivee
+                # On prend les vols du jour demande de preference
+                vols2_jour = [x for x in vols2 if x.datetime_depart > premiere_arrivee
+                              and x.datetime_depart.date() == jour_depart]
+                # Sinon on prend le jour d'apres
+                if len(vols2_jour) == 0:
+                    vols2_jour = [x for x in vols2
+                                  if x.datetime_depart > premiere_arrivee]
+                vols2 = vols2_jour
+                # On regarde le dernier depart de correspondance - 20 minutes
+                dernier_depart = vols2[-1].datetime_depart
+                dernier_depart -= timedelta(minutes=20)
+                # On enleve les vols qui arrivent apres le dernier depart
+                vols = [x for x in vols if x.datetime_arrivee < dernier_depart]
+                # Si le trajet ne comporte qu'une seule escale, on enregistre
+                if len(combi) == 2:
+                    vols_ok.append([[route, vols], [route2, vols2]])
+                # Sinon
+                else:
+                    # Meme chose
+                    premiere_arrivee = vols2[0].datetime_arrivee
+                    premiere_arrivee += timedelta(minutes=20)
+                    route3, vols3 = combi[2]
+                    # On garde ceux qui partent apres la premiere arrivee
+                    vols3_jour = [x for x in vols3 if x.datetime_depart > premiere_arrivee
+                                  and x.datetime_depart.date() == jour_depart]
+                    if len(vols3_jour) == 0:
+                        vols3_jour = [x for x in vols3
+                                      if x.datetime_depart > premiere_arrivee]
+                    vols3 = vols3_jour
+                    # On garde ceux qui arrivent avant le dernier depart
+                    dernier_depart = vols3[-1].datetime_depart
+                    dernier_depart -= timedelta(minutes=20)
+                    vols2 = [x for x in vols2 if x.datetime_arrivee < dernier_depart]
+                    dernier_depart = vols2[-1].datetime_depart
+                    dernier_depart -= timedelta(minutes=20)
+                    vols = [x for x in vols if x.datetime_arrivee < dernier_depart]
+                    # On enregistre
+                    vols_ok.append([[route, vols], [route2, vols2_jour], [route3, vols3]])
+
+        return vols_ok
+
     def consulter_reservations(self):
         """
         Methode qui permet d'afficher la liste de toutes les reservations effectuees
@@ -180,11 +313,3 @@ class Client(object):
         ihm.afficher("Il y a {} réservation(s)".format(len(resas_tri)))
         ihm.afficher_paginer(resas_tri, "Réservations", pas=10)
         return
-
-    def annuler_reservation(self, resa):
-        """
-        Methode qui permet de supprimer la reservation
-        :return: 
-        """
-        pass
-

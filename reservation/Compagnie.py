@@ -272,20 +272,6 @@ class Compagnie(object):
 
         return combinaisons
 
-    @staticmethod
-    def ajoute_prix_distance(combinaisons, classe):
-        combi_prix = []
-        combi_dist = []
-        for combi in combinaisons:
-            prix_combi = 0
-            dist_totale = 0
-            for route in combi:
-                prix_combi += route.calcul_prix_route(classe)
-                dist_totale += route.distance/1000
-            combi_prix.append(prix_combi)
-            combi_dist.append(dist_totale)
-        return combinaisons, combi_prix, combi_dist
-
     def afficher_aeroports(self):
         """
         Methode qui permet d'afficher les aeroports en fonction du nombre de route qui leur

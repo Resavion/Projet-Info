@@ -245,15 +245,17 @@ class Route(object):
             pass
         return prix_avec_classe
 
-    def chercher_vols(self, jour_depart, classe):
+    def chercher_vols(self, jour_depart, nb_passagers, classe):
         """
         Cherche les vols d'une route pour une date et une classe donnee
         
         :param jour_depart: 
+        :param nb_passagers:
         :param classe: 
         :return: 
         """
 
+        jour_depart = jour_depart.date()
         jour_plus1 = jour_depart.replace(day=jour_depart.day+1)
         horaires = self._horaires
         horaires.sort(key=lambda s: s.heure_depart)
@@ -265,7 +267,7 @@ class Route(object):
             vols = [x for x in horaire.vols
                     if jour_depart <= x.datetime_depart.date()
                     and x.datetime_depart.date() <= jour_plus1
-                    and x.places_restantes_classe(classe) > 0]
+                    and x.places_restantes_classe(classe) > nb_passagers]
             if vols:
                 vols_tout.extend(vols)
 

@@ -103,5 +103,5 @@ class Reservation(object):
                               (segment.vol.duree.seconds // 60) % 60,
                               segment.vol.horaire.compagnie.id_code_iata,
                               segment.vol.horaire.config_avion.type_avion) )
-            print('PRIX DU BILLET: {:.2f} EUROS'.format(billet.tarif))
+            print("PRIX DU BILLET: {:.2f} EUROS\n".format(billet.tarif))
         return

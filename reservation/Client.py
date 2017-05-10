@@ -92,11 +92,24 @@ class Client(object):
         # On filtre les vols pour qu'ils s'enchainent bien
         vols_ok = self.arrange_vols(combi_vols, date_dep)
 
-        combi_new = []
-        self.affiche_prix_distance(vols_ok, classe)
-        # for combi in vols_ok:
-        #     for route, vols in combi:
-        #         print(route, *vols)
+        ihm.afficher("Parmi les routes, {} possédaient des places a la date demandée"
+                     .format(len(vols_ok)))
+        combi_test = []
+        for combi in vols_ok:
+            combi_new = []
+            for route, vols in combi:
+                combi_new.append(route)
+            combi_test.append(combi_new)
+        choix_combi = self.affiche_prix_distance(combi_test, classe, choix=True)
+
+        combi = vols_ok[choix_combi]
+        for route, vols in combi:
+            ihm.afficher("Vols disponibles pour la route {} :".format(route))
+            vol = ihm.choisir_paginer(vols, "Choisissez un vol :")
+            ihm.afficher("Choisissez une place pour ce vol (les places libres sont représentées par un O) :")
+            vol.afficher_places()
+            place = ihm.demander("Saisissez le numéro de la place (ex : 35A) :")
+            print(place)
         return
 
     @staticmethod
@@ -175,7 +188,7 @@ class Client(object):
         return liste_choix.index(type_vol)
 
     @staticmethod
-    def affiche_prix_distance(combinaisons, classe):
+    def affiche_prix_distance(combinaisons, classe, choix=False):
         combi_prix = []
         combi_dist = []
         combi_tout = []
@@ -206,7 +219,12 @@ class Client(object):
                     route.aeroport_arrivee.municipalite,
                     route.aeroport_arrivee.code_pays)
             combi_print.append(ligne)
-        ihm.afficher_paginer(combi_print, "Liste des routes trouvées")
+
+        if choix:
+            trajet = ihm.choisir_paginer(combi_print, "Choisissez un trajet")
+            return combi_print.index(trajet)
+        else:
+            ihm.afficher_paginer(combi_print, "Liste des trajets trouvés")
         return
 
     @staticmethod
@@ -249,6 +267,7 @@ class Client(object):
         :return: 
         """
 
+        jour_depart = jour_depart.date()
         vols_ok = []
         for combi in combi_vols:
             route, vols = combi[0]

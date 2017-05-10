@@ -93,6 +93,9 @@ def gerer_reservation(client):
 
     # Choisir une reservation
     resas_tri = client.reservations
+    if len(resas_tri) == 0:
+        ihm.afficher("Il n'y a pas de réservations à afficher")
+        return
     resas_tri.sort(key=lambda s: s.date_achat, reverse=True)
     resa = ihm.choisir_paginer(
         resas_tri, "Choisir la réservation à afficher :")

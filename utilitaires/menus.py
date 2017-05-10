@@ -4,7 +4,8 @@ import matplotlib.pyplot as plt
 
 import ihm.console as ihm
 import utilitaires.earth as earth
-from utilitaires.carte import (mercator, dessine_fondcarte)
+from utilitaires.carte import (mercator, dessine_fondcarte, densif_geodesique,
+                               decoupe_ligne, parametrage_carte)
 from reservation.Client import Client
 
 
@@ -506,21 +507,51 @@ def afficher_carte_aeroports(aeroports, show=True):
     return
 
 
-def afficher_carte_routes(compagnies, show=True):
+def afficher_carte_routes(compagnies):
     """
     Methode qui permet d'afficher la carte des routes de la compagnie
     
     :param compagnies: liste compagnies
-    :param show: booleen qui permet de dire si l'on veut montrer la carte ou non
     :return: None
     """
 
     # Ajout du fond de carte (si la carte ne fait pas partie d'une composition)
-    if show:
-        dessine_fondcarte()
+    dessine_fondcarte()
+
     # Ajout de la carte de chaque route
+    routes_parcourues = {}
     for compagnie in compagnies:
-        compagnie.afficher_carte_routes(show=False, annot=False)
+        print("Préparation des routes de {}...".format(compagnie))
+        for route in compagnie.routes:
+            cle1 = "{}{}".format(route.aeroport_depart.id_code_iata,
+                                 route.aeroport_arrivee.id_code_iata)
+            cle2 = "{}{}".format(route.aeroport_arrivee.id_code_iata,
+                                 route.aeroport_depart.id_code_iata)
+            if cle1 not in routes_parcourues and cle2 not in routes_parcourues:
+                routes_parcourues[cle1] = 1
+                routes_parcourues[cle2] = 1
+                list_coords = np.zeros((2, 2))
+                list_coords[0, 0] = route.aeroport_depart.latitude_deg
+                list_coords[0, 1] = route.aeroport_depart.longitude_deg
+                list_coords[1, 0] = route.aeroport_arrivee.latitude_deg
+                list_coords[1, 1] = route.aeroport_arrivee.longitude_deg
+
+                # Densification suivant la ligne geodesique
+                new_coords = densif_geodesique(list_coords, route.distance)
+                tab_listes = decoupe_ligne(new_coords)
+                # Pour chaque partie de la route, on ajoute a la carte
+                for coords in tab_listes:
+                    # Transfo en Mercator
+                    xs, ys = mercator(coords, earth.E, 0, 0, earth.A)
+                    # Ajout a la carte
+                    style = 'b'
+                    if route.codeshare:
+                        style = 'c'
+                    largeur = 0.3
+                    plt.plot(xs, ys, style + '-', linewidth=largeur)
+
+    # Parametrage de la carte
+    parametrage_carte()
     # Affichage
     if show:
         plt.title('Carte de toutes les routes')

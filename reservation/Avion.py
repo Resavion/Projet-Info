@@ -156,7 +156,7 @@ class Avion(object):
 
         # Affichage
         if show:
-            plt.title("Carte de l'aeroport {0:s}".format(self._nom))
+            plt.title("Carte de l'avion {0:s}".format(self._id))
             plt.show()
         return
 

@@ -153,10 +153,10 @@ class Route(object):
         list_coords[0, 1] = self._aeroport_depart.longitude_deg
         list_coords[1, 0] = self._aeroport_arrivee.latitude_deg
         list_coords[1, 1] = self._aeroport_arrivee.longitude_deg
-        # Transfo en Mercator
-        xs0, ys0 = mercator(list_coords, earth.E, 0, 0, earth.A)
-        # Ajout points a la carte
-        plt.plot(xs0, ys0, 'b,')
+        # # Transfo en Mercator
+        # xs0, ys0 = mercator(list_coords, earth.E, 0, 0, earth.A)
+        # # Ajout points a la carte
+        # plt.plot(xs0, ys0, 'b,')
 
         # Densification suivant la ligne geodesique
         new_coords = densif_geodesique(list_coords, self._distance)
@@ -172,19 +172,19 @@ class Route(object):
             largeur = 0.2
             if show:
                 largeur = 0.5
-            plt.plot(xs, ys, style+'-', linewidth=largeur)[0]
+            plt.plot(xs, ys, style+'-', linewidth=largeur)
 
         # Parametrage de la carte
         parametrage_carte()
 
-        # Ajout de tags avec les codes des aeroports
-        if annot:
-            fig = plt.gcf()
-            ax = fig.add_subplot(111)
-            for X, Y, T in zip(xs0, ys0, [self._aeroport_depart.id_code_iata,
-                                          self._aeroport_arrivee.id_code_iata]):
-                ax.annotate('{0:s}'.format(T), xy=(X, Y), xytext=(4, -4), \
-                            fontsize=6, textcoords='offset points')
+        # # Ajout de tags avec les codes des aeroports
+        # if annot:
+        #     fig = plt.gcf()
+        #     ax = fig.add_subplot(111)
+        #     for X, Y, T in zip(xs0, ys0, [self._aeroport_depart.id_code_iata,
+        #                                   self._aeroport_arrivee.id_code_iata]):
+        #         ax.annotate('{0:s}'.format(T), xy=(X, Y), xytext=(4, -4), \
+        #                     fontsize=6, textcoords='offset points')
 
         # Affichage
         if show:

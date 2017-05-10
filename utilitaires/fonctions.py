@@ -18,7 +18,7 @@ def saisie_date(message, date_seuil, duree_limite=1):
     while True:
         try:
             date_saisie = ihm.demander(
-                "Saisissez votre {} (AAAA-MM-JJ) :".format(message))
+                "Saisissez la {} (AAAA-MM-JJ) :".format(message))
             date_saisie = datetime.strptime(date_saisie, '%Y-%m-%d')
             if date_saisie <= date_seuil or date_saisie > dans1an:
                 raise ValueError

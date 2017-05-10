@@ -16,6 +16,8 @@ if __name__ == '__main__':
 
     aeroports, compagnies, clients = charger_bd(db_name)
 
+    print("\n\nBienvenue dans Resavion\n\n")
+
     # On lance l'interface
     menus.menu_racine(clients, compagnies, aeroports)
 

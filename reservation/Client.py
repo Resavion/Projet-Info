@@ -1,6 +1,9 @@
 from datetime import (datetime, timedelta)
 
 import ihm.console as ihm
+from reservation.Segment import Segment
+from reservation.Billet import Billet
+from reservation.Reservation import Reservation
 from utilitaires.fonctions import (saisie_date,
                                    saisie_aeroport)
 
@@ -103,14 +106,57 @@ class Client(object):
         choix_combi = self.affiche_prix_distance(combi_test, classe, choix=True)
 
         combi = vols_ok[choix_combi]
+
+        combi_final = []
         for route, vols in combi:
             ihm.afficher("Vols disponibles pour la route {} :".format(route))
             vol = ihm.choisir_paginer(vols, "Choisissez un vol :")
-            ihm.afficher("Choisissez une place pour ce vol (les places libres sont représentées par un O) :")
-            vol.afficher_places()
-            place = ihm.demander("Saisissez le numéro de la place (ex : 35A) :")
-            vol.reserver_place(place[:-1],place[-1])
-            print(place)
+            combi_final.append(vol)
+
+        id_resa = 0
+        if Reservation.liste_ids:
+            id_resa = Reservation.liste_ids[-1]
+        id_resa += 1
+        new_resa = Reservation(id_resa, self, 0, datetime.now())
+
+        for i in range(nb_passagers):
+            nom = ihm.demander("Saisissez le nom du passager :")
+            prenom = ihm.demander("Saisssez le prénom du passager :")
+            passeport = ihm.demander("Saisissez le numéro de passeport :")
+            date_naissance = None
+            while True:
+                try:
+                    date_naissance = ihm.demander(
+                        "Saisissez la date de naissance (AAAA-MM-JJ) :")
+                    date_naissance = datetime.strptime(date_naissance, '%Y-%m-%d')
+                except ValueError:
+                    ihm.afficher("Ceci n'est pas une date valide.")
+                    pass
+                else:
+                    break
+
+            id_billet = 0
+            if Billet.liste_ids:
+                id_billet = Billet.liste_ids[-1]
+            id_billet += 1
+            billet = Billet(id_billet, new_resa, 0, nom, prenom, passeport, date_naissance, [])
+
+            for vol in combi_final:
+                ihm.afficher("Choisissez une place pour ce vol (les places libres sont représentées par un O) :")
+                vol.afficher_places()
+                place = ihm.demander("Saisissez le numéro de la place (ex : 35A) :")
+                vol.reserver_place(int(place[:-1]),place[-1])
+
+                id_segment = 0
+                if Segment.liste_ids:
+                    id_segment = Segment.liste_ids[-1]
+                id_segment += 1
+                seg = Segment(id_segment, billet, vol, '', '', place, '', classe)
+                billet.segments.append(seg)
+
+            new_resa.billets.append(billet)
+            
+        self.reservations.append(new_resa)
         return
 
     @staticmethod
@@ -154,7 +200,7 @@ class Client(object):
         liste_choix.extend(["{} passagers".format(x) for x in range(1,6)])
         nb_passagers = ihm.choisir(
             liste_choix, "Saisissez le nombre de voyageurs :")
-        ihm.afficher("Vous avez choisi {} passagers".format(nb_passagers))
+        ihm.afficher("Vous avez choisi {}".format(nb_passagers))
         nb_passagers = int(nb_passagers[0])
         return nb_passagers
 

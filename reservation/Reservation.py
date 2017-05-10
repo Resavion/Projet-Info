@@ -3,6 +3,8 @@ from reservation.Billet import Billet
 
 
 class Reservation(object):
+    liste_ids = []
+
     def __init__(self, id_resa, client, prix_total, date_achat,
                  billets=None):
         """
@@ -21,6 +23,7 @@ class Reservation(object):
         if billets is None:
             billets   = []
         self._billets = billets
+        self.liste_ids.append(id_resa)
 
     @property
     def id(self):

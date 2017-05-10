@@ -25,7 +25,7 @@ class Segment(object):
         self._place   = place
         self._options = options
         self._classe = classe
-        self.liste_ids.append(id_segment)
+        self.liste_ids.append(int(id_segment))
 
     @property
     def id(self):

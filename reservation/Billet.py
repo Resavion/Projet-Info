@@ -1,4 +1,6 @@
 class Billet(object):
+    liste_ids = []
+
     def __init__(self, id_billet, reservation, tarif, nom_passager, prenom_passager,
                  passeport, date_naissance, options, segments=None):
         """
@@ -25,6 +27,7 @@ class Billet(object):
         if segments is None:
             segments   = []
         self._segments = segments
+        self.liste_ids.append(id_billet)
 
     @property
     def id(self):

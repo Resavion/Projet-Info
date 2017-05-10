@@ -170,20 +170,6 @@ class Compagnie(object):
             plt.show()
         return
 
-    def ajouter_route(self):
-        """
-        Methode qui permet d'ajouter une route empruntée par la compagnie pour un vol
-        :return: 
-        """
-        pass
-
-    def suspendre_route(self):
-        """
-        Methode pour suspendre une route proposee par la compagnie
-        :return: 
-        """
-        pass
-
     def ajouter_vols_toutes_routes(self):
         """
         Ajoute des vols entre deux dates donnees pour toutes les routes
@@ -199,13 +185,6 @@ class Compagnie(object):
                 ihm.afficher(horaire)
                 horaire.creer_vols(debut=debut, nb_jours=nb_jours)
         return
-
-    def afficher_stats(self):
-        """
-        Methode qui permet d'afficher les statistiques sur le nombre de passager, etc pour la compagnie
-        :return: 
-        """
-        pass
 
     def chercher_route_directe(self, dep, arr, aeros_visites):
         """

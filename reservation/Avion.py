@@ -170,6 +170,3 @@ class Avion(object):
         ihm.afficher("Il y a {} vol(s)".format(len(self._vols)))
         ihm.afficher_paginer(self._vols, "Vols", pas=10)
         return
-
-    def afficher_statistiques(self):
-        pass

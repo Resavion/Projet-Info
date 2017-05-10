@@ -155,6 +155,7 @@ class Vol(object):
         """
 
         print(self._cabine)
+        return
 
     def reserver_place(self, rangee, colonne):
         """
@@ -279,33 +280,3 @@ class Vol(object):
         # on sauvegarde le nouvel avion
         self._cabine = avion_change
         return
-
-    def retarder_vol(self):
-        """
-        Methode qui permet de retarder l'heure de depart du vol
-        
-        :return: 
-        """
-        pass
-
-    def modifier_position_avion(self):
-        """
-        Methode qui permet de modifier la position de l'avion en fonction de ses coordonnées
-        
-        :return: 
-        """
-        pass
-
-    def annuler_vol(self):
-        """
-        Methode qui permet d'annuler le vol
-        
-        :return: 
-        """
-        pass
-
-
-
-
-
-

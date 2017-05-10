@@ -109,16 +109,3 @@ class Segment(object):
 
         new_place = (new_rang,new_colonne)
         self._place = "".join(new_place)
-
-    def modifier_options(self):
-        """
-        Methode qui permet de modifier les options choisies pour le segment
-        
-        :return: 
-        """
-        pass
-
-
-
-
-

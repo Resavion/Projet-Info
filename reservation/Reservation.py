@@ -49,26 +49,6 @@ class Reservation(object):
                     self._client.nom, self._client.prenom,
                     self._prix_total, self._date_achat)
 
-    def ajouter_billet(self):
-        """
-        Methode qui permet d'ajouter un billet à la reservation
-        :return: 
-        """
-        pass
-
-    def modifier_billet(self):
-        """
-        Methode qui permet de modifier un billet d'avion une fois avoir été ajouté
-        :return: 
-        """
-
-    def supprimer_billet(self):
-        """
-        Methode pour supprimer un billet d'avion de la reservation une fois crée
-        :return: 
-        """
-        pass
-
     def fournir_recapitulatif(self):
         """
         Methode qui permet de fournir au client le recapitulatif de sa reservation
@@ -125,5 +105,3 @@ class Reservation(object):
                               segment.vol.horaire.config_avion.type_avion) )
             print('PRIX DU BILLET: {:.2f} EUROS'.format(billet.tarif))
         return
-
-

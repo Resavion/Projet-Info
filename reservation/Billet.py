@@ -77,32 +77,3 @@ class Billet(object):
                     self._prenom_passager.upper(),
                     self._date_naissance, self._passeport,
                     self._tarif)
-
-    def ajouter_segment(self):
-        """
-        Methode permettant de reserver une place dans un vol
-        :return: 
-        """
-        pass
-
-    def modifier_segment(self):
-        """
-        Methode permettant de modifier un segment de vol
-        :return: 
-        """
-        pass
-
-    def supprimer_segment(self):
-        """
-        Methode permettant de supprimer un segment de vol
-        :return: 
-        """
-        pass
-
-
-    def modifier_options(self):
-        """
-        Methode permettant de modifier les options choisies pour le vol
-        :return: 
-        """
-        pass

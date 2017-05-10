@@ -238,11 +238,3 @@ class Aeroport(object):
                      .format(len(self._avions)))
         ihm.afficher_paginer(self._avions, "Avions au sol", pas=10)
         return
-
-    def afficher_vols(self):
-        """
-        Methode qui permet d'afficher tous les vols d'arrivee et de depart de l'aéroport un jour donné
-        
-        :return: 
-        """
-        pass

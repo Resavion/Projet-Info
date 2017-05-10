@@ -101,16 +101,10 @@ def gerer_reservation(client):
     while True:
         # Demander action : Faire, Consulter, Modifier, Annuler
         actions = ('Afficher le récapitulatif',
-                   'Modifier la réservation',
-                   'Annuler la réservation',
                    'Revenir au début')
         action = ihm.choisir(actions, "Choisissez une action :")
         if action == actions[0]:
             resa.fournir_recapitulatif()
-        elif action == actions[1]:
-            pass
-        elif action == actions[2]:
-            resa.client.annuler_reservation(resa)
         else:
             break
     return
@@ -252,8 +246,6 @@ def actions_avions(compagnie):
         actions = ('Afficher la liste des avions',
                    'Afficher une carte de la position des avions',
                    'Gérer un avion',
-                   'Ajouter un avion',
-                   'Retirer un avion',
                    'Revenir au menu précédent')
         action = ihm.choisir(actions, "Choisissez une action :")
         if action == actions[0]:
@@ -262,10 +254,6 @@ def actions_avions(compagnie):
             compagnie.afficher_carte_avions()
         elif action == actions[2]:
             gerer_avion(compagnie)
-        elif action == actions[3]:
-            compagnie.ajouter_avion()
-        elif action == actions[4]:
-            compagnie.retirer_avion()
         else:
             break
     return
@@ -287,15 +275,12 @@ def gerer_avion(compagnie):
     while True:
         actions = ("Afficher une carte de la position de l'avion",
                    "Afficher les vols de l'avion",
-                   "Afficher les statistiques",
                    'Revenir au menu précédent')
         action = ihm.choisir(actions, "Choisissez une action :")
         if action == actions[0]:
             avion.afficher_carte()
         elif action == actions[1]:
             avion.afficher_vols()
-        elif action == actions[2]:
-            avion.afficher_statistiques()
         else:
             break
     return
@@ -314,8 +299,6 @@ def actions_routes(compagnie):
         actions = ('Afficher la liste des routes',
                    'Afficher une carte des routes',
                    'Gérer une route',
-                   'Ajouter une route',
-                   'Suspendre une route',
                    'Ajouter des vols pour toutes les routes',
                    'Revenir au menu précédent')
         action = ihm.choisir(actions, "Choisissez une action :")
@@ -326,10 +309,6 @@ def actions_routes(compagnie):
         elif action == actions[2]:
             gerer_route(compagnie)
         elif action == actions[3]:
-            compagnie.ajouter_route()
-        elif action == actions[4]:
-            compagnie.suspendre_route()
-        elif action == actions[5]:
             compagnie.ajouter_vols_toutes_routes()
         else:
             break
@@ -354,7 +333,6 @@ def gerer_route(compagnie):
         actions = ("Afficher une carte de la route",
                    "Afficher les horaires de la route",
                    "Gérer un horaire",
-                   "Afficher les statistiques",
                    'Revenir au menu précédent')
         action = ihm.choisir(actions, "Choisissez une action :")
         if action == actions[0]:
@@ -363,8 +341,6 @@ def gerer_route(compagnie):
             route.afficher_horaires()
         elif action == actions[2]:
             gerer_horaire(route)
-        elif action == actions[3]:
-            route.afficher_statistiques()
         else:
             break
     return
@@ -388,16 +364,12 @@ def gerer_horaire(route):
         actions = (
             "Afficher les vols",
             "Ajouter des vols",
-            "Gérer un vol",
             'Revenir au menu précédent')
         action = ihm.choisir(actions, "Choisissez une action :")
         if action == actions[0]:
             hor.afficher_vols()
         elif action == actions[1]:
             hor.creer_vols()
-        elif action == actions[2]:
-            # gerer_vol(horaire)
-            pass
         else:
             break
     return
@@ -563,28 +535,3 @@ def afficher_carte_routes(compagnies):
     plt.title('Carte de toutes les routes')
     plt.show()
     return
-
-
-def ranger_liste_aeroport(compagnies):
-    """
-    Methode qui permet de ranger les aeroports selon le nombre de routes qui desservent une compagnie pour une compagnie donnée
-    
-    :param compagnies: liste des compagnies
-    :return: liste triée
-    """
-
-    liste_a_trier = []
-    for compagnie in compagnies:
-        nb_route = compagnie.nb_routes_sans_double
-        liste_a_trier.append((compagnie, nb_route))
-    nb_aeroport = len(liste_a_trier)
-    if nb_aeroport <= 1:
-        print(liste_a_trier)
-    for i in range(nb_aeroport):
-        for j in range(nb_aeroport):
-            if liste_a_trier[i][1] >= liste_a_trier[j][1]:
-                stock = liste_a_trier[i]
-                liste_a_trier[i] = liste_a_trier[j]
-                liste_a_trier[j] = stock
-
-    return liste_a_trier

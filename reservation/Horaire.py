@@ -124,6 +124,7 @@ class Horaire(object):
         vols_tri.sort(key=lambda s: s.datetime_depart, reverse=True)
         ihm.afficher("Il y a {} vol(s)".format(len(vols_tri)))
         ihm.afficher_paginer(vols_tri, "Vols", pas=10)
+        return
 
     def creer_vols(self,debut=None,nb_jours=None):
         """
@@ -167,10 +168,3 @@ class Horaire(object):
             else:
                 print("Ce vol existe déjà")
         return
-
-    def afficher_stats(self):
-        """
-        
-        :return: 
-        """
-        pass

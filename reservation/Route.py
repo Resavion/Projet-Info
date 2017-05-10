@@ -132,17 +132,6 @@ class Route(object):
         ihm.afficher_paginer(liste_horaires, "Liste des horaires")
         return
 
-    def chercher_horaire(self, date):
-        pass
-
-    def afficher_plan_vol(self):
-        """
-        Methode qui permet d'afficher le plan de vol et les différents points de passages (????)
-        de l'avion
-        :return: 
-        """
-        pass
-
     def afficher_carte(self, show=True, annot=True):
         """
         Methode qui permet d'afficher la route reliant deux aeroports

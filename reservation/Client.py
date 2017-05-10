@@ -92,9 +92,11 @@ class Client(object):
         # On filtre les vols pour qu'ils s'enchainent bien
         vols_ok = self.arrange_vols(combi_vols, date_dep)
 
-        for combi in vols_ok:
-            for route, vols in combi:
-                print(route, *vols)
+        combi_new = []
+        self.affiche_prix_distance(vols_ok, classe)
+        # for combi in vols_ok:
+        #     for route, vols in combi:
+        #         print(route, *vols)
         return
 
     @staticmethod
@@ -112,10 +114,10 @@ class Client(object):
         aer_arr     = saisie_aeroport("aéroport d'arrivée", aeroports)
         # Demander les dates départ et retour
         date_dep    = saisie_date("date de départ", datetime.today())
-        date_arr = None
+        date_ret = None
         aller_retour = ihm.choisir(['Oui','Non'], "Voulez-vous un retour ?")
         if aller_retour == 'Oui':
-            date_arr    = saisie_date("date de retour", date_dep)
+            date_ret    = saisie_date("date de retour", date_dep)
         # Demander le nombre de passagers
         nb_passagers  = Client.saisie_passagers()
         # Demander quelle classe
@@ -123,7 +125,7 @@ class Client(object):
         # Demander le nombre d'escales
         escales_max = Client.saisie_nb_escales()
 
-        return [aer_dep, aer_arr, date_dep, date_arr,
+        return [aer_dep, aer_arr, date_dep, date_ret,
                 nb_passagers, classe, escales_max]
 
     @staticmethod
@@ -138,7 +140,7 @@ class Client(object):
         liste_choix.extend(["{} passagers".format(x) for x in range(1,6)])
         nb_passagers = ihm.choisir(
             liste_choix, "Saisissez le nombre de voyageurs :")
-        ihm.afficher("Vous avez choisi {} voyageurs".format(nb_passagers))
+        ihm.afficher("Vous avez choisi {}")
         nb_passagers = int(nb_passagers[0])
         return nb_passagers
 

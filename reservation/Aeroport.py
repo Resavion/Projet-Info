@@ -8,8 +8,8 @@ from utilitaires.carte import (mercator, dessine_fondcarte, parametrage_carte)
 
 
 class Aeroport(object):
-    """ ca sert a quoi ???????"""
-    id_index = defaultdict(list)
+    """ Index des aeroports par id_code_iata """
+    id_index = defaultdict()
 
     def __init__(self, id_code_iata, type_aero, nom, latitude_deg, longitude_deg,
                  elevation_ft, code_continent, code_pays, municipalite, code_icao,
@@ -57,7 +57,7 @@ class Aeroport(object):
         if routes_sortantes is None:
             routes_sortantes   = []
         self._routes_sortantes = routes_sortantes
-        Aeroport.id_index[id_code_iata].append(self)
+        Aeroport.id_index[id_code_iata] = self
 
     @property
     def id_code_iata(self):

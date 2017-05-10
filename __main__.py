@@ -17,8 +17,22 @@ if __name__ == '__main__':
 
     print('\n\n OHAYOOOOOOOOOOOOOOOOOOOO')
 
+    combinaisons_total = []
+    for compagnie in compagnies:
+        from reservation.Aeroport import Aeroport
+        aer_dep = Aeroport.find_by_id("NRT")
+        aer_arr = Aeroport.find_by_id("BKK")
+        escales_max = 2
+        combinaisons = compagnie.chercher_routes_escales(
+            aer_dep, aer_arr, escales_max)
+        if combinaisons:
+            combinaisons_total.extend(combinaisons)
+            print(compagnie)
+            for combi in combinaisons:
+                print(*combi)
+
     # On lance l'interface
-    menus.menu_racine(clients, compagnies, aeroports)
+    # menus.menu_racine(clients, compagnies, aeroports)
 
     # liste_choix = ('Oui', 'Non')
     # choix = ihm.choisir(liste_choix,

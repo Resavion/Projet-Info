@@ -177,7 +177,7 @@ def charger_avions_de_compagnie(cur, configs, compagnie):
     rows   = r.select_all_par_compagnie(cur,'Avion', compagnie.id_code_iata)
     for row in rows:
         config         = [x for x in configs if x.nom == row[2]][0]
-        aeroport       = Aeroport.find_by_id(row[3])[0]
+        aeroport       = Aeroport.find_by_id(row[3])
         date_livraison = datetime.strptime(row[4],"%Y-%m-%d").date()
         date_der_rev   = datetime.strptime(row[5],"%Y-%m-%d").date()
         etat           = EnumAvion(row[6])
@@ -202,8 +202,8 @@ def charger_routes_de_compagnie(cur, compagnie):
     routes = []
     rows   = r.select_all_par_compagnie(cur,'Route', compagnie.id_code_iata)
     for row in rows:
-        dep      = Aeroport.find_by_id(row[1])[0]
-        arr      = Aeroport.find_by_id(row[2])[0]
+        dep      = Aeroport.find_by_id(row[1])
+        arr      = Aeroport.find_by_id(row[2])
         # row[4] = geom : linestring entre les deux aeroports en WKT
         # row[5] = codeshare : booleen qui permet de savoir si un avion est partage par plusieurs compagnies
         route    = Route(compagnie, dep, arr, row[3], row[4])

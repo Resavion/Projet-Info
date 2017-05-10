@@ -109,8 +109,8 @@ def dessine_fondcarte():
     return
 
 
-def parametrage_carte(x_min=-1200000000.0, x_max=1250000000.0,
-                      y_min=-1100000000.0, y_max=1800000000.0):
+def parametrage_carte(x_min=-1150000000.0, x_max=1150000000.0,
+                      y_min=-1100000000.0, y_max=1700000000.0):
     """
     Methode qui permet de gerer le cadrage de la carte
 

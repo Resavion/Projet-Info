@@ -521,7 +521,8 @@ def afficher_carte_routes(compagnies):
     # Ajout de la carte de chaque route
     routes_parcourues = {}
     for compagnie in compagnies:
-        print("Préparation des routes de {}...".format(compagnie))
+        print("Préparation des routes de {} - Liaisons : {:0d}..."
+              .format(compagnie, compagnie.nb_routes_sans_double))
         for route in compagnie.routes:
             cle1 = "{}{}".format(route.aeroport_depart.id_code_iata,
                                  route.aeroport_arrivee.id_code_iata)
@@ -535,59 +536,46 @@ def afficher_carte_routes(compagnies):
                 list_coords[0, 1] = route.aeroport_depart.longitude_deg
                 list_coords[1, 0] = route.aeroport_arrivee.latitude_deg
                 list_coords[1, 1] = route.aeroport_arrivee.longitude_deg
-
-                # Densification suivant la ligne geodesique
-                new_coords = densif_geodesique(list_coords, route.distance)
-                tab_listes = decoupe_ligne(new_coords)
+                domestique = (route.aeroport_depart.code_pays ==
+                              route.aeroport_arrivee.code_pays)
+                tab_listes = route.coords
+                if tab_listes is None:
+                    # Densification suivant la ligne geodesique
+                    new_coords = densif_geodesique(list_coords, route.distance)
+                    tab_listes = decoupe_ligne(new_coords)
+                    route.coords = tab_listes
                 # Pour chaque partie de la route, on ajoute a la carte
                 for coords in tab_listes:
                     # Transfo en Mercator
                     xs, ys = mercator(coords, earth.E, 0, 0, earth.A)
                     # Ajout a la carte
-                    style = 'b'
+                    coul = 'b'
                     if route.codeshare:
-                        style = 'c'
-                    largeur = 0.3
-                    plt.plot(xs, ys, style + '-', linewidth=largeur)
+                        coul = 'c'
+                    largeur = 0.2
+                    if domestique:
+                        largeur = 0.1
+                    plt.plot(xs, ys, linestyle='-', color=coul, linewidth=largeur)
 
     # Parametrage de la carte
     parametrage_carte()
     # Affichage
-    if show:
-        plt.title('Carte de toutes les routes')
-        plt.show()
+    plt.title('Carte de toutes les routes')
+    plt.show()
     return
-
-
-def nb_routes_sans_double(compagnie):
-    """
-    Methode qui permet de savoir combien de route sans doublon une compagnie a 
-    
-    :param compagnie: objet compagnie
-    :return: nombre de route sans doublon
-    """
-
-    nb_routes_double = 0
-    for route in compagnie.routes:
-        for terou in compagnie.routes:
-            if route.aeroport_depart.id_code_iata == terou.aeroport_arrivee.id_code_iata:
-                if route.aeroport_arrivee.id_code_iata == terou.aeroport_depart.id_code_iata:
-                    nb_routes_double += 1
-    nb_routes_double      = nb_routes_double / 2
-    nb_routes_sans_double = len(compagnie.routes) - nb_routes_double
-    return(nb_routes_sans_double)
 
 
 def ranger_liste_aeroport(compagnies):
     """
     Methode qui permet de ranger les aeroports selon le nombre de routes qui desservent une compagnie pour une compagnie donnée
+    
     :param compagnies: liste des compagnies
     :return: liste triée
     """
 
     liste_a_trier = []
     for compagnie in compagnies:
-        nb_route = nb_routes_sans_double(compagnie)
+        nb_route = compagnie.nb_routes_sans_double
         liste_a_trier.append((compagnie, nb_route))
     nb_aeroport = len(liste_a_trier)
     if nb_aeroport <= 1:
@@ -599,4 +587,4 @@ def ranger_liste_aeroport(compagnies):
                 liste_a_trier[i] = liste_a_trier[j]
                 liste_a_trier[j] = stock
 
-    return(liste_a_trier)
+    return liste_a_trier

@@ -75,6 +75,24 @@ class Compagnie(object):
     def routes(self):
         return self._routes
 
+    @property
+    def nb_routes_sans_double(self):
+        """
+        Methode qui permet de savoir combien de route sans doublon une compagnie a 
+
+        :return: nombre de route sans doublon
+        """
+
+        nb_routes_double = 0
+        for route in self._routes:
+            for terou in self._routes:
+                if route.aeroport_depart.id_code_iata == terou.aeroport_arrivee.id_code_iata:
+                    if route.aeroport_arrivee.id_code_iata == terou.aeroport_depart.id_code_iata:
+                        nb_routes_double += 1
+        nb_routes_double = nb_routes_double / 2
+        nb_sans_double = len(self._routes) - nb_routes_double
+        return int(nb_sans_double)
+
     def __str__(self):
         return "{}, {} (IATA : {}, ICAO : {})"\
             .format(self._nom, self._pays,

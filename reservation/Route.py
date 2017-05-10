@@ -35,6 +35,7 @@ class Route(object):
         if horaires is None:
             horaires   = []
         self._horaires = horaires
+        self._coords = None
 
         cle = "{}{}{}".format(compagnie.id_code_iata,
                               aeroport_depart.id_code_iata,
@@ -68,6 +69,14 @@ class Route(object):
     @property
     def horaires(self):
         return self._horaires
+
+    @property
+    def coords(self):
+        return self._coords
+
+    @coords.setter
+    def coords(self, liste):
+        self._coords = liste
 
     def __str__(self):
         return "{} - {} ({},{}) -> {} ({},{}) - {:.0f} km - " \
@@ -153,10 +162,10 @@ class Route(object):
         list_coords[0, 1] = self._aeroport_depart.longitude_deg
         list_coords[1, 0] = self._aeroport_arrivee.latitude_deg
         list_coords[1, 1] = self._aeroport_arrivee.longitude_deg
-        # # Transfo en Mercator
-        # xs0, ys0 = mercator(list_coords, earth.E, 0, 0, earth.A)
-        # # Ajout points a la carte
-        # plt.plot(xs0, ys0, 'b,')
+        # Transfo en Mercator
+        xs0, ys0 = mercator(list_coords, earth.E, 0, 0, earth.A)
+        # Ajout points a la carte
+        plt.plot(xs0, ys0, 'b,')
 
         # Densification suivant la ligne geodesique
         new_coords = densif_geodesique(list_coords, self._distance)
@@ -177,14 +186,14 @@ class Route(object):
         # Parametrage de la carte
         parametrage_carte()
 
-        # # Ajout de tags avec les codes des aeroports
-        # if annot:
-        #     fig = plt.gcf()
-        #     ax = fig.add_subplot(111)
-        #     for X, Y, T in zip(xs0, ys0, [self._aeroport_depart.id_code_iata,
-        #                                   self._aeroport_arrivee.id_code_iata]):
-        #         ax.annotate('{0:s}'.format(T), xy=(X, Y), xytext=(4, -4), \
-        #                     fontsize=6, textcoords='offset points')
+        # Ajout de tags avec les codes des aeroports
+        if annot:
+            fig = plt.gcf()
+            ax = fig.add_subplot(111)
+            for X, Y, T in zip(xs0, ys0, [self._aeroport_depart.id_code_iata,
+                                          self._aeroport_arrivee.id_code_iata]):
+                ax.annotate('{0:s}'.format(T), xy=(X, Y), xytext=(4, -4), \
+                            fontsize=6, textcoords='offset points')
 
         # Affichage
         if show:

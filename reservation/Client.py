@@ -153,7 +153,7 @@ class Client(object):
         liste_choix.extend(["{} passagers".format(x) for x in range(1,6)])
         nb_passagers = ihm.choisir(
             liste_choix, "Saisissez le nombre de voyageurs :")
-        ihm.afficher("Vous avez choisi {}")
+        ihm.afficher("Vous avez choisi {} passagers".format(nb_passagers))
         nb_passagers = int(nb_passagers[0])
         return nb_passagers
 

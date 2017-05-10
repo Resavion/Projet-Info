@@ -173,7 +173,6 @@ def actions_compagnie(compagnies):
         actions = ('Gérer les avions',
                    "Afficher les configurations d'avion",
                    'Gérer les routes',
-                   'Afficher les statistiques',
                    'Revenir au début')
         action = ihm.choisir(actions, "Choisissez une action :")
         if action == actions[0]:
@@ -182,8 +181,6 @@ def actions_compagnie(compagnies):
             compagnie.afficher_configs()
         elif action == actions[2]:
             actions_routes(compagnie)
-        elif action == actions[3]:
-            compagnie.afficher_stats()
         else:
             break
     return

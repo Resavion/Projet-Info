@@ -16,12 +16,9 @@ if __name__ == '__main__':
 
     aeroports, compagnies, clients = charger_bd(db_name)
 
-    print('\n\n OHAYOOOOOOOOOOOOOOOOOOOO')
-
     # On lance l'interface
     menus.menu_racine(clients, compagnies, aeroports)
 
-    #
     # liste_choix = ('Oui', 'Non')
     # choix = ihm.choisir(liste_choix,
     #                     "Voulez-vous sauvegarder vos modifications ?")

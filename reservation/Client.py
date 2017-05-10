@@ -109,6 +109,7 @@ class Client(object):
             ihm.afficher("Choisissez une place pour ce vol (les places libres sont représentées par un O) :")
             vol.afficher_places()
             place = ihm.demander("Saisissez le numéro de la place (ex : 35A) :")
+            vol.reserver_place(place[:-1],place[-1])
             print(place)
         return
 

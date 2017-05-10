@@ -1,7 +1,9 @@
-from reservation.Vol import Vol
 import ihm.console as ihm
 
+
 class Segment(object):
+    liste_ids = []
+
     def __init__(self, id_segment, billet, vol, horaire_codeshare,
                  place, options, classe='Y'):
         """
@@ -23,6 +25,7 @@ class Segment(object):
         self._place   = place
         self._options = options
         self._classe = classe
+        self.liste_ids.append(id_segment)
 
     @property
     def id(self):

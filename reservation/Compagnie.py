@@ -270,6 +270,10 @@ class Compagnie(object):
                 if route_directe:
                     combinaisons.append([route, route2, *route_directe])
 
+        return combinaisons
+
+    @staticmethod
+    def ajoute_prix_distance(combinaisons, classe):
         combi_prix = []
         combi_dist = []
         for combi in combinaisons:
@@ -280,7 +284,6 @@ class Compagnie(object):
                 dist_totale += route.distance/1000
             combi_prix.append(prix_combi)
             combi_dist.append(dist_totale)
-
         return combinaisons, combi_prix, combi_dist
 
     def afficher_aeroports(self):
@@ -289,6 +292,7 @@ class Compagnie(object):
         sont rattachées
         :return:
         """
+
         liste = defaultdict(int)
         for route in self._routes:
             liste[route.aeroport_depart] += 1

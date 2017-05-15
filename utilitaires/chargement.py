@@ -346,7 +346,8 @@ def charger_resas_de_client(cur, client):
     rows  = r.select_resas_par_client(cur, client.id)
     for row in rows:
         achat = datetime.strptime(row[3], "%Y-%m-%d %H:%M:%S")
-        resa  = Reservation(row[0], client, row[2], achat)
+        actif = (row[4] == 1)
+        resa  = Reservation(row[0], client, row[2], achat, actif)
         resas.append(resa)
         # print(resa)
     return resas
@@ -368,7 +369,7 @@ def charger_billets_de_resa(cur, resa):
         options_ids    = r.select_options_par_billet(cur, row[0])
         # on cree une liste d'option
         options        = [EnumOption(*x) for x in options_ids]
-        billet         = Billet(row[0], resa, *row[2:6], date_naissance, options)
+        billet         = Billet(row[0], resa, *row[2:5], date_naissance, options)
         billets.append(billet)
         # print(billet)
     return billets

@@ -64,8 +64,7 @@ class Client(object):
 
         # Saisie des criteres
         criteres = self.saisie_criteres(aeroports)
-        aer_dep, aer_arr, date_dep, date_arr, \
-            nb_passagers, classe, escales_max = criteres
+        aer_dep, aer_arr, date_dep, nb_passagers, classe, escales_max = criteres
 
         # Recherche des routes
         combinaisons_total = []
@@ -100,7 +99,7 @@ class Client(object):
 
         # On filtre les vols pour qu'ils s'enchainent bien
         vols_ok = self.arrange_vols(combi_vols, date_dep)
-        if len(combinaisons_total) == 0:
+        if len(vols_ok) == 0:
             ihm.afficher("Il n'y a pas de vols disponibles pour ces destinations")
             return
 
@@ -183,10 +182,6 @@ class Client(object):
         aer_arr     = saisie_aeroport("aéroport d'arrivée", aeroports)
         # Demander les dates départ et retour
         date_dep    = saisie_date("date de départ", datetime.today())
-        date_ret = None
-        aller_retour = ihm.choisir(['Oui','Non'], "Voulez-vous un retour ?")
-        if aller_retour == 'Oui':
-            date_ret    = saisie_date("date de retour", date_dep)
         # Demander le nombre de passagers
         nb_passagers  = Client.saisie_passagers()
         # Demander quelle classe
@@ -194,8 +189,7 @@ class Client(object):
         # Demander le nombre d'escales
         escales_max = Client.saisie_nb_escales()
 
-        return [aer_dep, aer_arr, date_dep, date_ret,
-                nb_passagers, classe, escales_max]
+        return [aer_dep, aer_arr, date_dep, nb_passagers, classe, escales_max]
 
     @staticmethod
     def saisie_passagers():

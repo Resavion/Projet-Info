@@ -129,10 +129,8 @@ class Route(object):
         # Ajout points a la carte
         plt.plot(xs0, ys0, 'b,')
 
-        print(list_coords)
         # Densification suivant la ligne geodesique
         new_coords = densif_geodesique(list_coords, self._distance)
-        print(new_coords)
         tab_listes = decoupe_ligne(new_coords)
         # Pour chaque partie de la route, on ajoute a la carte
         for coords in tab_listes:

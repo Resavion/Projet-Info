@@ -5,7 +5,7 @@ from reservation.Billet import Billet
 class Reservation(object):
     liste_ids = []
 
-    def __init__(self, id_resa, client, prix_total, date_achat,
+    def __init__(self, id_resa, client, prix_total, date_achat, actif,
                  billets=None):
         """
         Constructeur de la classe reservation
@@ -14,12 +14,15 @@ class Reservation(object):
         :param client: client qui a fait la reservation
         :param prix_total: prix total à payer pour la reservation
         :param date_achat: date de paiement de la reservation
+        :param actif: booleen si c'est actif ou annule
         :param billets: billets concernes par cette reservation
         """
+
         self._id         = id_resa
         self._client     = client
         self._prix_total = prix_total
         self._date_achat = date_achat
+        self._actif      = actif
         if billets is None:
             billets   = []
         self._billets = billets
@@ -42,15 +45,22 @@ class Reservation(object):
         return self._date_achat
 
     @property
+    def actif(self):
+        return self._actif
+
+    @property
     def billets(self):
         return self._billets
 
     def __str__(self):
-        return "Id : {:05d} - Par : {}, {} - Total : {} € - " \
-               "Le : {:%d/%m/%Y à %Hh%M}"\
-            .format(self._id,
-                    self._client.nom, self._client.prenom,
-                    self._prix_total, self._date_achat)
+        txt = "Id : {:05d} - Par : {}, {} - Total : {} € - " \
+              "Le : {:%d/%m/%Y à %Hh%M}"\
+              .format(self._id,
+                      self._client.nom, self._client.prenom,
+                      self._prix_total, self._date_achat)
+        if self._actif is False:
+            txt += " - ANNULE"
+        return txt
 
     def fournir_recapitulatif(self):
         """

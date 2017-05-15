@@ -146,11 +146,11 @@ def creer_bdd(db_name):
                                        id_client integer,
                                        prix_total real,
                                        date_achat text,
+                                       actif int,
                                        foreign key(id_client) references Client(id))"""
     executer_requete(cur, req)
     req = """create table Billet (id integer primary key,
                                   id_reservation integer,
-                                  tarif real,
                                   nom_passager text,
                                   prenom_passager text,
                                   passeport text,
@@ -366,20 +366,20 @@ def inserer_jeu_test(db_name):
     valider_modifs(conn)
 
     # Reservation
-    colonnes = ('id','id_client','prix_total','date_achat')
+    colonnes = ('id','id_client','prix_total','date_achat','actif')
     resas    = (
-        (1,1,1300,"2017-04-20 23:59:59"),
-        (2,1,500,"2017-04-19 13:40:01"),
+        (1,1,1300,"2017-04-20 23:59:59",1),
+        (2,1,500,"2017-04-19 13:40:01",0),
     )
     for t in resas:
         r.insert_into(cur, 'Reservation', colonnes, t)
     valider_modifs(conn)
 
     # Billet
-    colonnes = ('id','id_reservation','tarif','nom_passager','prenom_passager','passeport','date_naissance')
+    colonnes = ('id','id_reservation','nom_passager','prenom_passager','passeport','date_naissance')
     billets  = (
-        (10001,1,1200,"Chaffouin","Antoine","123456D","1980-05-15"),
-        (20002,2,400,"Tartempion","Lucien","123789E","1960-03-20"),
+        (10001,1,"Chaffouin","Antoine","123456D","1980-05-15"),
+        (20002,2,"Tartempion","Lucien","123789E","1960-03-20"),
     )
     for t in billets:
         r.insert_into(cur, 'Billet', colonnes, t)

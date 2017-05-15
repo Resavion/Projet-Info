@@ -177,7 +177,14 @@ class Compagnie(object):
         """
 
         debut = saisie_date("date de début", datetime.today())
-        nb_jours = int(ihm.demander("Saisissez un nombre de jours :"))
+        nb_jours = 0
+        while True:
+            try:
+                nb_jours = int(ihm.demander("Saisissez un nombre de jours :"))
+            except ValueError:
+                ihm.afficher("Ce nombre n'est pas valide !")
+            else:
+                break
         for route in self._routes:
             ihm.afficher(route)
             for horaire in route.horaires:

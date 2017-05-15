@@ -6,6 +6,7 @@ import ihm.console as ihm
 import utilitaires.earth as earth
 from utilitaires.carte import (dessine_fondcarte, parametrage_carte,
                                mercator)
+from utilitaires.fonctions import saisie_aeroport
 
 
 class Avion(object):
@@ -170,4 +171,22 @@ class Avion(object):
 
         ihm.afficher("Il y a {} vol(s)".format(len(self._vols)))
         ihm.afficher_paginer(self._vols, "Vols", pas=10)
+        return
+
+    def deplacer_vers_aeroport(self, aeroports):
+        """
+        Methode qui permet de deplacer (instantanement...) l'avion vers un aeroport
+        
+        :param aeroports: liste de tous les aeroports
+        :return: 
+        """
+
+        old_aero = self._aeroport
+        aero = saisie_aeroport("aéroport de destination", aeroports)
+        self._aeroport = aero
+        self._latitude_deg = aero.latitude_deg
+        self._longitude_deg = aero.longitude_deg
+        if old_aero is not None or old_aero != '':
+            old_aero.avions.remove(self)
+        aero.avions.append(self)
         return

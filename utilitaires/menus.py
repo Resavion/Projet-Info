@@ -178,7 +178,7 @@ def actions_compagnie(compagnies, aeroports):
                    'Revenir au début')
         action = ihm.choisir(actions, "Choisissez une action :")
         if action == actions[0]:
-            actions_avions(compagnie)
+            actions_avions(compagnie, aeroports)
         elif action == actions[1]:
             actions_configs(compagnie)
         elif action == actions[2]:
@@ -220,11 +220,12 @@ def choisir_par_continent(compagnies):
     return compagnie
 
 
-def actions_avions(compagnie):
+def actions_avions(compagnie, aeroports):
     """
     Sous-menu de gestion des avions d'une compagnie
     
     :param compagnie: l'objet compagnie en question
+    :param aeroports: liste de tous les aeroports
     :return: None
     """
 
@@ -240,17 +241,18 @@ def actions_avions(compagnie):
         elif action == actions[1]:
             compagnie.afficher_carte_avions()
         elif action == actions[2]:
-            gerer_avion(compagnie)
+            gerer_avion(compagnie, aeroports)
         else:
             break
     return
 
 
-def gerer_avion(compagnie):
+def gerer_avion(compagnie, aeroports):
     """
     Methode qui permet a la compagnie de gerer un avion
     
     :param compagnie: l'objet compagnie en question
+    :param aeroports: liste de tous les aeroports
     :return: None
     """
 
@@ -265,12 +267,15 @@ def gerer_avion(compagnie):
     while True:
         actions = ("Afficher une carte de la position de l'avion",
                    "Afficher les vols de l'avion",
+                   "Déplacer l'avion vers un aéroport",
                    'Revenir au menu précédent')
         action = ihm.choisir(actions, "Choisissez une action :")
         if action == actions[0]:
             avion.afficher_carte()
         elif action == actions[1]:
             avion.afficher_vols()
+        elif action == actions[2]:
+            avion.deplacer_vers_aeroport(aeroports)
         else:
             break
     return

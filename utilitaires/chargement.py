@@ -177,14 +177,17 @@ def charger_avions_de_compagnie(cur, configs, compagnie):
     rows   = r.select_all_par_compagnie(cur,'Avion', compagnie.id_code_iata)
     for row in rows:
         config         = [x for x in configs if x.nom == row[2]][0]
-        aeroport       = Aeroport.find_by_id(row[3])
+        aeroport = None
+        if row[3] != '':
+            aeroport   = Aeroport.find_by_id(row[3])
         date_livraison = datetime.strptime(row[4],"%Y-%m-%d").date()
         date_der_rev   = datetime.strptime(row[5],"%Y-%m-%d").date()
         etat           = EnumAvion(row[6])
         avion          = Avion(row[0], compagnie, config, aeroport,
                                date_livraison, date_der_rev, etat, *row[7:])
         avions.append(avion)
-        aeroport.avions.append(avion)
+        if aeroport is not None:
+            aeroport.avions.append(avion)
         # print(avion)
     return avions
 

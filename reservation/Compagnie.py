@@ -151,6 +151,7 @@ class Compagnie(object):
     def afficher_carte_routes(self, show=True, annot=True):
         """
         Methode qui permet d'afficher la carte des routes de la compagnie
+        
         :return: None
         """
 
@@ -160,6 +161,8 @@ class Compagnie(object):
         # Ajout de la carte de chaque route
         for route in self._routes:
             route.afficher_carte(show=False, annot=annot)
+        # Parametrage de la carte
+        parametrage_carte()
         # Affichage
         if show:
             plt.title('Carte du reseau {0:s}'.format(self._nom))
@@ -293,7 +296,14 @@ class Compagnie(object):
             codeshare = True
         # Creation de l'objet
         new_route = Route(self, aer_dep, aer_arr, geom, codeshare)
-        ihm.afficher("La route suivante a été créée :")
-        print(new_route)
-        self._routes.append(new_route)
+
+        # Confirmer ou pas
+        choix = ihm.choisir(
+            ['Oui','Non'],
+            "Confirmez-vous la création de la route {} ?".format(new_route))
+        if choix == 'Oui':
+            ihm.afficher("La route a été créée")
+            self._routes.append(new_route)
+        else:
+            ihm.afficher("La route n'a pas été créée")
         return

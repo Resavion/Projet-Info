@@ -55,3 +55,26 @@ def saisie_aeroport(message, aeroports):
             aero = results[0]
     ihm.afficher("Vous avez choisi : {}".format(aero))
     return aero
+
+
+def saisie_compagnie(compagnies):
+    """
+    Methode qui permet de choisir une compagnie par ses différents codes
+
+    :param compagnies: liste des compagnies
+    :return: la compagnie choisie
+    """
+
+    compagnie = None
+    code = ihm.demander(
+        "Tapez le code IATA (2 caractères) ou ICAO (3 caractères) :")
+    results = [x for x in compagnies
+               if x.id_code_iata == code or x.code_icao == code]
+    if len(results) == 0:
+        ihm.afficher("Désolé, nous n'avons pas trouvé votre compagnie !")
+    else:
+        compagnie = results[0]
+    if compagnie is not None:
+        ihm.afficher("Vous avez choisi la compagnie {}".format(compagnie))
+    return compagnie
+

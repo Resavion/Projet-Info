@@ -6,7 +6,7 @@ import ihm.console as ihm
 import utilitaires.earth as earth
 from utilitaires.carte import (mercator, dessine_fondcarte, densif_geodesique,
                                decoupe_ligne, parametrage_carte)
-from utilitaires.fonctions import saisie_aeroport
+from utilitaires.fonctions import (saisie_aeroport, saisie_compagnie)
 from reservation.Client import Client
 
 
@@ -165,7 +165,7 @@ def actions_compagnie(compagnies, aeroports):
             compagnie = choisir_par_continent(compagnies)
         # Si recherche par code
         elif recherche == actions[1]:
-            compagnie = choisir_par_code(compagnies)
+            compagnie = saisie_compagnie(compagnies)
         # Sinon on revient au début
         else:
             return recherche
@@ -182,7 +182,7 @@ def actions_compagnie(compagnies, aeroports):
         elif action == actions[1]:
             actions_configs(compagnie)
         elif action == actions[2]:
-            actions_routes(compagnie, aeroports)
+            actions_routes(compagnie, compagnies, aeroports)
         else:
             break
     return
@@ -217,28 +217,6 @@ def choisir_par_continent(compagnies):
     compagnie = ihm.choisir_paginer(
         compagnies_filtre, "Choisissez une compagnie :", pas=10)
     ihm.afficher("Vous allez gérer la compagnie {}".format(compagnie))
-    return compagnie
-
-
-def choisir_par_code(compagnies):
-    """
-    Methode qui permet de choisir une compagnie par ses différents codes
-    
-    :param compagnies: liste des compagnies
-    :return: la comapgnie choisie
-    """
-
-    compagnie = None
-    code = ihm.demander(
-        "Tapez le code IATA (2 caractères) ou ICAO (3 caractères) :")
-    results = [x for x in compagnies
-               if x.id_code_iata == code or x.code_icao == code]
-    if len(results) == 0:
-        ihm.afficher("Désolé, nous n'avons pas trouvé votre compagnie !")
-    else:
-        compagnie = results[0]
-    if compagnie is not None:
-        ihm.afficher("Vous allez gérer la compagnie {}".format(compagnie))
     return compagnie
 
 
@@ -340,11 +318,12 @@ def gerer_config(compagnie):
     return
 
 
-def actions_routes(compagnie, aeroports):
+def actions_routes(compagnie, compagnies, aeroports):
     """
      Methode qui permet a la compagnie de choisir les actions qu'ils souhaitent réaliser sur une route
 
     :param compagnie: objet compagnie
+    :param compagnies: liste de toutes les compagnies
     :param aeroports: liste de tous les aeroports
     :return: None
     """
@@ -353,6 +332,7 @@ def actions_routes(compagnie, aeroports):
     while True:
         actions = ('Afficher la liste des routes',
                    'Afficher une carte des routes',
+                   'Afficher la liste des aéroports desservis',
                    'Gérer une route',
                    'Ajouter une route',
                    'Ajouter des vols pour toutes les routes',
@@ -363,21 +343,24 @@ def actions_routes(compagnie, aeroports):
         elif action == actions[1]:
             compagnie.afficher_carte_routes()
         elif action == actions[2]:
-            gerer_route(compagnie)
+            compagnie.afficher_aeroports()
         elif action == actions[3]:
-            compagnie.creer_route(aeroports)
+            gerer_route(compagnie, compagnies)
         elif action == actions[4]:
+            compagnie.creer_route(aeroports)
+        elif action == actions[5]:
             compagnie.ajouter_vols_toutes_routes()
         else:
             break
     return
 
 
-def gerer_route(compagnie):
+def gerer_route(compagnie, compagnies):
     """
     Methode qui permet a la compagnie de gerer une route
     
     :param compagnie: objet compagnie
+    :param compagnies: liste de toutes les compagnies
     :return: None
     """
 
@@ -394,6 +377,7 @@ def gerer_route(compagnie):
         actions = ("Afficher une carte de la route",
                    "Afficher les horaires de la route",
                    "Gérer un horaire",
+                   "Ajouter un horaire",
                    'Revenir au menu précédent')
         action = ihm.choisir(actions, "Choisissez une action :")
         if action == actions[0]:
@@ -402,6 +386,8 @@ def gerer_route(compagnie):
             route.afficher_horaires()
         elif action == actions[2]:
             gerer_horaire(route)
+        elif action == actions[3]:
+            route.creer_horaire(compagnies)
         else:
             break
     return

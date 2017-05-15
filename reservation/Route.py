@@ -1,11 +1,14 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from datetime import (datetime, timedelta)
 from collections import defaultdict
 
 import ihm.console as ihm
 import utilitaires.earth as earth
 from utilitaires.carte import (mercator, dessine_fondcarte, parametrage_carte,
                                distance_haversine, densif_geodesique, decoupe_ligne)
+from utilitaires.fonctions import saisie_compagnie
+from reservation.Horaire import Horaire
 
 
 class Route(object):
@@ -231,3 +234,78 @@ class Route(object):
                 vols_tout.extend(vols)
 
         return vols_tout
+
+    def creer_horaire(self, compagnies):
+        """
+        Methode pour creer un horaire pour la route
+        
+        :return: 
+        """
+
+        new_hor = None
+        # Saisir numero de vol
+        num_vol = ihm.demander("Saisissez un numéro de vol (1 à 4 chiffres) :")
+        # Si c'est un codeshare,
+        choix_codeshare = ihm.choisir(
+            ['Oui', 'Non'],
+            "Est-ce que cet horaire est le codeshare de l'horaire "
+            "d'une autre compagnie ?")
+        if choix_codeshare == 'Oui':
+            # alors saisir compagnie
+            compagnie = saisie_compagnie(compagnies)
+            cle_route = "{}{}{}".format(compagnie.id_code_iata,
+                                        self._aeroport_depart.id_code_iata,
+                                        self._aeroport_arrivee.id_code_iata)
+            route = Route.cle_index[cle_route]
+            # et choisir horaire
+            hor_tri = route.horaires
+            if len(hor_tri) == 0:
+                ihm.afficher("Il n'y a pas d'horaire disponible !")
+                return
+            # On trie les routes par nombre d'horaires
+            hor_tri.sort(key=lambda s: s.numero)
+            hor = ihm.choisir_paginer(hor_tri, "Choisissez l'horaire :")
+            ihm.afficher("Vous avez choisi l'horaire {}".format(hor))
+            # Creation du nouvel horaire
+            new_hor = Horaire(self, num_vol, None, None, None, None,
+                              hor, None)
+        # Si ce n'est pas un codeshare
+        else:
+            # Saisir heure de depart
+            str_h_dep = ihm.demander("Saisissez l'heure de départ (HH:MM) :")
+            h_dep = datetime.strptime(str_h_dep, "%H:%M").time()
+            # Saisir heure d'arrivee
+            str_h_arr = ihm.demander("Saisissez l'heure d'arrivée (HH:MM) :")
+            h_arr = datetime.strptime(str_h_arr, "%H:%M").time()
+            # Saisir duree
+            str_dur = ihm.demander("Saisissez la durée (HHhMM, ex : 0h55) :")
+            t = datetime.strptime(str_dur, "%Hh%M")
+            dur = timedelta(hours=t.hour, minutes=t.minute)
+            # Saisir la periodicite : TODO
+            period = ''
+            configs = self.compagnie.configs
+            configs_tri = [x for x in configs
+                           if x.type_avion.distance_franchissable_km > self._distance/1000]
+            configs_tri.sort(key=lambda s: s.nom)
+            if len(configs_tri) == 0:
+                ihm.afficher("Il n'y a pas de configuration disponible !")
+                return
+            # Choisir la config
+            conf = ihm.choisir_paginer(
+                self.compagnie.configs, "Choisissez une configuration d'avion")
+            # Creation du nouvel horaire
+            new_hor = Horaire(
+                self, num_vol, h_dep, h_arr, dur, period, None, conf)
+
+        # Confirmer ou pas
+        choix = ihm.choisir(
+            ['Oui','Non'],
+            "Confirmez-vous la création de l'horaire {} ?".format(new_hor))
+        if choix == 'Oui':
+            self._horaires.append(new_hor)
+            if new_hor.horaire_operateur is not None:
+                new_hor.horaire_operateur.horaires_codeshare.append(new_hor)
+            ihm.afficher("L'horaire a été créé")
+        else:
+            ihm.afficher("L'horaire n'a pas été créé")
+        return

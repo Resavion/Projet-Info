@@ -32,10 +32,10 @@ class Avion(object):
         self._date_derniere_revision = date_derniere_revision
         self._etat                   = etat
         self._aeroport               = aeroport
-        if latitude_deg is None:
+        if latitude_deg == '' or latitude_deg is None:
             latitude_deg   = aeroport.latitude_deg
         self._latitude_deg = latitude_deg
-        if longitude_deg is None:
+        if longitude_deg == '' or longitude_deg is None:
             longitude_deg   = aeroport.longitude_deg
         self._longitude_deg = longitude_deg
         if vols is None:
@@ -137,8 +137,9 @@ class Avion(object):
 
         # Coordonnees de l'aeroport
         list_coords = np.zeros((1, 2))
-        list_coords[0, 0] = self._latitude_deg
-        list_coords[0, 1] = self._longitude_deg
+        print(self._latitude_deg, self._longitude_deg)
+        list_coords[0, 0] = float(self._latitude_deg)
+        list_coords[0, 1] = float(self._longitude_deg)
         # Transfo en Mercator
         xs0, ys0 = mercator(list_coords, earth.E, 0, 0, earth.A)
         # Ajout points a la carte

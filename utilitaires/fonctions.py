@@ -46,7 +46,7 @@ def saisie_aeroport(message, aeroports):
             "Saisissez l'{} (code IATA ou ICAO ou ville) :".format(message))
         results = [x for x in aeroports
                    if x.id_code_iata == code or x.code_icao == code or
-                   x.municipalite.startswith(code)]
+                   x.municipalite.lower().startswith(code)]
         if len(results) == 0:
             ihm.afficher("Désolé, nous n'avons pas trouvé votre aéroport !")
         elif len(results) > 1:

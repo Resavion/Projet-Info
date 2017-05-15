@@ -6,6 +6,7 @@ import ihm.console as ihm
 import utilitaires.earth as earth
 from utilitaires.carte import (mercator, dessine_fondcarte, densif_geodesique,
                                decoupe_ligne, parametrage_carte)
+from utilitaires.fonctions import saisie_aeroport
 from reservation.Client import Client
 
 
@@ -147,7 +148,7 @@ def actions_compagnie(compagnies):
      Methode qui permet a la compagnie de choisir les actions qu'elle souhaite réaliser
      
     :param compagnies: liste des compagnies
-    :return: ??
+    :return: None
     """
 
     compagnie = None
@@ -404,7 +405,7 @@ def actions_visualisation(compagnies,aeroports):
 
 
 def gerer_aeroport(aeroports):
-    aero = choisir_par_code_aeroport(aeroports)
+    aero = saisie_aeroport("aéroport à gérer", aeroports)
     # Proposer les actions
     while True:
         actions = (
@@ -431,30 +432,6 @@ def gerer_aeroport(aeroports):
         else:
             break
     return
-
-
-def choisir_par_code_aeroport(aeroports):
-    """
-    Methode qui permet de choisir un aeroport en fonction de ses codes 
-    
-    :param aeroports: liste aeroports
-    :return: l'aeroport choisi
-    """
-
-    aeroport = None
-    code = ihm.demander(
-        "Tapez le code IATA (2 caractères) ou ICAO (3 caractères) :")
-    results = [x for x in aeroports
-               if x.id_code_iata == code or x.code_icao == code]
-    if len(results) == 0:
-        ihm.afficher("Désolé, nous n'avons pas trouvé votre aéroport !")
-    elif len(results) > 1:
-        aeroport = ihm.choisir(results, "Précisez votre choix :")
-    else:
-        aeroport = results[0]
-    if aeroport is not None:
-        ihm.afficher("Vous allez gérer l'aéroport {}".format(aeroport))
-    return aeroport
 
 
 def afficher_carte_aeroports(aeroports, show=True):

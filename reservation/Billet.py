@@ -37,9 +37,9 @@ class Billet(object):
     def reservation(self):
         return self._reservation
 
-    @property
-    def tarif(self):
-        return self._tarif
+    # @property
+    # def tarif(self):
+    #     return self._tarif
 
     @property
     def nom_passager(self):
@@ -79,4 +79,4 @@ class Billet(object):
                     self._nom_passager.upper(),
                     self._prenom_passager.upper(),
                     self._date_naissance, self._passeport,
-                    self._tarif)
+                    self.tarif)

@@ -74,6 +74,9 @@ class Client(object):
                 aer_dep, aer_arr, escales_max)
             if combinaisons:
                 combinaisons_total.extend(combinaisons)
+        if len(combinaisons_total) == 0:
+            ihm.afficher("Il n'y a pas de routes possibles entre ces destinations")
+            return
 
         # Affiche les prix, distances
         self.affiche_prix_distance(combinaisons_total, classe)
@@ -87,6 +90,9 @@ class Client(object):
                     combi_ok = False
             if combi_ok:
                 combinaisons_avec_horaires.append(combi)
+        if len(combinaisons_total) == 0:
+            ihm.afficher("Il n'y a pas d'horaires disponibles pour ces destinations")
+            return
 
         # On recupere les vols pour chaque combinaison
         combi_vols = self.recupere_vols(
@@ -94,6 +100,9 @@ class Client(object):
 
         # On filtre les vols pour qu'ils s'enchainent bien
         vols_ok = self.arrange_vols(combi_vols, date_dep)
+        if len(combinaisons_total) == 0:
+            ihm.afficher("Il n'y a pas de vols disponibles pour ces destinations")
+            return
 
         ihm.afficher("Parmi les routes, {} possédaient des places a la date demandée"
                      .format(len(vols_ok)))
@@ -196,8 +205,7 @@ class Client(object):
         :return: le nombre de passager
         """
 
-        liste_choix = ["0 passager",]
-        liste_choix.extend(["{} passagers".format(x) for x in range(1,6)])
+        liste_choix = ["{} passagers".format(x) for x in range(1,6)]
         nb_passagers = ihm.choisir(
             liste_choix, "Saisissez le nombre de voyageurs :")
         ihm.afficher("Vous avez choisi {}".format(nb_passagers))

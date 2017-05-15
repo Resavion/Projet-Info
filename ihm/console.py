@@ -73,6 +73,7 @@ def choisir_paginer(liste_choix, message="", pas=10):
             liste.append("Voir les éléments précédents")
         if borne_haut < len(liste_choix):
             liste.append("Voir les éléments suivants")
+        liste.append("Revenir au menu")
         # Faire le choix
         elem = choisir(liste, message)
         if elem == "Voir les éléments suivants":
@@ -89,7 +90,7 @@ def afficher_paginer(liste_elems, message, pas=10):
     """
     Methode qui permet d'afficher la pagination
     
-   :param liste_choix: liste des choix a paginer
+    :param liste_elems: liste des choix a paginer
     :param message: message a dire
     :param pas: 
     :return: 

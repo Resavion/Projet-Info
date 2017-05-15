@@ -302,8 +302,8 @@ class Compagnie(object):
             ['Oui','Non'],
             "Confirmez-vous la création de la route {} ?".format(new_route))
         if choix == 'Oui':
-            ihm.afficher("La route a été créée")
             self._routes.append(new_route)
+            ihm.afficher("La route a été créée")
         else:
             ihm.afficher("La route n'a pas été créée")
         return

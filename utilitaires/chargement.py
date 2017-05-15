@@ -345,7 +345,7 @@ def charger_resas_de_client(cur, client):
     resas = []
     rows  = r.select_resas_par_client(cur, client.id)
     for row in rows:
-        achat = datetime.strptime(row[3], "%Y-%m-%d %H:%M:%S")
+        achat = datetime.strptime(row[3], "%Y-%m-%d %H:%M:%S.%f")
         actif = (row[4] == 1)
         resa  = Reservation(row[0], client, row[2], achat, actif)
         resas.append(resa)
@@ -365,7 +365,7 @@ def charger_billets_de_resa(cur, resa):
     billets = []
     rows    = r.select_billets_par_resa(cur, resa.id)
     for row in rows:
-        date_naissance = datetime.strptime(row[6], "%Y-%m-%d").date()
+        date_naissance = datetime.strptime(row[5], "%Y-%m-%d").date()
         options_ids    = r.select_options_par_billet(cur, row[0])
         # on cree une liste d'option
         options        = [EnumOption(*x) for x in options_ids]
@@ -561,6 +561,31 @@ def update_vol(cur, vol):
     return
 
 
+def update_reservation(cur, resa):
+    """
+    Methode qui permet de mettre a jour une reservation
+
+    :param cur: curseur
+    :param resa: l'objet reservation
+    :return: None
+    """
+
+    row = r.select_par_id(cur, 'Reservation', resa.id)
+    if not row:
+        # Insérer resa dans bd
+        colonnes = ('id', 'id_client', 'prix_total', 'date_achat', 'actif')
+        values = (resa.id, resa.client.id, resa.prix_total, resa.date_achat, resa.actif)
+        r.insert_into(cur, 'Reservation', colonnes, values)
+        # print("insert {}".format(resa))
+    else:
+        # Update resa dans bd
+        colonnes = ('actif',)
+        values = (resa.actif,)
+        r.update(cur, 'Reservation', colonnes, values, resa.id)
+        # print("update {}".format(resa))
+    return
+
+
 def update_billet(cur, billet):
     """
     Methode qui permet de mettre a jour les informations liées au billet d'avion
@@ -573,22 +598,21 @@ def update_billet(cur, billet):
     row = r.select_par_id(cur, 'Billet', billet.id)
     if not row:
         # Insérer billet dans bd
-        colonnes = ('id', 'id_reservation', 'tarif',
+        colonnes = ('id', 'id_reservation',
                     'nom_passager', 'prenom_passager', 'passeport',
-                    'date_naissance', 'options')
-        values   = (billet.id, billet.reservation.id, billet.tarif,
+                    'date_naissance')
+        values   = (billet.id, billet.reservation.id,
                     billet.nom_passager, billet.prenom_passager,
-                    billet.passeport, billet.date_naissance,
-                    billet.options)
+                    billet.passeport, billet.date_naissance)
         r.insert_into(cur, 'Billet', colonnes, values)
         # print("insert {}".format(billet))
     else:
         # Update billet dans bd
-        colonnes = ('tarif', 'nom_passager', 'prenom_passager',
-                    'passeport', 'date_naissance', 'options')
-        values   = (billet.tarif, billet.nom_passager,
+        colonnes = ('nom_passager', 'prenom_passager',
+                    'passeport', 'date_naissance')
+        values   = (billet.nom_passager,
                     billet.prenom_passager, billet.passeport,
-                    billet.date_naissance, billet.options)
+                    billet.date_naissance)
         r.update(cur, 'Billet', colonnes, values, billet.id)
         # print("update {}".format(billet))
     return

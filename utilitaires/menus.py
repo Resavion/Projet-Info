@@ -105,10 +105,13 @@ def gerer_reservation(client):
     while True:
         # Demander action : Faire, Consulter, Modifier, Annuler
         actions = ('Afficher le récapitulatif',
+                   'Annuler la réservation',
                    'Revenir au début')
         action = ihm.choisir(actions, "Choisissez une action :")
         if action == actions[0]:
             resa.fournir_recapitulatif()
+        elif action == actions[1]:
+            resa.annuler()
         else:
             break
     return

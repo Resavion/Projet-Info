@@ -15,6 +15,7 @@ class Segment(object):
         :param horaire_codeshare: horaire concerne par ce segment si codeshare
         :param place: numero du siège
         :param options: options que le passager a pris pour cette partie de trajet
+        :param classe: classe de la place
         """
         self._id      = id_segment
         self._billet  = billet
@@ -46,6 +47,10 @@ class Segment(object):
     @property
     def place(self):
         return self._place
+
+    @property
+    def actif(self):
+        return self._billet.reservation.actif
 
     @property
     def options(self):
@@ -102,11 +107,9 @@ class Segment(object):
         old_colonne = int(self._place[-1])
 
         # on demande le nouveau rang et la nouvelle colonne
-        new_rang = ihm.demander(
-            "Saisissez le rang:")
+        new_rang = ihm.demander("Saisissez le rang :")
         new_rangee = int(new_rang)
-        new_colonne = ihm.demander(
-            "Saisissez la colonne:")
+        new_colonne = ihm.demander("Saisissez la colonne :")
         self.vol.liberer_place(old_rangee, old_colonne)
         self.vol.reserver_place(new_rangee, new_colonne)
 

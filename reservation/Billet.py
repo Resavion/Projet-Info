@@ -15,6 +15,7 @@ class Billet(object):
         :param options: options que le passager à pris pour son vol
         :param segments: segments qui composent le billet
         """
+
         self._id              = id_billet
         self._reservation     = reservation
         self._nom_passager    = nom_passager
@@ -56,6 +57,10 @@ class Billet(object):
         return self._date_naissance
 
     @property
+    def actif(self):
+        return self._reservation.actif
+
+    @property
     def options(self):
         return self._options
 
@@ -72,7 +77,7 @@ class Billet(object):
 
     def __str__(self):
         return "Billet n°{:05d} - {} {} (né le {:%d/%m/%Y}, passeport n°{})" \
-               " - Tarif : {} €"\
+               " - Tarif : {:.2f} €"\
             .format(self._id,
                     self._nom_passager.upper(),
                     self._prenom_passager.upper(),

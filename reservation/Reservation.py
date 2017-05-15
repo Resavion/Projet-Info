@@ -5,8 +5,8 @@ from reservation.Billet import Billet
 class Reservation(object):
     liste_ids = []
 
-    def __init__(self, id_resa, client, prix_total, date_achat, actif,
-                 billets=None):
+    def __init__(self, id_resa, client, prix_total, date_achat,
+                 actif=True, billets=None):
         """
         Constructeur de la classe reservation
         
@@ -37,7 +37,10 @@ class Reservation(object):
         return self._client
 
     @property
-    def prix_tota(self):
+    def prix_total(self):
+        if self._prix_total == 0:
+            for bil in self._billets:
+                self._prix_total += bil.tarif
         return self._prix_total
 
     @property
@@ -53,11 +56,11 @@ class Reservation(object):
         return self._billets
 
     def __str__(self):
-        txt = "Id : {:05d} - Par : {}, {} - Total : {} € - " \
+        txt = "Id : {:05d} - Par : {}, {} - Total : {:.2f} € - " \
               "Le : {:%d/%m/%Y à %Hh%M}"\
               .format(self._id,
                       self._client.nom, self._client.prenom,
-                      self._prix_total, self._date_achat)
+                      self.prix_total, self._date_achat)
         if self._actif is False:
             txt += " - ANNULE"
         return txt
@@ -81,7 +84,7 @@ class Reservation(object):
                           billet.prenom_passager.upper(),
                           billet.date_naissance,
                           billet.passeport,
-                          self._id) )
+                          self._id))
             for segment in billet.segments:
                 print("VOL:  {} {}{:4s} - {}     {} {} A {} {}      {:%d/%m/%Y}\n"
                       "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\n"
@@ -89,7 +92,7 @@ class Reservation(object):
                       "DEPART:  {:%d/%m/%Y %H:%M} - {}, {} ({})\n"
                       "ARRIVEE: {:%d/%m/%Y %H:%M} - {}, {} ({})\n"
                       "_  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _\n"
-                      #"CLASSE: ICI ca serait bien d'avoir la classe de la place ?\n"
+                      "PLACE: {}\n"
                       "NON FUMEUR\n"
                       "DUREE: {}h{:02d}\n"
                       "EQUIPEMENT: {} - {}\n"
@@ -112,9 +115,27 @@ class Reservation(object):
                               segment.horaire.route.aeroport_arrivee.municipalite.upper(),
                               segment.horaire.route.aeroport_arrivee.nom.upper(),
                               segment.horaire.route.aeroport_arrivee.id_code_iata,
+                              segment.place,
                               segment.vol.duree.seconds // 3600,
                               (segment.vol.duree.seconds // 60) % 60,
                               segment.vol.horaire.compagnie.id_code_iata,
-                              segment.vol.horaire.config_avion.type_avion) )
+                              segment.vol.horaire.config_avion.type_avion))
             print("PRIX DU BILLET: {:.2f} EUROS\n".format(billet.tarif))
+        return
+
+    def annuler(self):
+        """
+        Change l'etat de la reservation en actif = False,
+        donc libere les places des segments
+        
+        :return: 
+        """
+
+        self._actif = False
+        for bil in self._billets:
+            for seg in bil.segments:
+                place_rang = int(seg.place[:-1])
+                place_col = seg.place[-1]
+                seg.vol.liberer_place(place_rang, place_col)
+                seg.vol.segments.remove(seg)
         return

@@ -125,7 +125,7 @@ class Client(object):
         if Reservation.liste_ids:
             id_resa = Reservation.liste_ids[-1]
         id_resa += 1
-        new_resa = Reservation(id_resa, self, 0, datetime.now())
+        new_resa = Reservation(id_resa, self, 0, datetime.now(), True)
 
         for i in range(nb_passagers):
             nom = ihm.demander("Saisissez le nom du passager :")
@@ -141,13 +141,14 @@ class Client(object):
                     ihm.afficher("Ceci n'est pas une date valide.")
                     pass
                 else:
+                    date_naissance = date_naissance.date()
                     break
 
             id_billet = 0
             if Billet.liste_ids:
                 id_billet = Billet.liste_ids[-1]
             id_billet += 1
-            billet = Billet(id_billet, new_resa, 0, nom, prenom, passeport, date_naissance, [])
+            billet = Billet(id_billet, new_resa, nom, prenom, passeport, date_naissance, [])
 
             for vol in combi_final:
                 ihm.afficher("Choisissez une place pour ce vol (les places libres sont représentées par un O) :")
@@ -161,9 +162,13 @@ class Client(object):
                 id_segment += 1
                 seg = Segment(id_segment, billet, vol, vol.horaire, place, '', classe)
                 billet.segments.append(seg)
+                vol.segments.append(seg)
 
             new_resa.billets.append(billet)
 
+        ihm.afficher("La réservation a été effectuée !")
+        ihm.afficher(new_resa)
+        print(*new_resa.billets)
         self.reservations.append(new_resa)
         return
 

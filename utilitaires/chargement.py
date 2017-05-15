@@ -292,8 +292,10 @@ def charger_vols_de_horaire(cur, horaire):
         arr = datetime.strptime(row[3], "%Y-%m-%d %H:%M:%S")
         t   = datetime.strptime(row[4], "%H:%M:%S")
         dur = timedelta(hours=t.hour, minutes=t.minute)
+        # Statut
+        statut = EnumStatutVol(row[10])
         # Vol
-        vol = Vol(horaire, dep, arr, dur, avion, *row[6:])
+        vol = Vol(horaire, dep, arr, dur, avion, *row[6:10], statut)
         vols.append(vol)
         if avion is not None:
             avion.vols.append(vol)

@@ -150,7 +150,15 @@ class Aeroport(object):
         # Transfo en Mercator
         xs0, ys0 = mercator(list_coords, earth.E, 0, 0, earth.A)
         # Ajout points a la carte
-        plt.plot(xs0, ys0, 'b.')
+        symbole = '.'
+        # if annot is False:
+        #     symbole = ','
+        couleur = 'red'
+        if self._type_aero == 'medium_airport':
+            couleur = 'deepskyblue'
+        elif self._type_aero == 'small_airport':
+            couleur = 'limegreen'
+        plt.plot(xs0, ys0, c=couleur, marker=symbole, markersize=1.5)
 
         # Ajout des routes a la carte si demande
         if routes:

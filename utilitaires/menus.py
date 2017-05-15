@@ -172,14 +172,14 @@ def actions_compagnie(compagnies):
     # Proposer les actions
     while True:
         actions = ('Gérer les avions',
-                   "Afficher les configurations d'avion",
+                   "Gérer les configurations d'avion",
                    'Gérer les routes',
                    'Revenir au début')
         action = ihm.choisir(actions, "Choisissez une action :")
         if action == actions[0]:
             actions_avions(compagnie)
         elif action == actions[1]:
-            compagnie.afficher_configs()
+            actions_configs(compagnie)
         elif action == actions[2]:
             actions_routes(compagnie)
         else:
@@ -242,6 +242,13 @@ def choisir_par_code(compagnies):
 
 
 def actions_avions(compagnie):
+    """
+    Sous-menu de gestion des avions d'une compagnie
+    
+    :param compagnie: l'objet compagnie en question
+    :return: None
+    """
+
     # Proposer les actions
     while True:
         actions = ('Afficher la liste des avions',
@@ -269,6 +276,9 @@ def gerer_avion(compagnie):
     """
 
     avions = compagnie.avions
+    if len(avions) == 0:
+        ihm.afficher("Il n'y a pas d'avion disponible !")
+        return
     avions.sort(key=lambda s: s.id, reverse=True)
     avion = ihm.choisir_paginer(avions, "Choisissez un avion :")
     ihm.afficher("Vous allez gérer l'avion {}".format(avion))
@@ -284,6 +294,48 @@ def gerer_avion(compagnie):
             avion.afficher_vols()
         else:
             break
+    return
+
+
+def actions_configs(compagnie):
+    """
+    Sous-menu de gestion des configurations d'avions d'une compagnie
+    
+    :param compagnie: l'objet compagnie en question
+    :return: None
+    """
+
+    # Proposer les actions
+    while True:
+        actions = ("Afficher la liste des configurations d'avions",
+                   "Afficher le plan de cabine d'une configuration",
+                   'Revenir au menu précédent')
+        action = ihm.choisir(actions, "Choisissez une action :")
+        if action == actions[0]:
+            compagnie.afficher_configs()
+        elif action == actions[1]:
+            gerer_config(compagnie)
+        else:
+            break
+    return
+
+
+def gerer_config(compagnie):
+    """
+    Methode qui permet a la compagnie de gerer une config d'avion
+
+    :param compagnie: l'objet compagnie en question
+    :return: None
+    """
+
+    configs = compagnie.configs
+    if len(configs) == 0:
+        ihm.afficher("Il n'y a pas de configuration d'avion disponible !")
+        return
+    configs.sort(key=lambda s: s.nom, reverse=True)
+    config = ihm.choisir_paginer(configs, "Choisissez une configuration :")
+    ihm.afficher("Vous allez gérer la configuration {}".format(config))
+    config.afficher_disposition()
     return
 
 
@@ -325,6 +377,9 @@ def gerer_route(compagnie):
     """
 
     routes_tri = compagnie.routes
+    if len(routes_tri) == 0:
+        ihm.afficher("Il n'y a pas de route disponible !")
+        return
     # On trie les routes par nombre d'horaires
     routes_tri.sort(key=lambda s: len(s.horaires), reverse=True)
     route = ihm.choisir_paginer(routes_tri, "Choisissez la route :")
@@ -356,6 +411,9 @@ def gerer_horaire(route):
     """
 
     hor_tri = route.horaires
+    if len(hor_tri) == 0:
+        ihm.afficher("Il n'y a pas d'horaire disponible !")
+        return
     # On trie les routes par nombre d'horaires
     hor_tri.sort(key=lambda s: s.numero)
     hor = ihm.choisir_paginer(hor_tri, "Choisissez l'horaire :")
@@ -447,11 +505,18 @@ def afficher_carte_aeroports(aeroports, show=True):
     if show:
         dessine_fondcarte()
     # Ajout de la carte de chaque aeroport
-    for aeroport in aeroports:
+    small = [x for x in aeroports if x.type_aero == 'small_airport']
+    medium = [x for x in aeroports if x.type_aero == 'medium_airport']
+    large = [x for x in aeroports if x.type_aero == 'large_airport']
+    for aeroport in small:
+        aeroport.afficher_carte(show=False, annot=False)
+    for aeroport in medium:
+        aeroport.afficher_carte(show=False, annot=False)
+    for aeroport in large:
         aeroport.afficher_carte(show=False, annot=False)
     # Affichage
     if show:
-        plt.title('Carte de toutes les aéroports')
+        plt.title('Carte de tous les aéroports')
         plt.show()
     return
 

@@ -91,36 +91,6 @@ class Route(object):
                     self._distance / 1000,
                     len(self._horaires))
 
-    def ajouter_horaire(self):
-        """
-        Methode qui permet d'ajouter un horaire de vol a une route 
-        :return: 
-        """
-        pass
-
-    def supprimer_horaire(self):
-        """
-        Methode qui permet de supprimer un horaire de vol a une route
-        
-        :return: 
-        """
-        pass
-
-    def calculer_plan_vol(self):
-        """
-        Methode pour calculer le trajet de l'avion en fonction des zones autorisées
-        :return: 
-        """
-        pass
-
-    def afficher_stats(self):
-        """
-        Methode qui permet d'afficher les statistiques sur le nombre de personnes ayant réellement
-        emprunté le chemin par rapport au nombre de places offertes
-        :return: 
-        """
-        pass
-
     def afficher_horaires(self):
         """
         Methode qui permet d'afficher les horaires ou cette route est empruntée

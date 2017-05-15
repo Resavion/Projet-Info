@@ -73,7 +73,6 @@ def choisir_paginer(liste_choix, message="", pas=10):
             liste.append("Voir les éléments précédents")
         if borne_haut < len(liste_choix):
             liste.append("Voir les éléments suivants")
-        liste.append("Revenir au menu")
         # Faire le choix
         elem = choisir(liste, message)
         if elem == "Voir les éléments suivants":

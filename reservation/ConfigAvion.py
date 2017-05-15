@@ -66,3 +66,13 @@ class ConfigAvion(object):
                     self._type_avion, self._nb_places_premiere,
                     self._nb_places_business, self._nb_places_eco_plus,
                     self._nb_places_eco, self._nb_total_places)
+
+    def afficher_disposition(self):
+        """
+        Affiche la disposition des sieges de la cabine
+        
+        :return: None 
+        """
+
+        print(self._disposition)
+        return

@@ -3,7 +3,7 @@ from datetime import datetime
 from collections import defaultdict
 
 import ihm.console as ihm
-from utilitaires.carte import dessine_fondcarte
+from utilitaires.carte import (dessine_fondcarte, parametrage_carte)
 from utilitaires.fonctions import saisie_date
 
 
@@ -117,21 +117,16 @@ class Compagnie(object):
         # Ajout du fond de carte (si la carte ne fait pas partie d'une composition)
         if show:
             dessine_fondcarte()
-        # Ajout de la carte de chaque route
+        # Ajout de la carte de chaque avion
         for avion in self._avions:
             avion.afficher_carte(show=False, annot=annot)
+        # Parametrage de la carte
+        parametrage_carte()
         # Affichage
         if show:
             plt.title('Carte des avions de {0:s}'.format(self._nom))
             plt.show()
         return
-
-    def affecter_avion(self):
-        """
-        Methode qui permet d'affecter un avion existant à un vol
-        :return: 
-        """
-        pass
 
     def afficher_configs(self):
         """
@@ -255,6 +250,7 @@ class Compagnie(object):
         """
         Methode qui permet d'afficher les aeroports en fonction du nombre de route qui leur
         sont rattachées
+        
         :return:
         """
 

@@ -30,7 +30,7 @@ def menu_racine(clients, compagnies, aeroports):
             actions_client(clients, compagnies, aeroports)
         # Si Compagnie
         elif choix == modes[1]:
-            actions_compagnie(compagnies)
+            actions_compagnie(compagnies, aeroports)
         # Si Visualisation
         elif choix == modes[2]:
             actions_visualisation(compagnies, aeroports)
@@ -143,11 +143,12 @@ def ajouter_client(clients):
     return client
 
 
-def actions_compagnie(compagnies):
+def actions_compagnie(compagnies, aeroports):
     """
      Methode qui permet a la compagnie de choisir les actions qu'elle souhaite réaliser
      
     :param compagnies: liste des compagnies
+    :param aeroports: liste de tous les aeroports
     :return: None
     """
 
@@ -181,7 +182,7 @@ def actions_compagnie(compagnies):
         elif action == actions[1]:
             actions_configs(compagnie)
         elif action == actions[2]:
-            actions_routes(compagnie)
+            actions_routes(compagnie, aeroports)
         else:
             break
     return
@@ -339,11 +340,12 @@ def gerer_config(compagnie):
     return
 
 
-def actions_routes(compagnie):
+def actions_routes(compagnie, aeroports):
     """
      Methode qui permet a la compagnie de choisir les actions qu'ils souhaitent réaliser sur une route
 
     :param compagnie: objet compagnie
+    :param aeroports: liste de tous les aeroports
     :return: None
     """
 
@@ -352,6 +354,7 @@ def actions_routes(compagnie):
         actions = ('Afficher la liste des routes',
                    'Afficher une carte des routes',
                    'Gérer une route',
+                   'Ajouter une route',
                    'Ajouter des vols pour toutes les routes',
                    'Revenir au menu précédent')
         action = ihm.choisir(actions, "Choisissez une action :")
@@ -362,6 +365,8 @@ def actions_routes(compagnie):
         elif action == actions[2]:
             gerer_route(compagnie)
         elif action == actions[3]:
+            compagnie.creer_route(aeroports)
+        elif action == actions[4]:
             compagnie.ajouter_vols_toutes_routes()
         else:
             break

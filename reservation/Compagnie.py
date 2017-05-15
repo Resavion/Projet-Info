@@ -4,7 +4,8 @@ from collections import defaultdict
 
 import ihm.console as ihm
 from utilitaires.carte import (dessine_fondcarte, parametrage_carte)
-from utilitaires.fonctions import saisie_date
+from utilitaires.fonctions import (saisie_date, saisie_aeroport)
+from reservation.Route import Route
 
 
 class Compagnie(object):
@@ -266,5 +267,33 @@ class Compagnie(object):
         ihm.afficher_paginer(aeros_nb_routes, "Liste des aéroports de {}".format(self._nom))
         return
 
+    def creer_route(self, aeroports):
+        """
+        Methode pour creer une nouvelle route
+        
+        :param aeroports: la liste de tous les aeroports
+        :return: 
+        """
 
-
+        # Saisir depart
+        aer_dep = saisie_aeroport("aéroport de départ", aeroports)
+        # Saisir arrivee
+        aer_arr = saisie_aeroport("aéroport d'arrivée", aeroports)
+        # Geometrie
+        geom = "LINESTRING({} {},{} {})".format(
+            aer_dep.longitude_deg, aer_dep.latitude_deg,
+            aer_arr.longitude_deg, aer_arr.longitude_deg
+        )
+        # Codeshare
+        choix = ihm.choisir(
+            ['Oui','Non'],
+            "Cette route est-elle un codeshare d'une autre compagnie ?")
+        codeshare = False
+        if choix == 'Oui':
+            codeshare = True
+        # Creation de l'objet
+        new_route = Route(self, aer_dep, aer_arr, geom, codeshare)
+        ihm.afficher("La route suivante a été créée :")
+        print(new_route)
+        self._routes.append(new_route)
+        return
